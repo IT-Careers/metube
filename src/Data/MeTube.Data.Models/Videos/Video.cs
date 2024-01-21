@@ -3,7 +3,7 @@ using MeTube.Data.Models.Reactions;
 
 namespace MeTube.Data.Models.Videos
 {
-    public class Video : BaseEntity
+    public class Video : MetadataBaseEntity
     {
         public string Title { get; set; }
 

@@ -6,4 +6,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\Data\MeTube.Data.Models\MeTube.Data.Models.csproj" />
+    <ProjectReference Include="..\..\Data\MeTube.Data\MeTube.Data.csproj" />
+    <ProjectReference Include="..\MeTube.Service.Models\MeTube.Service.Models.csproj" />
+  </ItemGroup>
+
 </Project>

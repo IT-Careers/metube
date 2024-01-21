@@ -4,7 +4,7 @@ using MeTube.Data.Models.Videos;
 
 namespace MeTube.Data.Models.Playlists
 {
-    public class Playlist : BaseEntity
+    public class Playlist : MetadataBaseEntity
     {
         public string Title { get; set; }
 

@@ -8,5 +8,7 @@ namespace MeTube.Data.Models.Comments
         public Playlist Playlist { get; set; }
 
         public List<PlaylistCommentReaction> Reactions { get; set; }
+        
+        public List<PlaylistComment> Replies { get; set; }
     }
 }
