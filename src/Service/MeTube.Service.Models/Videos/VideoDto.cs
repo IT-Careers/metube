@@ -9,16 +9,11 @@ public class VideoDto : BaseEntityDto
 
     public string Description { get; set; }
 
-    public AttachmentDto? VideoFile { get; set; }
+    public AttachmentDto VideoFile { get; set; }
 
-    public AttachmentDto? ThumbnailImage { get; set; }
+    public AttachmentDto ThumbnailImage { get; set; }
 
     public List<VideoCommentDto> Comments { get; set; }
 
     public List<VideoReactionDto> Reactions { get; set; }
-
-    public static VideoDto fromEntity(Video video)
-    {
-        throw new NotImplementedException();
-    }
 }

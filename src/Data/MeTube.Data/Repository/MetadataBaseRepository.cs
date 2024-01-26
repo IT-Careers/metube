@@ -22,12 +22,6 @@ public class MetadataBaseRepository<TEntity> : BaseRepository<TEntity>
         return await base.Edit(entity);
     }
 
-    public async Task<TEntity> DeleteById(string id)
-    {
-        TEntity entity = await GetById(id);
-        return await Delete(entity);
-    }
-
     public async Task<TEntity> Delete(TEntity entity)
     {
         entity.DeletedOn = DateTime.Now;

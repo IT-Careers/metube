@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeTube.Service.Models", "Se
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeTube.Web.Models", "Web\MeTube.Web.Models\MeTube.Web.Models.csproj", "{AAC0C0F6-1E2C-4017-825F-56457DC82E16}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MeTube.Model.Mappings", "Service\MeTube.Model.Mappings\MeTube.Model.Mappings.csproj", "{AE508B5E-DF49-4700-89B5-275AC68596B3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{AAC0C0F6-1E2C-4017-825F-56457DC82E16}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{AAC0C0F6-1E2C-4017-825F-56457DC82E16}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{AAC0C0F6-1E2C-4017-825F-56457DC82E16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE508B5E-DF49-4700-89B5-275AC68596B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE508B5E-DF49-4700-89B5-275AC68596B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE508B5E-DF49-4700-89B5-275AC68596B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE508B5E-DF49-4700-89B5-275AC68596B3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -62,6 +68,7 @@ Global
 		{7B6E4892-ACBA-4746-9392-2D2276BB4282} = {313E313D-7DE2-4FFA-801E-4A3A6E7D876D}
 		{04732F2E-F73E-43A3-8783-0F42E0E57388} = {313E313D-7DE2-4FFA-801E-4A3A6E7D876D}
 		{AAC0C0F6-1E2C-4017-825F-56457DC82E16} = {2A3AEA9D-8F77-4E2E-8E3D-DBE167E082EB}
+		{AE508B5E-DF49-4700-89B5-275AC68596B3} = {313E313D-7DE2-4FFA-801E-4A3A6E7D876D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {A7605E11-F2EC-4116-B2D1-323DAAA88E62}

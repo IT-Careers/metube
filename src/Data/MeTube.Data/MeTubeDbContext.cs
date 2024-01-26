@@ -26,7 +26,7 @@ namespace MeTube.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             // TODO: Extract into some kind of constant...
-            optionsBuilder.UseSqlServer("Server=(localdb)\\mssqllocaldb;Database=metube_db;Trusted_Connection=True;MultipleActiveResultSets=true");
+            optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=metube_db;User Id=postgres;Password=1234;");
 
             base.OnConfiguring(optionsBuilder);
         }

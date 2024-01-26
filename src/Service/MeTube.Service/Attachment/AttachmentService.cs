@@ -1,5 +1,6 @@
 using MeTube.Data.Models;
 using MeTube.Data.Repository;
+using MeTube.Model.Mappings;
 using MeTube.Service.Models;
 
 namespace MeTube.Service;
@@ -15,27 +16,33 @@ public class AttachmentService : IAttachmentService
     
     public async Task<AttachmentDto> GetById(string id)
     {
-        Attachment attachment = await _attachmentRepository.GetById(id);
+        Attachment attachment = GetByIdInternal(id);
         
-        return AttachmentDto.fromEntity(attachment); 
+        return AttachmentMapping.ToDto(attachment); 
     }
 
     public async Task<AttachmentDto> Create(AttachmentDto attachmentDto)
     {
-        Attachment attachment = AttachmentDto.toEntity(attachmentDto);
+        Attachment attachment = AttachmentMapping.ToEntity(attachmentDto);
         
-        return AttachmentDto.fromEntity(await _attachmentRepository.Create(attachment));
+        return AttachmentMapping.ToDto(await _attachmentRepository.Create(attachment));
     }
 
     public async Task<AttachmentDto> Edit(AttachmentDto attachmentDto)
     {
-        Attachment attachment = AttachmentDto.toEntity(attachmentDto);
+        Attachment attachment = AttachmentMapping.ToEntity(attachmentDto);
         
-        return AttachmentDto.fromEntity(await _attachmentRepository.Edit(attachment));
+        return AttachmentMapping.ToDto(await _attachmentRepository.Edit(attachment));
     }
 
     public async Task<AttachmentDto> DeleteById(string id)
     {
-        return AttachmentDto.fromEntity(await _attachmentRepository.DeleteById(id));
+        return AttachmentMapping.ToDto(GetByIdInternal(id));
+    }
+
+    private Attachment GetByIdInternal(string id)
+    {
+        return _attachmentRepository.GetAll()
+            .Result.First(attachment => attachment.Id == id);
     }
 }

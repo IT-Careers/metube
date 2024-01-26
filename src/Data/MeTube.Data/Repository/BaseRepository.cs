@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Data.Repository;
 
-public class BaseRepository<TEntity> 
+public class BaseRepository<TEntity>
     where TEntity : BaseEntity
 {
     protected MeTubeDbContext _dbContext;
@@ -20,10 +20,9 @@ public class BaseRepository<TEntity>
         return entity;
     }
 
-    public async Task<TEntity> GetById(string id)
+    public async Task<IQueryable<TEntity>> GetAll()
     {
-        return await _dbContext.Set<TEntity>()
-            .FirstAsync(e => e.Id == id);
+        return _dbContext.Set<TEntity>().AsQueryable();
     }
 
     public async Task<TEntity> Edit(TEntity entity)
@@ -33,12 +32,6 @@ public class BaseRepository<TEntity>
         return entity;
     }
 
-    public async Task<TEntity> DeleteById(string id)
-    {
-        TEntity entity = await GetById(id);
-        return await Delete(entity);
-    }
-    
     public async Task<TEntity> Delete(TEntity entity)
     {
         _dbContext.Remove(entity);

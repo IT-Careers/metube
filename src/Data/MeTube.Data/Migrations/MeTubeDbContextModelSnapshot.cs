@@ -3,8 +3,8 @@ using System;
 using MeTube.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -18,22 +18,22 @@ namespace MeTube.Data.Migrations
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.15")
-                .HasAnnotation("Relational:MaxIdentifierLength", 128);
+                .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
-            SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+            NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
             modelBuilder.Entity("MeTube.Data.Models.Attachment", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("BackupURL")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CloudURL")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -43,25 +43,54 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Comments.PlaylistComment", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("PlaylistCommentId")
+                        .HasColumnType("text");
 
                     b.Property<string>("PlaylistId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PosterId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DeletedById");
+
+                    b.HasIndex("PlaylistCommentId");
 
                     b.HasIndex("PlaylistId");
 
                     b.HasIndex("PosterId");
+
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("PlaylistComment");
                 });
@@ -69,23 +98,52 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Comments.VideoComment", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Content")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("PosterId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("VideoCommentId")
+                        .HasColumnType("text");
 
                     b.Property<string>("VideoId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DeletedById");
+
                     b.HasIndex("PosterId");
+
+                    b.HasIndex("UpdatedById");
+
+                    b.HasIndex("VideoCommentId");
 
                     b.HasIndex("VideoId");
 
@@ -95,54 +153,54 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.MeTubeUser", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Email")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedUserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
+                        .HasColumnType("boolean");
 
                     b.Property<string>("UserName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
@@ -151,8 +209,7 @@ namespace MeTube.Data.Migrations
 
                     b.HasIndex("NormalizedUserName")
                         .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+                        .HasDatabaseName("UserNameIndex");
 
                     b.ToTable("AspNetUsers", (string)null);
                 });
@@ -160,23 +217,47 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Playlists.Playlist", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PlaylistThumbnailId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DeletedById");
+
                     b.HasIndex("PlaylistThumbnailId");
+
+                    b.HasIndex("UpdatedById");
 
                     b.ToTable("Playlists");
                 });
@@ -184,19 +265,19 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Reactions.PlaylistCommentReaction", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CommentId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -212,18 +293,18 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Reactions.PlaylistReaction", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PlaylistId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -239,15 +320,15 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Reactions.ReactionType", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ReactionIconId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Type")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -259,19 +340,19 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Reactions.VideoCommentReaction", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("CommentId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -287,19 +368,19 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Reactions.VideoReaction", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("TypeId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("VideoId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -315,30 +396,54 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Videos.Video", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("CreatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DeletedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("DeletedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("PlaylistId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ThumbnailImageId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
+
+                    b.Property<string>("UpdatedById")
+                        .HasColumnType("text");
+
+                    b.Property<DateTime>("UpdatedOn")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("VideoFileId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CreatedById");
+
+                    b.HasIndex("DeletedById");
 
                     b.HasIndex("PlaylistId");
 
                     b.HasIndex("ThumbnailImageId");
+
+                    b.HasIndex("UpdatedById");
 
                     b.HasIndex("VideoFileId");
 
@@ -348,26 +453,25 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.Property<string>("NormalizedName")
                         .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
+                        .HasColumnType("character varying(256)");
 
                     b.HasKey("Id");
 
                     b.HasIndex("NormalizedName")
                         .IsUnique()
-                        .HasDatabaseName("RoleNameIndex")
-                        .HasFilter("[NormalizedName] IS NOT NULL");
+                        .HasDatabaseName("RoleNameIndex");
 
                     b.ToTable("AspNetRoles", (string)null);
                 });
@@ -376,19 +480,19 @@ namespace MeTube.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -401,19 +505,19 @@ namespace MeTube.Data.Migrations
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("integer");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("ClaimType")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("ClaimValue")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
@@ -426,18 +530,18 @@ namespace MeTube.Data.Migrations
                 {
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderKey")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("ProviderDisplayName")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.Property<string>("UserId")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("LoginProvider", "ProviderKey");
 
@@ -449,10 +553,10 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserRole<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("RoleId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "RoleId");
 
@@ -464,18 +568,18 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
                     b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LoginProvider")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Name")
                         .HasMaxLength(128)
-                        .HasColumnType("nvarchar(128)");
+                        .HasColumnType("character varying(128)");
 
                     b.Property<string>("Value")
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("text");
 
                     b.HasKey("UserId", "LoginProvider", "Name");
 
@@ -484,6 +588,18 @@ namespace MeTube.Data.Migrations
 
             modelBuilder.Entity("MeTube.Data.Models.Comments.PlaylistComment", b =>
                 {
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById");
+
+                    b.HasOne("MeTube.Data.Models.Comments.PlaylistComment", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("PlaylistCommentId");
+
                     b.HasOne("MeTube.Data.Models.Playlists.Playlist", "Playlist")
                         .WithMany("Comments")
                         .HasForeignKey("PlaylistId")
@@ -496,18 +612,44 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
+
                     b.Navigation("Playlist");
 
                     b.Navigation("Poster");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Comments.VideoComment", b =>
                 {
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById");
+
                     b.HasOne("MeTube.Data.Models.MeTubeUser", "Poster")
                         .WithMany()
                         .HasForeignKey("PosterId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.HasOne("MeTube.Data.Models.Comments.VideoComment", null)
+                        .WithMany("Replies")
+                        .HasForeignKey("VideoCommentId");
 
                     b.HasOne("MeTube.Data.Models.Videos.Video", "Video")
                         .WithMany("Comments")
@@ -515,20 +657,44 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
+
                     b.Navigation("Poster");
+
+                    b.Navigation("UpdatedBy");
 
                     b.Navigation("Video");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Playlists.Playlist", b =>
                 {
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById");
+
                     b.HasOne("MeTube.Data.Models.Attachment", "PlaylistThumbnail")
                         .WithMany()
                         .HasForeignKey("PlaylistThumbnailId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
+
                     b.Navigation("PlaylistThumbnail");
+
+                    b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Reactions.PlaylistCommentReaction", b =>
@@ -650,6 +816,14 @@ namespace MeTube.Data.Migrations
 
             modelBuilder.Entity("MeTube.Data.Models.Videos.Video", b =>
                 {
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
+                        .WithMany()
+                        .HasForeignKey("CreatedById");
+
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                        .WithMany()
+                        .HasForeignKey("DeletedById");
+
                     b.HasOne("MeTube.Data.Models.Playlists.Playlist", null)
                         .WithMany("Videos")
                         .HasForeignKey("PlaylistId");
@@ -658,11 +832,21 @@ namespace MeTube.Data.Migrations
                         .WithMany()
                         .HasForeignKey("ThumbnailImageId");
 
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                        .WithMany()
+                        .HasForeignKey("UpdatedById");
+
                     b.HasOne("MeTube.Data.Models.Attachment", "VideoFile")
                         .WithMany()
                         .HasForeignKey("VideoFileId");
 
+                    b.Navigation("CreatedBy");
+
+                    b.Navigation("DeletedBy");
+
                     b.Navigation("ThumbnailImage");
+
+                    b.Navigation("UpdatedBy");
 
                     b.Navigation("VideoFile");
                 });
@@ -721,11 +905,15 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Comments.PlaylistComment", b =>
                 {
                     b.Navigation("Reactions");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Comments.VideoComment", b =>
                 {
                     b.Navigation("Reactions");
+
+                    b.Navigation("Replies");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Playlists.Playlist", b =>
