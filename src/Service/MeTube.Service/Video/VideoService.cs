@@ -2,6 +2,7 @@ using MeTube.Data.Models.Videos;
 using MeTube.Data.Repository;
 using MeTube.Model.Mappings.Videos;
 using MeTube.Service.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Service;
 
@@ -9,48 +10,53 @@ public class VideoService : IVideoService
 {
     private readonly VideoRepository _videoRepository;
 
-    public VideoService(VideoRepository videoRepository)
+    private readonly IPlaylistService _playlistService;
+
+    public VideoService(VideoRepository videoRepository, IPlaylistService playlistService)
     {
-        _videoRepository = videoRepository;
+        this._videoRepository = videoRepository;
+        this._playlistService = playlistService;
     }
 
-    public async Task<VideoDto> GetById(string id)
+    public async Task<VideoDto> GetByIdAsync(string id)
     {
-        return VideoMapping.ToDto(GetByIdInternal(id));
+        return (await this.GetByIdInternalAsync(id)).ToDto();
     }
 
-    public async Task<List<VideoDto>> GetAllPlaylistVideos(string playlistId)
+    public IQueryable<VideoDto> GetAll()
     {
-        return _videoRepository.GetAllByPlaylistId(playlistId)
-            .Result.Select(e => VideoMapping.ToDto(e))
-            .ToList();
+        return this._videoRepository.GetAllAsNoTracking().Select(video => video.ToDto());
     }
 
-    public async Task<VideoDto> Create(VideoDto videoDto)
+    public async Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId)
     {
-        Video video = VideoMapping.ToEntity(videoDto);
-
-        return VideoMapping.ToDto(await _videoRepository.CreateAsync(video));
+        return (await this._playlistService.GetByIdAsync(playlistId)).Videos;
     }
 
-    public async Task<VideoDto> Edit(VideoDto videoDto)
+    public async Task<VideoDto> CreateAsync(VideoDto videoDto)
     {
-        Video video = VideoMapping.ToEntity(videoDto);
+        Video video = videoDto.ToEntity();
 
-        return VideoMapping.ToDto(await _videoRepository.EditAsync(video));
+        return (await _videoRepository.CreateAsync(video)).ToDto();
     }
 
-    public async Task<VideoDto> DeleteById(string id)
+    public async Task<VideoDto> EditAsync(VideoDto videoDto)
     {
-        Video video = GetByIdInternal(id);
+        Video video = videoDto.ToEntity();
 
-        return VideoMapping.ToDto(await _videoRepository.DeleteAsync(video));
+        return (await _videoRepository.EditAsync(video)).ToDto();
     }
 
-    private Video GetByIdInternal(string id)
+    public async Task<VideoDto> DeleteByIdAsync(string id)
     {
-        return _videoRepository.GetAll()
-            .Result
-            .First(video => video.Id == id);
+        Video video = await this.GetByIdInternalAsync(id);
+
+        return (await _videoRepository.DeleteAsync(video)).ToDto();
+    }
+
+    private async Task<Video> GetByIdInternalAsync(string id)
+    {
+        return await this._videoRepository.GetAll()
+            .SingleOrDefaultAsync(video => video.Id == id);
     }
 }
