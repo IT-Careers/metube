@@ -4,8 +4,13 @@ namespace MeTube.Service.Comment;
 
 public interface IVideoCommentService
 {
-    Task<VideoCommentDto> GetById(string id);
-    Task<VideoCommentDto> Create(VideoCommentDto attachmentDto);
-    Task<VideoCommentDto> Edit(VideoCommentDto attachmentDto);
-    Task<VideoCommentDto> DeleteById(string id);
+    Task<VideoCommentDto> GetByIdAsync(string id);
+
+    IQueryable<VideoCommentDto> GetAll();
+
+    Task<VideoCommentDto> CreateAsync(VideoCommentDto videoCommentDto);
+
+    Task<VideoCommentDto> EditAsync(VideoCommentDto videoCommentDto);
+
+    Task<VideoCommentDto> DeleteByIdAsync(string id);
 }

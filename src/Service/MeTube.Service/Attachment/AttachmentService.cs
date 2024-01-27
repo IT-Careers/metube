@@ -15,7 +15,7 @@ public class AttachmentService : IAttachmentService
         this._attachmentRepository = repository;
     }
     
-    public async Task<AttachmentDto> GetById(string id)
+    public async Task<AttachmentDto> GetByIdAsync(string id)
     {
         Attachment attachment = await this.GetByIdInternalAsync(id);
         
@@ -26,21 +26,21 @@ public class AttachmentService : IAttachmentService
         return this._attachmentRepository.GetAllAsNoTracking().Select(attachment => attachment.ToDto());
     }
 
-    public async Task<AttachmentDto> Create(AttachmentDto attachmentDto)
+    public async Task<AttachmentDto> CreateAsync(AttachmentDto attachmentDto)
     {
         Attachment attachment = attachmentDto.ToEntity();
         
         return (await this._attachmentRepository.CreateAsync(attachment)).ToDto();
     }
 
-    public async Task<AttachmentDto> Edit(AttachmentDto attachmentDto)
+    public async Task<AttachmentDto> EditAsync(AttachmentDto attachmentDto)
     {
         Attachment attachment = attachmentDto.ToEntity();
         
         return (await this._attachmentRepository.EditAsync(attachment)).ToDto();
     }
 
-    public async Task<AttachmentDto> DeleteById(string id)
+    public async Task<AttachmentDto> DeleteByIdAsync(string id)
     {
         return (await this.GetByIdInternalAsync(id)).ToDto();
     }

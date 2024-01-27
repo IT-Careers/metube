@@ -30,21 +30,21 @@ public class VideoService : IVideoService
     {
         Video video = VideoMapping.ToEntity(videoDto);
 
-        return VideoMapping.ToDto(await _videoRepository.Create(video));
+        return VideoMapping.ToDto(await _videoRepository.CreateAsync(video));
     }
 
     public async Task<VideoDto> Edit(VideoDto videoDto)
     {
         Video video = VideoMapping.ToEntity(videoDto);
 
-        return VideoMapping.ToDto(await _videoRepository.Edit(video));
+        return VideoMapping.ToDto(await _videoRepository.EditAsync(video));
     }
 
     public async Task<VideoDto> DeleteById(string id)
     {
         Video video = GetByIdInternal(id);
 
-        return VideoMapping.ToDto(await _videoRepository.Delete(video));
+        return VideoMapping.ToDto(await _videoRepository.DeleteAsync(video));
     }
 
     private Video GetByIdInternal(string id)

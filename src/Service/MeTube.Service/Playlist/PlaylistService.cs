@@ -23,21 +23,21 @@ public class PlaylistService : IPlaylistService
     {
         Playlist playlist = PlaylistMapping.ToEntity(playlistDto);
 
-        return PlaylistMapping.ToDto(await _playlistRepository.Create(playlist));
+        return PlaylistMapping.ToDto(await _playlistRepository.CreateAsync(playlist));
     }
 
     public async Task<PlaylistDto> Edit(PlaylistDto playlistDto)
     {
         Playlist playlist = PlaylistMapping.ToEntity(playlistDto);
 
-        return PlaylistMapping.ToDto(await _playlistRepository.Edit(playlist));
+        return PlaylistMapping.ToDto(await _playlistRepository.EditAsync(playlist));
     }
 
     public async Task<PlaylistDto> DeleteById(string id)
     {
         Playlist playlist = GetByIdInternal(id);
 
-        return PlaylistMapping.ToDto(await _playlistRepository.Delete(playlist));
+        return PlaylistMapping.ToDto(await _playlistRepository.DeleteAsync(playlist));
     }
 
     private Playlist GetByIdInternal(string id)
