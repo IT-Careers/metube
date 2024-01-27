@@ -1,6 +1,6 @@
 using MeTube.Data.Models.Playlists;
 using MeTube.Data.Repository;
-using MeTube.Model.Mappings;
+using MeTube.Model.Mappings.Playlists;
 using MeTube.Service.Models.Playlist;
 
 namespace MeTube.Service;

@@ -22,6 +22,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MeTube.Data.Models\MeTube.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\MeTube.Data\MeTube.Data.csproj" />
+    <ProjectReference Include="..\..\Service\MeTube.Service\MeTube.Service.csproj" />
   </ItemGroup>
 
 </Project>

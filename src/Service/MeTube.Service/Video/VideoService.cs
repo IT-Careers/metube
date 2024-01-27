@@ -1,6 +1,6 @@
 using MeTube.Data.Models.Videos;
 using MeTube.Data.Repository;
-using MeTube.Model.Mappings;
+using MeTube.Model.Mappings.Videos;
 using MeTube.Service.Models;
 
 namespace MeTube.Service;

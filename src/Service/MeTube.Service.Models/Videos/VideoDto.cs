@@ -1,4 +1,3 @@
-using MeTube.Data.Models.Videos;
 using MeTube.Service.Models.Reactions;
 
 namespace MeTube.Service.Models;

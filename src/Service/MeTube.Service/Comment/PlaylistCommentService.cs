@@ -1,6 +1,6 @@
 using MeTube.Data.Models.Comments;
 using MeTube.Data.Repository;
-using MeTube.Model.Mappings;
+using MeTube.Model.Mappings.Comments;
 using MeTube.Service.Models;
 
 namespace MeTube.Service.Comment;
