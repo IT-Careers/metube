@@ -1,6 +1,7 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace MeTube.Service.Models;
 
-public class MeTubeUserDto
+public class MeTubeUserDto : IdentityUser<string>
 {
-    
 }

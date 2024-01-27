@@ -1,5 +1,3 @@
-using MeTube.Data.Models;
-
 namespace MeTube.Service.Models;
 
 public class AttachmentDto : BaseEntityDto

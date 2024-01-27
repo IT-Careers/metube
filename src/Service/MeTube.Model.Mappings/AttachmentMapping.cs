@@ -5,25 +5,25 @@ namespace MeTube.Model.Mappings;
 
 public static class AttachmentMapping
 {
-    public static Attachment ToEntity(AttachmentDto dto)
+    public static Attachment ToEntity(this AttachmentDto attachmentDto)
     {
-        Attachment entity = new Attachment();
+        Attachment attachment = new Attachment();
 
-        entity.Id = dto.Id;
-        entity.CloudURL = dto.CloudURL;
-        entity.BackupURL = dto.BackupURL;
+        attachment.Id = attachmentDto.Id;
+        attachment.CloudURL = attachmentDto.CloudURL;
+        attachment.BackupURL = attachmentDto.BackupURL;
         
-        return entity;
+        return attachment;
     }
 
-    public static AttachmentDto ToDto(Attachment entity)
+    public static AttachmentDto ToDto(this Attachment attachment)
     {
-        AttachmentDto dto = new AttachmentDto();
+        AttachmentDto attachmentDto = new AttachmentDto();
         
-        dto.Id = entity.Id;
-        dto.CloudURL = entity.CloudURL;
-        dto.BackupURL = entity.BackupURL;
+        attachmentDto.Id = attachment.Id;
+        attachmentDto.CloudURL = attachment.CloudURL;
+        attachmentDto.BackupURL = attachment.BackupURL;
         
-        return dto;
+        return attachmentDto;
     }
 }
