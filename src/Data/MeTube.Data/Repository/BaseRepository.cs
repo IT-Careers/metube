@@ -3,39 +3,43 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Data.Repository;
 
-public class BaseRepository<TEntity>
-    where TEntity : BaseEntity
+public class BaseRepository<TEntity> where TEntity : BaseEntity
 {
-    protected MeTubeDbContext _dbContext;
+    protected readonly MeTubeDbContext _dbContext;
 
     public BaseRepository(MeTubeDbContext dbContext)
     {
-        _dbContext = dbContext;
+        this._dbContext = dbContext;
     }
 
-    public async Task<TEntity> Create(TEntity entity)
+    public async Task<TEntity> CreateAsync(TEntity entity)
     {
-        await _dbContext.AddAsync(entity);
-        await _dbContext.SaveChangesAsync();
+        await this._dbContext.AddAsync(entity);
+        await this._dbContext.SaveChangesAsync();
         return entity;
     }
 
-    public async Task<IQueryable<TEntity>> GetAll()
+    public IQueryable<TEntity> GetAll()
     {
-        return _dbContext.Set<TEntity>().AsQueryable();
+        return this._dbContext.Set<TEntity>().AsQueryable();
     }
 
-    public async Task<TEntity> Edit(TEntity entity)
+    public IQueryable<TEntity> GetAllAsNoTracking()
     {
-        _dbContext.Update(entity);
-        await _dbContext.SaveChangesAsync();
+        return this._dbContext.Set<TEntity>().AsNoTracking();
+    }
+
+    public async Task<TEntity> EditAsync(TEntity entity)
+    {
+        this._dbContext.Update(entity);
+        await this._dbContext.SaveChangesAsync();
         return entity;
     }
 
-    public async Task<TEntity> Delete(TEntity entity)
+    public async Task<TEntity> DeleteAsync(TEntity entity)
     {
-        _dbContext.Remove(entity);
-        await _dbContext.SaveChangesAsync();
+        this._dbContext.Remove(entity);
+        await this._dbContext.SaveChangesAsync();
         return entity;
     }
 }

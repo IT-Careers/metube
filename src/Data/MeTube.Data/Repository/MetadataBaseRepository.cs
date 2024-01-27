@@ -13,18 +13,18 @@ public class MetadataBaseRepository<TEntity> : BaseRepository<TEntity>
     public async Task<TEntity> Create(TEntity entity)
     {
         entity.CreatedOn = DateTime.Now;
-        return await base.Create(entity);
+        return await base.CreateAsync(entity);
     }
 
     public async Task<TEntity> Edit(TEntity entity)
     {
         entity.UpdatedOn = DateTime.Now;
-        return await base.Edit(entity);
+        return await base.EditAsync(entity);
     }
 
     public async Task<TEntity> Delete(TEntity entity)
     {
         entity.DeletedOn = DateTime.Now;
-        return await base.Delete(entity);
+        return await base.DeleteAsync(entity);
     }
 }

@@ -2,6 +2,7 @@ using MeTube.Data.Models;
 using MeTube.Data.Repository;
 using MeTube.Model.Mappings;
 using MeTube.Service.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Service;
 
@@ -11,38 +12,43 @@ public class AttachmentService : IAttachmentService
 
     public AttachmentService(AttachmentRepository repository)
     {
-        _attachmentRepository = repository;
+        this._attachmentRepository = repository;
     }
     
     public async Task<AttachmentDto> GetById(string id)
     {
-        Attachment attachment = GetByIdInternal(id);
+        Attachment attachment = await this.GetByIdInternalAsync(id);
         
-        return AttachmentMapping.ToDto(attachment); 
+        return attachment.ToDto(); 
+    }
+    public IQueryable<AttachmentDto> GetAll()
+    {
+        return this._attachmentRepository.GetAllAsNoTracking().Select(attachment => attachment.ToDto());
     }
 
     public async Task<AttachmentDto> Create(AttachmentDto attachmentDto)
     {
-        Attachment attachment = AttachmentMapping.ToEntity(attachmentDto);
+        Attachment attachment = attachmentDto.ToEntity();
         
-        return AttachmentMapping.ToDto(await _attachmentRepository.Create(attachment));
+        return (await this._attachmentRepository.CreateAsync(attachment)).ToDto();
     }
 
     public async Task<AttachmentDto> Edit(AttachmentDto attachmentDto)
     {
-        Attachment attachment = AttachmentMapping.ToEntity(attachmentDto);
+        Attachment attachment = attachmentDto.ToEntity();
         
-        return AttachmentMapping.ToDto(await _attachmentRepository.Edit(attachment));
+        return (await this._attachmentRepository.EditAsync(attachment)).ToDto();
     }
 
     public async Task<AttachmentDto> DeleteById(string id)
     {
-        return AttachmentMapping.ToDto(GetByIdInternal(id));
+        return (await this.GetByIdInternalAsync(id)).ToDto();
     }
 
-    private Attachment GetByIdInternal(string id)
+    private async Task<Attachment> GetByIdInternalAsync(string id)
     {
-        return _attachmentRepository.GetAll()
-            .Result.First(attachment => attachment.Id == id);
+        return await this._attachmentRepository
+            .GetAll()
+            .SingleOrDefaultAsync(attachment => attachment.Id == id);
     }
 }
