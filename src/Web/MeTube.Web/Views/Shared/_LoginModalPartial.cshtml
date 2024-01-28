@@ -1,0 +1,36 @@
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+<!-- Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-primary-light">
+            <div class="modal-body">
+                <h3 class="text-center mt-3 text-primary-dark fw-bolder">Sing in</h3>
+                <hr class="hr-4 bg-primary-dark" />
+                <form action="/Identity/Account/Login" method="post">
+                    <input name="__RequestVerificationToken" type="hidden" value="@requestToken">
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-center">
+                            <label for="email" class="form-label fw-bolder">Email</label>
+                        </div>
+                        <input type="email" class="form-control w-75 mx-auto" id="email" name="email">
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-center">
+                            <label for="password" class="form-label fw-bolder">Password</label>
+                        </div>
+                        <input type="password" class="form-control w-75 mx-auto" id="password" name="password">
+                    </div>
+                    <hr class="hr-4 bg-primary-dark mt-4" />
+                    <div class="button-holder d-flex justify-content-center">
+                        <button type="submit" class="btn bg-primary-dark text-primary-light fw-bolder">Sign in</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

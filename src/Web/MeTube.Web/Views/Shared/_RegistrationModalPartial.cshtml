@@ -1,0 +1,102 @@
+﻿@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
+
+@{
+    var requestToken = Antiforgery.GetAndStoreTokens(Context).RequestToken;
+}
+
+<!-- Modal -->
+<div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content bg-primary-light">
+            <div class="modal-body">
+                <h3 class="text-center mt-3 text-primary-dark fw-bolder">Sing up</h3>
+                <hr class="hr-4 bg-primary-dark" />
+                <form action="/Identity/Account/Register" method="post" enctype="multipart/form-data">
+                    <input name="__RequestVerificationToken" type="hidden" value="@requestToken" />
+                    <div class="step-1">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <label for="email" class="form-label fw-bolder">Email</label>
+                            </div>
+                            <input type="email" class="form-control w-75 mx-auto" id="email" name="email" placeholder="Email...">
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <label for="password" class="form-label fw-bolder">Password</label>
+                            </div>
+                            <input type="password" class="form-control w-75 mx-auto" id="password" name="password" placeholder="Super secret stronk password...">
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <label for="confirmPassword" class="form-label fw-bolder">Confirm Password</label>
+                            </div>
+                            <input type="password" class="form-control w-75 mx-auto" id="confirmPassword" name="confirmPassword" placeholder="Repeat it if you remember it...">
+                        </div>
+                    </div>
+                    <div class="step-2 d-none">
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <label for="username" class="form-label fw-bolder">Username</label>
+                            </div>
+                            <input type="text" class="form-control w-75 mx-auto" id="username" name="username" placeholder="The coolest one you can think of...">
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <label for="about" class="form-label fw-bolder">About you</label>
+                            </div>
+                            <input type="text" class="form-control w-75 mx-auto" id="about" name="about" placeholder="A few words to describe your supremacy...">
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <label for="profilePicture" class="form-label fw-bolder">Profile picture</label>
+                            </div>
+                            <input type="file" class="form-control w-75 mx-auto" id="profilePicture" name="profilePicture">
+                        </div>
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-center">
+                                <label for="coverPicture" class="form-label fw-bolder">Cover picture</label>
+                            </div>
+                            <input type="file" class="form-control w-75 mx-auto" id="coverPicture" name="coverPicture">
+                        </div>
+                    </div>
+                    <hr class="hr-4 bg-primary-dark mt-4" />
+                    <div class="button-holder d-flex justify-content-around">
+                        <button type="button" class="btn bg-primary-dark text-primary-light fw-bolder step-1-button">Proceed</button>
+                        <button type="button" class="btn d-none bg-main text-primary-dark fw-bolder step-2-button">Go back</button>
+                        <button type="submit" class="btn d-none bg-main text-primary-dark fw-bolder step-2-button">Sign up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const step1Button = document.querySelector('.step-1-button');
+    const step2Buttons = document.querySelectorAll('.step-2-button');
+    const step1Fields = document.querySelector('.step-1');
+    const step2Fields = document.querySelector('.step-2');
+
+    const registerModal = document.querySelector('#registerModal');
+
+    registerModal.addEventListener('hidden.bs.modal', (event) => {
+        step1Button.classList.remove('d-none');
+        step1Fields.classList.remove('d-none');
+        [...step2Buttons].forEach(step2Button => step2Button.classList.add('d-none'));
+        step2Fields.classList.add('d-none');
+    });
+
+    step1Button.addEventListener('click', () => {
+        step1Button.classList.add('d-none');
+        step1Fields.classList.add('d-none');
+        [...step2Buttons].forEach(step2Button => step2Button.classList.remove('d-none'));
+        step2Fields.classList.remove('d-none');
+    });
+
+    [...step2Buttons][0].addEventListener('click', () => {
+        step1Button.classList.remove('d-none');
+        step1Fields.classList.remove('d-none');
+        [...step2Buttons].forEach(step2Button => step2Button.classList.add('d-none'));
+        step2Fields.classList.add('d-none');
+    });
+</script>
