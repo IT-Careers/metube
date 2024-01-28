@@ -2,6 +2,7 @@ using MeTube.Data.Models.Comments;
 using MeTube.Data.Repository;
 using MeTube.Model.Mappings.Comments;
 using MeTube.Service.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Service.Comment;
 
@@ -11,39 +12,43 @@ public class PlaylistCommentService : IPlaylistCommentService
 
     public PlaylistCommentService(PlaylistCommentRepository playlistCommentRepository)
     {
-        _playlistCommentRepository = playlistCommentRepository;
+        this._playlistCommentRepository = playlistCommentRepository;
     }
 
-    public async Task<PlaylistCommentDto> GetById(string id)
+    public async Task<PlaylistCommentDto> GetByIdAsync(string id)
     {
-        return PlaylistCommentMapping.ToDto(GetByIdInternal(id));
+        return (await this.GetByIdInternalAsync(id)).ToDto();
     }
 
-    public async Task<PlaylistCommentDto> Create(PlaylistCommentDto playlistCommentDto)
+    public IQueryable<PlaylistCommentDto> GetAll()
     {
-        PlaylistComment playlistComment = PlaylistCommentMapping.ToEntity(playlistCommentDto);
-
-        return PlaylistCommentMapping.ToDto(await _playlistCommentRepository.Create(playlistComment));
+        return this._playlistCommentRepository.GetAllAsNoTracking().Select(playlistComment => playlistComment.ToDto());
     }
 
-    public async Task<PlaylistCommentDto> Edit(PlaylistCommentDto playlistCommentDto)
+    public async Task<PlaylistCommentDto> CreateAsync(PlaylistCommentDto playlistCommentDto)
     {
-        PlaylistComment playlistComment = PlaylistCommentMapping.ToEntity(playlistCommentDto);
+        PlaylistComment playlistComment = playlistCommentDto.ToEntity();
 
-        return PlaylistCommentMapping.ToDto(await _playlistCommentRepository.Edit(playlistComment));
+        return (await this._playlistCommentRepository.CreateAsync(playlistComment)).ToDto();
     }
 
-    public async Task<PlaylistCommentDto> DeleteById(string id)
+    public async Task<PlaylistCommentDto> EditAsync(PlaylistCommentDto playlistCommentDto)
     {
-        PlaylistComment playlistComment = GetByIdInternal(id);
+        PlaylistComment playlistComment = playlistCommentDto.ToEntity();
 
-        return PlaylistCommentMapping.ToDto(await _playlistCommentRepository.Delete(playlistComment));
+        return (await this._playlistCommentRepository.EditAsync(playlistComment)).ToDto();
     }
 
-    private PlaylistComment GetByIdInternal(string id)
+    public async Task<PlaylistCommentDto> DeleteByIdAsync(string id)
     {
-        return _playlistCommentRepository.GetAll()
-            .Result
-            .First(playlistComment => playlistComment.Id == id);
+        PlaylistComment playlistComment = await this.GetByIdInternalAsync(id);
+
+        return (await this._playlistCommentRepository.DeleteAsync(playlistComment)).ToDto();
+    }
+
+    private async Task<PlaylistComment> GetByIdInternalAsync(string id)
+    {
+        return await this._playlistCommentRepository.GetAll()
+            .SingleOrDefaultAsync(playlistComment => playlistComment.Id == id);
     }
 }

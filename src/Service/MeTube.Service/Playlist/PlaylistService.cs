@@ -2,6 +2,7 @@ using MeTube.Data.Models.Playlists;
 using MeTube.Data.Repository;
 using MeTube.Model.Mappings.Playlists;
 using MeTube.Service.Models.Playlist;
+using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Service;
 
@@ -14,36 +15,40 @@ public class PlaylistService : IPlaylistService
         _playlistRepository = playlistRepository;
     }
 
-    public async Task<PlaylistDto> GetById(string id)
+    public async Task<PlaylistDto> GetByIdAsync(string id)
     {
-        return PlaylistMapping.ToDto(GetByIdInternal(id));
+        return (await this.GetByIdInternalAsync(id)).ToDto();
     }
 
-    public async Task<PlaylistDto> Create(PlaylistDto playlistDto)
+    public IQueryable<PlaylistDto> GetAll()
     {
-        Playlist playlist = PlaylistMapping.ToEntity(playlistDto);
-
-        return PlaylistMapping.ToDto(await _playlistRepository.Create(playlist));
+        return this._playlistRepository.GetAllAsNoTracking().Select(playlist => playlist.ToDto());
     }
 
-    public async Task<PlaylistDto> Edit(PlaylistDto playlistDto)
+    public async Task<PlaylistDto> CreateAsync(PlaylistDto playlistDto)
     {
-        Playlist playlist = PlaylistMapping.ToEntity(playlistDto);
+        Playlist playlist = playlistDto.ToEntity();
 
-        return PlaylistMapping.ToDto(await _playlistRepository.Edit(playlist));
+        return (await this._playlistRepository.CreateAsync(playlist)).ToDto();
     }
 
-    public async Task<PlaylistDto> DeleteById(string id)
+    public async Task<PlaylistDto> EditAsync(PlaylistDto playlistDto)
     {
-        Playlist playlist = GetByIdInternal(id);
+        Playlist playlist = playlistDto.ToEntity();
 
-        return PlaylistMapping.ToDto(await _playlistRepository.Delete(playlist));
+        return (await this._playlistRepository.EditAsync(playlist)).ToDto();
     }
 
-    private Playlist GetByIdInternal(string id)
+    public async Task<PlaylistDto> DeleteByIdAsync(string id)
     {
-        return _playlistRepository.GetAll()
-            .Result
-            .First(playlist => playlist.Id == id);
+        Playlist playlist = await this.GetByIdInternalAsync(id);
+
+        return (await this._playlistRepository.DeleteAsync(playlist)).ToDto();
+    }
+
+    private async Task<Playlist> GetByIdInternalAsync(string id)
+    {
+        return await this._playlistRepository.GetAll()
+            .SingleOrDefaultAsync(playlist => playlist.Id == id);
     }
 }

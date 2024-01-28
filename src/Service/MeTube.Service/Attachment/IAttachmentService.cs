@@ -4,8 +4,13 @@ namespace MeTube.Service;
 
 public interface IAttachmentService
 {
-    Task<AttachmentDto> GetById(string id);
-    Task<AttachmentDto> Create(AttachmentDto attachmentDto);
-    Task<AttachmentDto> Edit(AttachmentDto attachmentDto);
-    Task<AttachmentDto> DeleteById(string id);
+    Task<AttachmentDto> GetByIdAsync(string id);
+
+    IQueryable<AttachmentDto> GetAll();
+
+    Task<AttachmentDto> CreateAsync(AttachmentDto attachmentDto);
+
+    Task<AttachmentDto> EditAsync(AttachmentDto attachmentDto);
+
+    Task<AttachmentDto> DeleteByIdAsync(string id);
 }

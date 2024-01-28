@@ -5,8 +5,13 @@ namespace MeTube.Service;
 
 public interface IPlaylistService
 {
-    Task<PlaylistDto> GetById(string id);
-    Task<PlaylistDto> Create(PlaylistDto playlistDto);
-    Task<PlaylistDto> Edit(PlaylistDto playlistDto);
-    Task<PlaylistDto> DeleteById(string id);
+    Task<PlaylistDto> GetByIdAsync(string id);
+
+    IQueryable<PlaylistDto> GetAll();
+
+    Task<PlaylistDto> CreateAsync(PlaylistDto playlistDto);
+
+    Task<PlaylistDto> EditAsync(PlaylistDto playlistDto);
+
+    Task<PlaylistDto> DeleteByIdAsync(string id);
 }

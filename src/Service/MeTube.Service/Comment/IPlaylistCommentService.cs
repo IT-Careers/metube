@@ -4,8 +4,13 @@ namespace MeTube.Service.Comment;
 
 public interface IPlaylistCommentService
 {
-    Task<PlaylistCommentDto> GetById(string id);
-    Task<PlaylistCommentDto> Create(PlaylistCommentDto playlistCommentDto);
-    Task<PlaylistCommentDto> Edit(PlaylistCommentDto playlistCommentDto);
-    Task<PlaylistCommentDto> DeleteById(string id);
+    Task<PlaylistCommentDto> GetByIdAsync(string id);
+
+    IQueryable<PlaylistCommentDto> GetAll();
+
+    Task<PlaylistCommentDto> CreateAsync(PlaylistCommentDto playlistCommentDto);
+
+    Task<PlaylistCommentDto> EditAsync(PlaylistCommentDto playlistCommentDto);
+
+    Task<PlaylistCommentDto> DeleteByIdAsync(string id);
 }
