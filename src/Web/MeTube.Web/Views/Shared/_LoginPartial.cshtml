@@ -17,10 +17,13 @@
 else
 {
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        <a class="nav-link text-dark" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">Register</a>
     </li>
     <li class="nav-item">
-        <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        <a class="nav-link text-dark" href="#" data-bs-toggle="modal" data-bs-target="#loginModal">Login</a>
     </li>
 }
 </ul>
+
+<partial name="_LoginModalPartial">
+<partial name="_RegistrationModalPartial">
