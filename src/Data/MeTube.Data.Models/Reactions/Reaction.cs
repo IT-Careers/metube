@@ -1,9 +1,10 @@
-﻿namespace MeTube.Data.Models.Reactions
-{
-    public abstract class Reaction : BaseEntity
-    {
-        public MeTubeUser User { get; set; }
+﻿using MeTube.Data.Models.Channels;
 
-        public ReactionType Type { get; set; }
-    }
+namespace MeTube.Data.Models.Reactions;
+
+public abstract class Reaction : BaseEntity
+{
+    public Channel Channel { get; set; }
+
+    public ReactionType Type { get; set; }
 }

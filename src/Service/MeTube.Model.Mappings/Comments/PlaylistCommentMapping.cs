@@ -1,7 +1,8 @@
 using MeTube.Data.Models.Comments;
+using MeTube.Model.Mappings.Channels;
 using MeTube.Model.Mappings.Playlists;
 using MeTube.Model.Mappings.Reactions;
-using MeTube.Service.Models;
+using MeTube.Service.Models.Comments;
 
 namespace MeTube.Model.Mappings.Comments;
 
@@ -13,7 +14,7 @@ public static class PlaylistCommentMapping
 
         playlistComment.Id = playlistCommentDto.Id;
         playlistComment.Content = playlistCommentDto.Content;
-        playlistComment.Poster = playlistCommentDto.Poster.ToEntity();
+        playlistComment.CreatedBy = playlistCommentDto.CreatedBy.ToEntity();
         playlistComment.Playlist = playlistCommentDto.Playlist.ToEntity();
         playlistComment.Reactions = playlistCommentDto.Reactions.Select(plcr => plcr.ToEntity()).ToList();
         playlistComment.Replies = playlistCommentDto.Replies.Select(plcr => plcr.ToEntity()).ToList();
@@ -27,7 +28,7 @@ public static class PlaylistCommentMapping
 
         playlistCommentDto.Id = playlistComment.Id;
         playlistCommentDto.Content = playlistComment.Content;
-        playlistCommentDto.Poster = playlistComment.Poster.ToDto();
+        playlistCommentDto.Channel = playlistComment.CreatedBy.ToDto();
         playlistCommentDto.Playlist = playlistComment.Playlist.ToDto();
         playlistCommentDto.Reactions = playlistComment.Reactions.Select(plcr => plcr.ToDto()).ToList();
         playlistCommentDto.Replies = playlistComment.Replies.Select(plcr => plcr.ToDto()).ToList();

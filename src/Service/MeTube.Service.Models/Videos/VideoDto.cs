@@ -1,8 +1,9 @@
+using MeTube.Service.Models.Comments;
 using MeTube.Service.Models.Reactions;
 
-namespace MeTube.Service.Models;
+namespace MeTube.Service.Models.Videos;
 
-public class VideoDto : BaseEntityDto
+public class VideoDto : MetadataBaseEntityDto
 {
     public string Title { get; set; }
 
@@ -10,7 +11,7 @@ public class VideoDto : BaseEntityDto
 
     public AttachmentDto VideoFile { get; set; }
 
-    public AttachmentDto ThumbnailImage { get; set; }
+    public AttachmentDto Thumbnail { get; set; }
 
     public List<VideoCommentDto> Comments { get; set; }
 

@@ -1,4 +1,5 @@
 ﻿using MeTube.Data.Models;
+using MeTube.Data.Models.Channels;
 using MeTube.Data.Models.Comments;
 using MeTube.Data.Models.Playlists;
 using MeTube.Data.Models.Reactions;
@@ -18,6 +19,8 @@ namespace MeTube.Data
         public DbSet<Playlist> Playlists { get; set; }
 
         public DbSet<ReactionType> ReactionTypes { get; set; }
+
+        public DbSet<Channel> Channels { get; set; }
 
         public MeTubeDbContext(DbContextOptions<MeTubeDbContext> options) : base(options)
         {
@@ -62,6 +65,58 @@ namespace MeTube.Data
                 .HasMany(plc => plc.Reactions)
                 .WithOne(plcr => plcr.Comment)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Channel>()
+                .HasMany(c => c.Videos)
+                .WithOne(v => v.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Channel>()
+                .HasMany(c => c.VideoComments)
+                .WithOne(vc => vc.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Channel>()
+                .HasMany(c => c.Playlists)
+                .WithOne(pl => pl.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Channel>()
+                .HasMany(c => c.PlaylistComments)
+                .WithOne(plc => plc.CreatedBy)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            builder.Entity<Video>()
+                .HasOne(v => v.DeletedBy);
+
+            builder.Entity<Playlist>()
+                .HasOne(pl => pl.DeletedBy);
+
+            builder.Entity<VideoComment>()
+                .HasOne(vc => vc.DeletedBy);
+
+            builder.Entity<PlaylistComment>()
+                .HasOne(plc => plc.DeletedBy);
+
+            builder.Entity<Video>()
+                .HasOne(v => v.UpdatedBy);
+
+            builder.Entity<Playlist>()
+                .HasOne(pl => pl.UpdatedBy);
+
+            builder.Entity<VideoComment>()
+                .HasOne(vc => vc.UpdatedBy);
+
+            builder.Entity<PlaylistComment>()
+                .HasOne(plc => plc.UpdatedBy);
+
+            builder.Entity<Channel>()
+                .HasMany(c => c.Subscribers)
+                .WithOne(c => c.Subscription);
+
+            builder.Entity<Channel>()
+                .HasMany(c => c.Subscriptions)
+                .WithOne(c => c.Subscriber);
 
             base.OnModelCreating(builder);
         }

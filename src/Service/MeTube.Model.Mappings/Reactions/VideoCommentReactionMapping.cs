@@ -1,5 +1,6 @@
 ﻿using MeTube.Data.Models.Reactions;
 using MeTube.Model.Mappings;
+using MeTube.Model.Mappings.Channels;
 using MeTube.Model.Mappings.Comments;
 using MeTube.Model.Mappings.Reactions;
 using MeTube.Service.Models.Reactions;
@@ -14,7 +15,7 @@ public static class VideoCommentReactionMapping
 
         VideoCommentReaction.Id = VideoCommentReactionDto.Id;
         VideoCommentReaction.Comment = VideoCommentReactionDto.Comment.ToEntity();
-        VideoCommentReaction.User = VideoCommentReactionDto.User.ToEntity();
+        VideoCommentReaction.Channel = VideoCommentReactionDto.Channel.ToEntity();
         VideoCommentReaction.Type = VideoCommentReactionDto.Type.ToEntity();
 
         return VideoCommentReaction;
@@ -26,7 +27,7 @@ public static class VideoCommentReactionMapping
 
         VideoCommentReactionDto.Id = VideoCommentReaction.Id;
         VideoCommentReactionDto.Comment = VideoCommentReaction.Comment.ToDto();
-        VideoCommentReactionDto.User = VideoCommentReaction.User.ToDto();
+        VideoCommentReactionDto.Channel = VideoCommentReaction.Channel.ToDto();
         VideoCommentReactionDto.Type = VideoCommentReaction.Type.ToDto();
 
         return VideoCommentReactionDto;

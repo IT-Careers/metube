@@ -40,6 +40,86 @@ namespace MeTube.Data.Migrations
                     b.ToTable("Attachments");
                 });
 
+            modelBuilder.Entity("MeTube.Data.Models.Channels.Channel", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("About")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("CoverPictureId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("ProfilePictureId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CoverPictureId");
+
+                    b.HasIndex("ProfilePictureId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Channels");
+                });
+
+            modelBuilder.Entity("MeTube.Data.Models.Channels.ChannelSubscriptionsMapping", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubscriberId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("SubscriptionId")
+                        .HasColumnType("text");
+
+                    b.Property<long>("Timestamp")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("SubscriberId");
+
+                    b.HasIndex("SubscriptionId");
+
+                    b.ToTable("ChannelSubscriptionsMapping");
+                });
+
+            modelBuilder.Entity("MeTube.Data.Models.Channels.ChannelVideoHistoryMapping", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ChannelId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<long>("Timestamp")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("VideoId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ChannelId");
+
+                    b.HasIndex("VideoId");
+
+                    b.ToTable("ChannelVideoHistoryMapping");
+                });
+
             modelBuilder.Entity("MeTube.Data.Models.Comments.PlaylistComment", b =>
                 {
                     b.Property<string>("Id")
@@ -68,10 +148,6 @@ namespace MeTube.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("PosterId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("UpdatedById")
                         .HasColumnType("text");
 
@@ -87,8 +163,6 @@ namespace MeTube.Data.Migrations
                     b.HasIndex("PlaylistCommentId");
 
                     b.HasIndex("PlaylistId");
-
-                    b.HasIndex("PosterId");
 
                     b.HasIndex("UpdatedById");
 
@@ -116,10 +190,6 @@ namespace MeTube.Data.Migrations
                     b.Property<DateTime>("DeletedOn")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("PosterId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("UpdatedById")
                         .HasColumnType("text");
 
@@ -138,8 +208,6 @@ namespace MeTube.Data.Migrations
                     b.HasIndex("CreatedById");
 
                     b.HasIndex("DeletedById");
-
-                    b.HasIndex("PosterId");
 
                     b.HasIndex("UpdatedById");
 
@@ -267,6 +335,10 @@ namespace MeTube.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("ChannelId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("CommentId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -275,17 +347,13 @@ namespace MeTube.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ChannelId");
 
                     b.HasIndex("CommentId");
 
                     b.HasIndex("TypeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PlaylistCommentReaction");
                 });
@@ -293,6 +361,10 @@ namespace MeTube.Data.Migrations
             modelBuilder.Entity("MeTube.Data.Models.Reactions.PlaylistReaction", b =>
                 {
                     b.Property<string>("Id")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ChannelId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PlaylistId")
@@ -303,16 +375,13 @@ namespace MeTube.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ChannelId");
 
                     b.HasIndex("PlaylistId");
 
                     b.HasIndex("TypeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("PlaylistReaction");
                 });
@@ -342,6 +411,10 @@ namespace MeTube.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
+                    b.Property<string>("ChannelId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<string>("CommentId")
                         .IsRequired()
                         .HasColumnType("text");
@@ -350,17 +423,13 @@ namespace MeTube.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
+
+                    b.HasIndex("ChannelId");
 
                     b.HasIndex("CommentId");
 
                     b.HasIndex("TypeId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("VideoCommentReaction");
                 });
@@ -370,11 +439,11 @@ namespace MeTube.Data.Migrations
                     b.Property<string>("Id")
                         .HasColumnType("text");
 
-                    b.Property<string>("TypeId")
+                    b.Property<string>("ChannelId")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("UserId")
+                    b.Property<string>("TypeId")
                         .IsRequired()
                         .HasColumnType("text");
 
@@ -384,9 +453,9 @@ namespace MeTube.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("TypeId");
+                    b.HasIndex("ChannelId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("TypeId");
 
                     b.HasIndex("VideoId");
 
@@ -417,7 +486,7 @@ namespace MeTube.Data.Migrations
                     b.Property<string>("PlaylistId")
                         .HasColumnType("text");
 
-                    b.Property<string>("ThumbnailImageId")
+                    b.Property<string>("ThumbnailId")
                         .HasColumnType("text");
 
                     b.Property<string>("Title")
@@ -441,7 +510,7 @@ namespace MeTube.Data.Migrations
 
                     b.HasIndex("PlaylistId");
 
-                    b.HasIndex("ThumbnailImageId");
+                    b.HasIndex("ThumbnailId");
 
                     b.HasIndex("UpdatedById");
 
@@ -586,13 +655,75 @@ namespace MeTube.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("MeTube.Data.Models.Channels.Channel", b =>
+                {
+                    b.HasOne("MeTube.Data.Models.Attachment", "CoverPicture")
+                        .WithMany()
+                        .HasForeignKey("CoverPictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MeTube.Data.Models.Attachment", "ProfilePicture")
+                        .WithMany()
+                        .HasForeignKey("ProfilePictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MeTube.Data.Models.MeTubeUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("CoverPicture");
+
+                    b.Navigation("ProfilePicture");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("MeTube.Data.Models.Channels.ChannelSubscriptionsMapping", b =>
+                {
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "Subscriber")
+                        .WithMany("Subscriptions")
+                        .HasForeignKey("SubscriberId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "Subscription")
+                        .WithMany("Subscribers")
+                        .HasForeignKey("SubscriptionId");
+
+                    b.Navigation("Subscriber");
+
+                    b.Navigation("Subscription");
+                });
+
+            modelBuilder.Entity("MeTube.Data.Models.Channels.ChannelVideoHistoryMapping", b =>
+                {
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "Channel")
+                        .WithMany("History")
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("MeTube.Data.Models.Videos.Video", "Video")
+                        .WithMany()
+                        .HasForeignKey("VideoId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Channel");
+
+                    b.Navigation("Video");
+                });
+
             modelBuilder.Entity("MeTube.Data.Models.Comments.PlaylistComment", b =>
                 {
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "CreatedBy")
+                        .WithMany("PlaylistComments")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "DeletedBy")
                         .WithMany()
                         .HasForeignKey("DeletedById");
 
@@ -606,13 +737,7 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "Poster")
-                        .WithMany()
-                        .HasForeignKey("PosterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
 
@@ -622,28 +747,21 @@ namespace MeTube.Data.Migrations
 
                     b.Navigation("Playlist");
 
-                    b.Navigation("Poster");
-
                     b.Navigation("UpdatedBy");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Comments.VideoComment", b =>
                 {
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "CreatedBy")
+                        .WithMany("VideoComments")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "DeletedBy")
                         .WithMany()
                         .HasForeignKey("DeletedById");
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "Poster")
-                        .WithMany()
-                        .HasForeignKey("PosterId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
 
@@ -661,8 +779,6 @@ namespace MeTube.Data.Migrations
 
                     b.Navigation("DeletedBy");
 
-                    b.Navigation("Poster");
-
                     b.Navigation("UpdatedBy");
 
                     b.Navigation("Video");
@@ -670,11 +786,12 @@ namespace MeTube.Data.Migrations
 
             modelBuilder.Entity("MeTube.Data.Models.Playlists.Playlist", b =>
                 {
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "CreatedBy")
+                        .WithMany("Playlists")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "DeletedBy")
                         .WithMany()
                         .HasForeignKey("DeletedById");
 
@@ -684,7 +801,7 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
 
@@ -699,6 +816,12 @@ namespace MeTube.Data.Migrations
 
             modelBuilder.Entity("MeTube.Data.Models.Reactions.PlaylistCommentReaction", b =>
                 {
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "Channel")
+                        .WithMany()
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MeTube.Data.Models.Comments.PlaylistComment", "Comment")
                         .WithMany("Reactions")
                         .HasForeignKey("CommentId")
@@ -711,21 +834,21 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Channel");
 
                     b.Navigation("Comment");
 
                     b.Navigation("Type");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Reactions.PlaylistReaction", b =>
                 {
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "Channel")
+                        .WithMany("PlaylistReactions")
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MeTube.Data.Models.Playlists.Playlist", "Playlist")
                         .WithMany("Reactions")
                         .HasForeignKey("PlaylistId")
@@ -738,15 +861,11 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId");
+                    b.Navigation("Channel");
 
                     b.Navigation("Playlist");
 
                     b.Navigation("Type");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Reactions.ReactionType", b =>
@@ -762,6 +881,12 @@ namespace MeTube.Data.Migrations
 
             modelBuilder.Entity("MeTube.Data.Models.Reactions.VideoCommentReaction", b =>
                 {
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "Channel")
+                        .WithMany()
+                        .HasForeignKey("ChannelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("MeTube.Data.Models.Comments.VideoComment", "Comment")
                         .WithMany("Reactions")
                         .HasForeignKey("CommentId")
@@ -774,30 +899,24 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Navigation("Channel");
 
                     b.Navigation("Comment");
 
                     b.Navigation("Type");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Reactions.VideoReaction", b =>
                 {
-                    b.HasOne("MeTube.Data.Models.Reactions.ReactionType", "Type")
-                        .WithMany()
-                        .HasForeignKey("TypeId")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "Channel")
+                        .WithMany("VideoReactions")
+                        .HasForeignKey("ChannelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "User")
+                    b.HasOne("MeTube.Data.Models.Reactions.ReactionType", "Type")
                         .WithMany()
-                        .HasForeignKey("UserId")
+                        .HasForeignKey("TypeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -807,20 +926,21 @@ namespace MeTube.Data.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Type");
+                    b.Navigation("Channel");
 
-                    b.Navigation("User");
+                    b.Navigation("Type");
 
                     b.Navigation("Video");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Videos.Video", b =>
                 {
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "CreatedBy")
-                        .WithMany()
-                        .HasForeignKey("CreatedById");
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "CreatedBy")
+                        .WithMany("Videos")
+                        .HasForeignKey("CreatedById")
+                        .OnDelete(DeleteBehavior.Restrict);
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "DeletedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "DeletedBy")
                         .WithMany()
                         .HasForeignKey("DeletedById");
 
@@ -828,11 +948,11 @@ namespace MeTube.Data.Migrations
                         .WithMany("Videos")
                         .HasForeignKey("PlaylistId");
 
-                    b.HasOne("MeTube.Data.Models.Attachment", "ThumbnailImage")
+                    b.HasOne("MeTube.Data.Models.Attachment", "Thumbnail")
                         .WithMany()
-                        .HasForeignKey("ThumbnailImageId");
+                        .HasForeignKey("ThumbnailId");
 
-                    b.HasOne("MeTube.Data.Models.MeTubeUser", "UpdatedBy")
+                    b.HasOne("MeTube.Data.Models.Channels.Channel", "UpdatedBy")
                         .WithMany()
                         .HasForeignKey("UpdatedById");
 
@@ -844,7 +964,7 @@ namespace MeTube.Data.Migrations
 
                     b.Navigation("DeletedBy");
 
-                    b.Navigation("ThumbnailImage");
+                    b.Navigation("Thumbnail");
 
                     b.Navigation("UpdatedBy");
 
@@ -900,6 +1020,27 @@ namespace MeTube.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("MeTube.Data.Models.Channels.Channel", b =>
+                {
+                    b.Navigation("History");
+
+                    b.Navigation("PlaylistComments");
+
+                    b.Navigation("PlaylistReactions");
+
+                    b.Navigation("Playlists");
+
+                    b.Navigation("Subscribers");
+
+                    b.Navigation("Subscriptions");
+
+                    b.Navigation("VideoComments");
+
+                    b.Navigation("VideoReactions");
+
+                    b.Navigation("Videos");
                 });
 
             modelBuilder.Entity("MeTube.Data.Models.Comments.PlaylistComment", b =>

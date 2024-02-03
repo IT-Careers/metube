@@ -1,9 +1,8 @@
-﻿namespace MeTube.Data.Models.Comments
-{
-    public abstract class Comment : MetadataBaseEntity
-    {
-        public string Content { get; set; }
+﻿using MeTube.Data.Models.Channels;
 
-        public MeTubeUser Poster { get; set; }
-    }
+namespace MeTube.Data.Models.Comments;
+
+public abstract class Comment : MetadataBaseEntity
+{
+    public string Content { get; set; }
 }

@@ -1,5 +1,6 @@
 ﻿using MeTube.Data.Models.Reactions;
 using MeTube.Model.Mappings;
+using MeTube.Model.Mappings.Channels;
 using MeTube.Model.Mappings.Comments;
 using MeTube.Model.Mappings.Reactions;
 using MeTube.Service.Models.Reactions;
@@ -14,7 +15,7 @@ public static class PlaylistCommentReactionMapping
 
         playlistCommentReaction.Id = playlistCommentReactionDto.Id;
         playlistCommentReaction.Comment = playlistCommentReactionDto.Comment.ToEntity();
-        playlistCommentReaction.User = playlistCommentReactionDto.User.ToEntity();
+        playlistCommentReaction.Channel = playlistCommentReactionDto.Channel.ToEntity();
         playlistCommentReaction.Type = playlistCommentReactionDto.Type.ToEntity();
 
         return playlistCommentReaction;
@@ -26,7 +27,7 @@ public static class PlaylistCommentReactionMapping
 
         playlistCommentReactionDto.Id = playlistCommentReaction.Id;
         playlistCommentReactionDto.Comment = playlistCommentReaction.Comment.ToDto();
-        playlistCommentReactionDto.User = playlistCommentReaction.User.ToDto();
+        playlistCommentReactionDto.Channel = playlistCommentReaction.Channel.ToDto();
         playlistCommentReactionDto.Type = playlistCommentReaction.Type.ToDto();
 
         return playlistCommentReactionDto;
