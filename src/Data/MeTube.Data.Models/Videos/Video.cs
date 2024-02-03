@@ -11,7 +11,7 @@ namespace MeTube.Data.Models.Videos
 
         public Attachment? VideoFile { get; set; }
 
-        public Attachment? ThumbnailImage { get; set; }
+        public Attachment? Thumbnail { get; set; }
 
         public List<VideoComment> Comments { get; set; }
 

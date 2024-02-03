@@ -1,3 +1,5 @@
+using MeTube.Data.Models.Channels;
+
 namespace MeTube.Data.Models;
 
 public class MetadataBaseEntity : BaseEntity
@@ -8,9 +10,9 @@ public class MetadataBaseEntity : BaseEntity
    
    public DateTime DeletedOn { get; set; }
    
-   public MeTubeUser? CreatedBy { get; set; }
+   public Channel? CreatedBy { get; set; }
    
-   public MeTubeUser? UpdatedBy { get; set; }
+   public Channel? UpdatedBy { get; set; }
    
-   public MeTubeUser? DeletedBy { get; set; }
+   public Channel? DeletedBy { get; set; }
 }

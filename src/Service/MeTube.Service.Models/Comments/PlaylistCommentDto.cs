@@ -1,7 +1,7 @@
 using MeTube.Service.Models.Playlist;
 using MeTube.Service.Models.Reactions;
 
-namespace MeTube.Service.Models;
+namespace MeTube.Service.Models.Comments;
 
 public class PlaylistCommentDto : CommentDto
 {

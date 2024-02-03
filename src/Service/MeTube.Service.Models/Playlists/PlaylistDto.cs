@@ -1,8 +1,10 @@
+using MeTube.Service.Models.Comments;
 using MeTube.Service.Models.Reactions;
+using MeTube.Service.Models.Videos;
 
 namespace MeTube.Service.Models.Playlist;
 
-public class PlaylistDto : BaseEntityDto
+public class PlaylistDto : MetadataBaseEntityDto
 {
     public string Title { get; set; }
 

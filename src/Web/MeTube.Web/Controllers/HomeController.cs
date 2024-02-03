@@ -6,7 +6,6 @@ namespace MeTube.Web.Controllers
     {
         public IActionResult Index()
         {
-            this.ViewData["test"] = "test";
             return View();
         }
     }

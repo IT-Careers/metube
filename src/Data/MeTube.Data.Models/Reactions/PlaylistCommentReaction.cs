@@ -1,9 +1,8 @@
 ﻿using MeTube.Data.Models.Comments;
 
-namespace MeTube.Data.Models.Reactions
+namespace MeTube.Data.Models.Reactions;
+
+public class PlaylistCommentReaction : Reaction
 {
-    public class PlaylistCommentReaction : Reaction
-    {
-        public PlaylistComment Comment { get; set; }
-    }
+    public PlaylistComment Comment { get; set; }
 }

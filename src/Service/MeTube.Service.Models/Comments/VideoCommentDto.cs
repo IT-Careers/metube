@@ -1,6 +1,7 @@
 using MeTube.Service.Models.Reactions;
+using MeTube.Service.Models.Videos;
 
-namespace MeTube.Service.Models;
+namespace MeTube.Service.Models.Comments;
 
 public class VideoCommentDto : CommentDto
 {

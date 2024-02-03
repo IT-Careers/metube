@@ -1,5 +1,6 @@
 ﻿using MeTube.Data.Models.Comments;
-using MeTube.Service.Models;
+using MeTube.Model.Mappings.Channels;
+using MeTube.Service.Models.Comments;
 
 namespace MeTube.Model.Mappings.Comments;
 
@@ -11,7 +12,7 @@ public static class VideoCommentMapping
 
         videoComment.Id = videoCommentDto.Id;
         videoComment.Content = videoCommentDto.Content;
-        videoComment.Poster = videoCommentDto.Poster.ToEntity();
+        videoComment.CreatedBy = videoCommentDto.CreatedBy.ToEntity();
         videoComment.Replies = videoCommentDto.Replies.Select(vcrDto => vcrDto.ToEntity()).ToList();
 
         return videoComment;
@@ -23,7 +24,7 @@ public static class VideoCommentMapping
 
         videoCommentDto.Id = videoComment.Id;
         videoCommentDto.Content = videoComment.Content;
-        videoCommentDto.Poster = videoComment.Poster.ToDto();
+        videoCommentDto.CreatedBy = videoComment.CreatedBy.ToDto();
         videoCommentDto.Replies = videoComment.Replies.Select(vcr => vcr.ToDto()).ToList();
 
         return videoCommentDto;

@@ -1,8 +1,10 @@
-namespace MeTube.Service.Models;
+using MeTube.Service.Models.Channels;
 
-public class CommentDto : BaseEntityDto
+namespace MeTube.Service.Models.Comments;
+
+public class CommentDto : MetadataBaseEntityDto
 {
     public string Content { get; set; }
 
-    public MeTubeUserDto Poster { get; set; }
+    public ChannelDto Channel { get; set; }
 }

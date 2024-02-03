@@ -1,9 +1,8 @@
 ﻿using MeTube.Data.Models.Comments;
 
-namespace MeTube.Data.Models.Reactions
+namespace MeTube.Data.Models.Reactions;
+
+public class VideoCommentReaction : Reaction
 {
-    public class VideoCommentReaction : Reaction
-    {
-        public VideoComment Comment { get; set; }
-    }
+    public VideoComment Comment { get; set; }
 }

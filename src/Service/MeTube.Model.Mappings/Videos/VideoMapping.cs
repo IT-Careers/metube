@@ -1,7 +1,7 @@
 using MeTube.Data.Models.Videos;
 using MeTube.Model.Mappings.Comments;
 using MeTube.Model.Mappings.Reactions;
-using MeTube.Service.Models;
+using MeTube.Service.Models.Videos;
 
 namespace MeTube.Model.Mappings.Videos;
 
@@ -15,7 +15,7 @@ public static class VideoMapping
         video.Title = videoDto.Title;
         video.Description = videoDto.Description;
         video.VideoFile = videoDto.VideoFile.ToEntity();
-        video.ThumbnailImage = videoDto.ThumbnailImage.ToEntity();
+        video.Thumbnail = videoDto.Thumbnail.ToEntity();
         video.Comments = videoDto.Comments.Select(vcDto => vcDto.ToEntity()).ToList();
         video.Reactions = videoDto.Reactions.Select(vcr => vcr.ToEntity()).ToList();
 
@@ -30,7 +30,7 @@ public static class VideoMapping
         videoDto.Title = video.Title;
         videoDto.Description = video.Description;
         videoDto.VideoFile = video.VideoFile.ToDto();
-        videoDto.ThumbnailImage = video.ThumbnailImage.ToDto();
+        videoDto.Thumbnail = video.Thumbnail.ToDto();
         videoDto.Comments = video.Comments.Select(vc => vc.ToDto()).ToList();
         videoDto.Reactions = video.Reactions.Select(vcr => vcr.ToDto()).ToList();
 
