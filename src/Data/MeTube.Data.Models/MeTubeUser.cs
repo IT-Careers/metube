@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace MeTube.Data.Models
+namespace MeTube.Data.Models;
+
+public class MeTubeUser : IdentityUser
 {
-    public class MeTubeUser : IdentityUser
-    {
-    }
 }

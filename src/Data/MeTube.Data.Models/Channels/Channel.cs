@@ -7,6 +7,8 @@ namespace MeTube.Data.Models.Channels;
 
 public class Channel : BaseEntity
 {
+    public string Name { get; set; }
+
     public MeTubeUser User { get; set; }
     
     public List<ChannelSubscriptionsMapping> Subscribers { get; set; }
@@ -27,9 +29,9 @@ public class Channel : BaseEntity
 
     public List<ChannelVideoHistoryMapping> History { get; set; }
 
-    public Attachment ProfilePicture { get; set; }
+    public Attachment? ProfilePicture { get; set; }
 
-    public Attachment CoverPicture { get; set; }
+    public Attachment? CoverPicture { get; set; }
 
     public string About { get; set; }
 }

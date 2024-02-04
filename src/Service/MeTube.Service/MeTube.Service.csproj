@@ -7,6 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Http.Features" Version="5.0.17" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\Data\MeTube.Data.Models\MeTube.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\MeTube.Data\MeTube.Data.csproj" />
     <ProjectReference Include="..\MeTube.Model.Mappings\MeTube.Model.Mappings.csproj" />

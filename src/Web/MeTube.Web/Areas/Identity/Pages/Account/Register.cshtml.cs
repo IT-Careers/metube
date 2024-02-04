@@ -3,6 +3,11 @@
 #nullable disable
 
 using MeTube.Data.Models;
+using MeTube.Model.Mappings;
+using MeTube.Service;
+using MeTube.Service.Attachments;
+using MeTube.Service.Channels;
+using MeTube.Service.Models.Channels;
 using MeTube.Web.Models.Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -16,17 +21,26 @@ namespace MeTube.Web.Areas.Identity.Pages.Account
         private readonly UserManager<MeTubeUser> _userManager;
         private readonly IUserStore<MeTubeUser> _userStore;
         private readonly ILogger<RegisterModel> _logger;
+        private readonly IChannelService _channelService;
+        private readonly IAttachmentService _attachmentService;
+        private readonly ICloudinaryService _cloudinaryService;
 
         public RegisterModel(
             UserManager<MeTubeUser> userManager,
             IUserStore<MeTubeUser> userStore,
             SignInManager<MeTubeUser> signInManager,
-            ILogger<RegisterModel> logger)
+            ILogger<RegisterModel> logger,
+            IChannelService channelService,
+            IAttachmentService attachmentService,
+            ICloudinaryService cloudinaryService)
         {
             _userManager = userManager;
             _userStore = userStore;
             _signInManager = signInManager;
             _logger = logger;
+            _channelService = channelService;
+            _attachmentService = attachmentService;
+            _cloudinaryService = cloudinaryService;
         }
 
         [BindProperty]
@@ -48,6 +62,13 @@ namespace MeTube.Web.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    MeTubeUser newlyRegisteredUser = await _userStore.FindByIdAsync(user.Id, CancellationToken.None);
+                    ChannelDto channel = await this.CreateChannel();
+                    
+                    await _channelService.CreateAsync(channel, newlyRegisteredUser);
+
+                    _logger.LogInformation($"Successfully created channel - {channel.Name}.");
 
                     await _signInManager.SignInAsync(user, isPersistent: false);
                     return LocalRedirect(returnUrl);
@@ -74,6 +95,22 @@ namespace MeTube.Web.Areas.Identity.Pages.Account
                     $"Ensure that '{nameof(MeTubeUser)}' is not an abstract class and has a parameterless constructor, or alternatively " +
                     $"override the register page in /Areas/Identity/Pages/Account/Register.cshtml");
             }
+        }
+
+        private async Task<ChannelDto> CreateChannel()
+        {
+            ChannelDto channelDto = new ChannelDto();
+
+            channelDto.About = this.Input.About;
+            channelDto.Name = this.Input.Username;
+
+            var profilePictureUploadResult = await this._cloudinaryService.UploadFile(Input.ProfilePicture);
+            channelDto.ProfilePicture = this._attachmentService.CreateAttachmentFromCloudinaryPayload(profilePictureUploadResult);
+
+            var coverPictureUploadResult = await this._cloudinaryService.UploadFile(Input.CoverPicture);
+            channelDto.CoverPicture = this._attachmentService.CreateAttachmentFromCloudinaryPayload(coverPictureUploadResult);
+            
+            return channelDto;
         }
     }
 }
