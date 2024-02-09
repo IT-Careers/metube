@@ -4,6 +4,8 @@ namespace MeTube.Service.Attachments;
 
 public interface IAttachmentService
 {
+    AttachmentDto CreateAttachmentFromCloudinaryPayload(Dictionary<string, object> payload);
+
     Task<AttachmentDto> GetByIdAsync(string id);
 
     IQueryable<AttachmentDto> GetAll();

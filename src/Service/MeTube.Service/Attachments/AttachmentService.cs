@@ -51,4 +51,13 @@ public class AttachmentService : IAttachmentService
             .GetAll()
             .SingleOrDefaultAsync(attachment => attachment.Id == id);
     }
+
+    public AttachmentDto CreateAttachmentFromCloudinaryPayload(Dictionary<string, object> payload)
+    {
+        AttachmentDto attachmentDto = new AttachmentDto();
+
+        attachmentDto.CloudURL = payload["url"].ToString();
+
+        return attachmentDto;
+    }
 }

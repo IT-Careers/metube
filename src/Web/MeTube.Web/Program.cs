@@ -1,5 +1,16 @@
 using MeTube.Data;
 using MeTube.Data.Models;
+using MeTube.Data.Repository;
+using MeTube.Data.Repository.Channels;
+using MeTube.Data.Repository.Comments;
+using MeTube.Data.Repository.Playlists;
+using MeTube.Data.Repository.Videos;
+using MeTube.Service;
+using MeTube.Service.Attachments;
+using MeTube.Service.Channels;
+using MeTube.Service.Comments;
+using MeTube.Service.Playlists;
+using MeTube.Service.Videos;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Web
@@ -13,6 +24,21 @@ namespace MeTube.Web
             builder.Services.AddDbContext<MeTubeDbContext>(options =>
                 options.UseNpgsql(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+            builder.Services.AddTransient<AttachmentRepository, AttachmentRepository>();
+            builder.Services.AddTransient<ChannelRepository, ChannelRepository>();
+            builder.Services.AddTransient<VideoRepository, VideoRepository>();
+            builder.Services.AddTransient<PlaylistRepository, PlaylistRepository>();
+            builder.Services.AddTransient<VideoCommentRepository, VideoCommentRepository>();
+            builder.Services.AddTransient<PlaylistCommentRepository, PlaylistCommentRepository>();
+
+            builder.Services.AddTransient<ICloudinaryService, CloudinaryService>();
+            builder.Services.AddTransient<IAttachmentService, AttachmentService>();
+            builder.Services.AddTransient<IVideoService, VideoService>();
+            builder.Services.AddTransient<IPlaylistService, PlaylistService>();
+            builder.Services.AddTransient<IVideoCommentService, VideoCommentService>();
+            builder.Services.AddTransient<IPlaylistCommentService, PlaylistCommentService>();
+            builder.Services.AddTransient<IChannelService,  ChannelService>();
 
             builder.Services.AddDefaultIdentity<MeTubeUser>(options => {
                 options.SignIn.RequireConfirmedAccount = false;

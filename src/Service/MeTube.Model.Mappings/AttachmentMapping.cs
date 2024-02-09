@@ -9,7 +9,7 @@ public static class AttachmentMapping
     {
         Attachment attachment = new Attachment();
 
-        attachment.Id = attachmentDto.Id;
+        attachment.Id = attachmentDto.Id ?? attachment.Id;
         attachment.CloudURL = attachmentDto.CloudURL;
         attachment.BackupURL = attachmentDto.BackupURL;
         

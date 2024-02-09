@@ -3,6 +3,7 @@ using System;
 using MeTube.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeTube.Data.Migrations
 {
     [DbContext(typeof(MeTubeDbContext))]
-    partial class MeTubeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204114429_ChannelNames")]
+    partial class ChannelNames
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -28,6 +31,7 @@ namespace MeTube.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("BackupURL")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("CloudURL")
@@ -49,6 +53,7 @@ namespace MeTube.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("CoverPictureId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Name")
@@ -56,6 +61,7 @@ namespace MeTube.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("ProfilePictureId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("UserId")
@@ -660,11 +666,15 @@ namespace MeTube.Data.Migrations
                 {
                     b.HasOne("MeTube.Data.Models.Attachment", "CoverPicture")
                         .WithMany()
-                        .HasForeignKey("CoverPictureId");
+                        .HasForeignKey("CoverPictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MeTube.Data.Models.Attachment", "ProfilePicture")
                         .WithMany()
-                        .HasForeignKey("ProfilePictureId");
+                        .HasForeignKey("ProfilePictureId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.HasOne("MeTube.Data.Models.MeTubeUser", "User")
                         .WithMany()
