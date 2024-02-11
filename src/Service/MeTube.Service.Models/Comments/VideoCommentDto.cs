@@ -5,6 +5,12 @@ namespace MeTube.Service.Models.Comments;
 
 public class VideoCommentDto : CommentDto
 {
+    public VideoCommentDto()
+    {
+        Reactions = new List<VideoCommentReactionDto>();
+        Replies = new List<VideoCommentDto>();
+    }
+    
     public VideoDto Video { get; set; }
 
     public List<VideoCommentReactionDto> Reactions { get; set; }

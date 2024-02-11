@@ -5,6 +5,12 @@ namespace MeTube.Data.Models.Comments
 {
     public class VideoComment : Comment
     {
+        public VideoComment()
+        {
+            Reactions = new List<VideoCommentReaction>();
+            Replies = new List<VideoComment>();
+        }
+        
         public Video Video { get; set; }
 
         public List<VideoCommentReaction> Reactions { get; set; }

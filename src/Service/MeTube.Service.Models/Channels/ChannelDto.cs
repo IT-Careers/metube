@@ -7,6 +7,19 @@ namespace MeTube.Service.Models.Channels;
 
 public class ChannelDto : BaseEntityDto
 {
+    public ChannelDto()
+    {
+        Subscribers = new List<ChannelSubscriptionsMappingDto>();
+        Subscriptions = new List<ChannelSubscriptionsMappingDto>();
+        Videos = new List<VideoDto>();
+        Playlists = new List<PlaylistDto>();
+        VideoReactions = new List<VideoReactionDto>();
+        VideoComments = new List<VideoCommentDto>();
+        PlaylistReactions = new List<PlaylistReactionDto>();
+        PlaylistComments = new List<PlaylistCommentDto>();
+        History = new List<ChannelVideoHistoryMappingDto>();
+    }
+
     public string Name { get; set; }
 
     public MeTubeUserDto User { get; set; }

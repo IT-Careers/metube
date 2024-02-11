@@ -6,6 +6,13 @@ namespace MeTube.Data.Models.Playlists
 {
     public class Playlist : MetadataBaseEntity
     {
+        public Playlist()
+        {
+            Reactions = new List<PlaylistReaction>();
+            Comments = new List<PlaylistComment>();
+            Videos = new List<Video>();
+        }
+        
         public string Title { get; set; }
 
         public string Description { get; set; }
