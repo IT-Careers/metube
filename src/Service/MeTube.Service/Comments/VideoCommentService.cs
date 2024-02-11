@@ -38,7 +38,8 @@ public class VideoCommentService : IVideoCommentService
 
     public IQueryable<VideoCommentDto> GetAll()
     {
-        return _videoCommentRepository.GetAllAsNoTracking().Select(videoComment => videoComment.ToDto());
+        return _videoCommentRepository.GetAllAsNoTracking()
+            .Select(videoComment => videoComment.ToDto(true, true, true));
     }
 
     public async Task<VideoCommentDto> GetByIdAsync(string id)

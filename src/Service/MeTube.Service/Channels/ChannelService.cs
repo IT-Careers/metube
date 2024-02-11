@@ -41,7 +41,8 @@ public class ChannelService : IChannelService
 
     public IQueryable<ChannelDto> GetAll()
     {
-        return this._channelRepository.GetAllAsNoTracking().Select(channel => channel.ToDto());
+        return this._channelRepository.GetAllAsNoTracking()
+            .Select(channel => channel.ToDto(true, true, true, true, true, true, true, true, true));
     }
 
     public async Task<ChannelDto> GetByIdAsync(string id)

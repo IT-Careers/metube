@@ -19,14 +19,22 @@ public static class PlaylistReactionMapping
         return playlistReaction;
     }
 
-    public static PlaylistReactionDto ToDto(this PlaylistReaction playlistReaction)
+    public static PlaylistReactionDto ToDto(this PlaylistReaction playlistReaction, bool includePlaylist = false,
+        bool includeChannel = true)
     {
         PlaylistReactionDto playlistReactionDto = new PlaylistReactionDto();
 
         playlistReactionDto.Id = playlistReaction.Id;
-        playlistReactionDto.Playlist = playlistReaction.Playlist.ToDto();
-        playlistReactionDto.Channel = playlistReaction.Channel.ToDto();
         playlistReactionDto.Type = playlistReaction.Type.ToDto();
+
+        playlistReactionDto.Playlist = includePlaylist
+            ? playlistReaction.Playlist.ToDto(includeReactions: false)
+            : null;
+
+        playlistReactionDto.Channel = includeChannel
+            ? playlistReaction.Channel.ToDto(includePlaylistReactions: false)
+            : null;
+
 
         return playlistReactionDto;
     }

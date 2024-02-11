@@ -22,16 +22,26 @@ public static class PlaylistCommentMapping
         return playlistComment;
     }
 
-    public static PlaylistCommentDto ToDto(this PlaylistComment playlistComment)
+    public static PlaylistCommentDto ToDto(this PlaylistComment playlistComment, bool includeChannel = true,
+        bool includePlaylist = true, bool includeReactions = true)
     {
         PlaylistCommentDto playlistCommentDto = new PlaylistCommentDto();
 
         playlistCommentDto.Id = playlistComment.Id;
         playlistCommentDto.Content = playlistComment.Content;
-        playlistCommentDto.Channel = playlistComment.CreatedBy.ToDto();
-        playlistCommentDto.Playlist = playlistComment.Playlist.ToDto();
-        playlistCommentDto.Reactions = playlistComment.Reactions.Select(plcr => plcr.ToDto()).ToList();
-        playlistCommentDto.Replies = playlistComment.Replies.Select(plcr => plcr.ToDto()).ToList();
+        playlistCommentDto.Replies = playlistComment.Replies.Select(plcr => plcr.ToDto(true)).ToList();
+
+        playlistCommentDto.CreatedBy = includeChannel
+            ? playlistComment.CreatedBy.ToDto(includePlaylistComment: false)
+            : null;
+
+        playlistCommentDto.Playlist = includePlaylist
+            ? playlistComment.Playlist.ToDto(includeComments: false)
+            : null;
+
+        playlistCommentDto.Reactions = includeReactions
+            ? playlistComment.Reactions.Select(plcr => plcr.ToDto(includeComment: false)).ToList()
+            : null;
 
         return playlistCommentDto;
     }
