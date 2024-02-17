@@ -40,6 +40,8 @@ namespace MeTube.Web
             builder.Services.AddTransient<IPlaylistCommentService, PlaylistCommentService>();
             builder.Services.AddTransient<IChannelService,  ChannelService>();
 
+            builder.Services.AddTransient<IVideoFacade, VideoFacade>();
+
             builder.Services.AddDefaultIdentity<MeTubeUser>(options => {
                 options.SignIn.RequireConfirmedAccount = false;
                 options.Password.RequireDigit = false;

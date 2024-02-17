@@ -14,6 +14,7 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Data\MeTube.Data.Models\MeTube.Data.Models.csproj" />
     <ProjectReference Include="..\..\Data\MeTube.Data\MeTube.Data.csproj" />
+    <ProjectReference Include="..\..\Web\MeTube.Web.Models\MeTube.Web.Models.csproj" />
     <ProjectReference Include="..\MeTube.Model.Mappings\MeTube.Model.Mappings.csproj" />
     <ProjectReference Include="..\MeTube.Service.Models\MeTube.Service.Models.csproj" />
   </ItemGroup>

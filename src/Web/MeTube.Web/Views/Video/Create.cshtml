@@ -1,0 +1,27 @@
+@{
+    ViewData["Title"] = "Create Video";
+}
+
+<form asp-controller="Video" asp-method="Create" method="POST" encrypt="multipart/form-data">
+    <div class="m-2">
+        <label for="title">Title</label>
+        <input id="title" type="text" name="title">
+    </div>
+    
+    <div class="m-2">
+        <label for="description">Description</label>
+        <input id="description" type="text" name="description">
+    </div>
+
+    <div class="m-2">
+        <label for="video">Video</label>
+        <input id="video" type="file" name="video">
+    </div>
+
+    <div class="m-2">
+        <label for="thumbnail">Thumbnail</label>
+        <input id="thumbnail" type="file" name="thumbnail">
+    </div>
+
+    <input class="btn btn-primary" type="submit" value="Submit"/>
+</form>
