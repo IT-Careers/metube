@@ -1,8 +1,96 @@
-﻿@{
+﻿@model List<VideoDto>
+
+@{
     ViewData["Title"] = "Home page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<header>
+    <div class="search-bar-container">
+        <input class="search-bar" type="text" />
+        <img class="search-bar-icon" src="~/images/search-icon.png" />
+    </div>
+</header>
+<main>
+    <section class="subscription-videos"></section>
+    <section class="trending-videos"></section>
+    <section class="random-videos">
+        @{
+            int randomVideoIndex = 0;
+            int leftoverVideoContainers = 0;
+        }
+        @for (int row = 0; row < (Model.Count / 5) + 1; row++)
+        {
+            {
+                leftoverVideoContainers = 0;
+            }
+            <div class="videos-row">
+                @for (int currentRowIndex = 0; currentRowIndex < 5 && randomVideoIndex < Model.Count; currentRowIndex++, randomVideoIndex++, leftoverVideoContainers++)
+                {
+                    <div class="videos-card">
+                        <img class="videos-thumbnail" src="@Model[randomVideoIndex].Thumbnail.CloudURL">
+                        <div class="videos-data">
+                            <img class="videos-channel-profile-picture" src="@Model[randomVideoIndex].CreatedBy.ProfilePicture.CloudURL" />
+                            <div class="videos-details">
+                                <div class="videos-title">@Model[randomVideoIndex].Title</div>
+                                <div class="videos-channel-name">@Model[randomVideoIndex].CreatedBy.Name</div>
+                                <div class="videos-metrics">
+                                    <div class="videos-views">0</div>
+                                    <div class="videos-views-date-separator"></div>
+                                    <div class="videos-date">@Model[randomVideoIndex].CreatedOn.ToString("dd/MM/yyyy")</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                @for(;leftoverVideoContainers < 5; leftoverVideoContainers++)
+                {
+                    <div class="videos-card"></div>
+                }
+            </div>
+        }
+    </section>
+</main>
+<script>
+    const sidebarCollapseButton = document.querySelector('.sidebar-collapse-button');
+    const sidebarExpandButton = document.querySelector('.sidebar-expand-button');
+    const sidebar = document.querySelector('.sidebar');
+    const mainContent = document.querySelector('.main-content');
+
+    sidebarCollapseButton.addEventListener('click', () => {
+        sidebarCollapseButton.classList.add('d-none');
+        sidebarCollapseButton.classList.add('sidebar-collapse-button-collapsed');
+        sidebarExpandButton.classList.remove('d-none');
+        sidebarCollapseButton.classList.remove('slide-right');
+        sidebarExpandButton.classList.add('slide-left');
+
+        sidebar.classList.remove('sidebar-expanded');
+        sidebar.classList.add('sidebar-collapsed');
+
+        mainContent.classList.remove('slide-right-content');
+        mainContent.classList.add('slide-left-content');
+
+        setTimeout(() => {
+            mainContent.classList.add('main-content-expanded');
+            mainContent.classList.remove('main-content-collapsed');
+        }, 500);
+    });
+
+    sidebarExpandButton.addEventListener('click', () => {
+        sidebarCollapseButton.classList.remove('d-none');
+        sidebarExpandButton.classList.add('d-none');
+        sidebarCollapseButton.classList.add('slide-right');
+        sidebarExpandButton.classList.remove('slide-left');
+
+        sidebar.classList.add('sidebar-expanded');
+        sidebar.classList.remove('sidebar-collapsed');
+
+        mainContent.classList.remove('slide-left-content');
+        mainContent.classList.add('slide-right-content');
+
+        setTimeout(() => {
+            sidebarCollapseButton.classList.remove('sidebar-collapse-button-collapsed');
+            mainContent.classList.remove('main-content-expanded');
+            mainContent.classList.add('main-content-collapsed');
+        }, 500);
+    });
+</script>

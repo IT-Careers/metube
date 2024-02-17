@@ -10,7 +10,7 @@ public interface IVideoService
 
     Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId);
 
-    Task<VideoDto> CreateAsync(VideoDto videoDto);
+    Task<VideoDto> CreateAsync(VideoDto videoDto, string userId);
 
     Task<VideoDto> EditAsync(VideoDto attachmentDto);
 

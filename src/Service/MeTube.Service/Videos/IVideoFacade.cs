@@ -4,5 +4,5 @@ namespace MeTube.Service.Videos;
 
 public interface IVideoFacade 
 {
-    void Create(VideoCreateModel model);
+    Task Create(VideoCreateModel model, string userId);
 }

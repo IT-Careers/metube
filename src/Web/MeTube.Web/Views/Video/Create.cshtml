@@ -1,26 +1,28 @@
+@model VideoCreateModel
+
 @{
     ViewData["Title"] = "Create Video";
 }
 
-<form asp-controller="Video" asp-method="Create" method="POST" encrypt="multipart/form-data">
+<form asp-controller="Video" asp-method="Create" method="POST" enctype="multipart/form-data">
     <div class="m-2">
         <label for="title">Title</label>
-        <input id="title" type="text" name="title">
+        <input id="title" type="text" asp-for="@Model.Title">
     </div>
     
     <div class="m-2">
         <label for="description">Description</label>
-        <input id="description" type="text" name="description">
+        <input id="description" type="text" asp-for="@Model.Description">
     </div>
 
     <div class="m-2">
         <label for="video">Video</label>
-        <input id="video" type="file" name="video">
+        <input id="video" type="file" asp-for="@Model.Video">
     </div>
 
     <div class="m-2">
         <label for="thumbnail">Thumbnail</label>
-        <input id="thumbnail" type="file" name="thumbnail">
+        <input id="thumbnail" type="file" asp-for="@Model.Thumbnail">
     </div>
 
     <input class="btn btn-primary" type="submit" value="Submit"/>
