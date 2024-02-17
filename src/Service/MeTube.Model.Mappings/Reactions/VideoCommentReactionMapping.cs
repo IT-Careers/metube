@@ -21,14 +21,18 @@ public static class VideoCommentReactionMapping
         return VideoCommentReaction;
     }
 
-    public static VideoCommentReactionDto ToDto(this VideoCommentReaction VideoCommentReaction)
+    public static VideoCommentReactionDto ToDto(this VideoCommentReaction VideoCommentReaction,
+        bool includeComments = true)
     {
         VideoCommentReactionDto VideoCommentReactionDto = new VideoCommentReactionDto();
 
         VideoCommentReactionDto.Id = VideoCommentReaction.Id;
-        VideoCommentReactionDto.Comment = VideoCommentReaction.Comment.ToDto();
         VideoCommentReactionDto.Channel = VideoCommentReaction.Channel.ToDto();
         VideoCommentReactionDto.Type = VideoCommentReaction.Type.ToDto();
+
+        VideoCommentReactionDto.Comment = includeComments
+            ? VideoCommentReaction.Comment.ToDto(includeReactions: false)
+            : null;
 
         return VideoCommentReactionDto;
     }

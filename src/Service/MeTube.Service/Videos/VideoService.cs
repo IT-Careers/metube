@@ -26,7 +26,7 @@ public class VideoService : IVideoService
 
     public IQueryable<VideoDto> GetAll()
     {
-        return this._videoRepository.GetAllAsNoTracking().Select(video => video.ToDto());
+        return this._videoRepository.GetAllAsNoTracking().Select(video => video.ToDto(true, true));
     }
 
     public async Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId)
@@ -38,7 +38,7 @@ public class VideoService : IVideoService
     {
         Video video = videoDto.ToEntity();
 
-        return (await _videoRepository.CreateAsync(video)).ToDto();
+        return (await _videoRepository.CreateAsync(video)).ToDto(true);
     }
 
     public async Task<VideoDto> EditAsync(VideoDto videoDto)

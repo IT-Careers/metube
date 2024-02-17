@@ -22,7 +22,8 @@ public class PlaylistService : IPlaylistService
 
     public IQueryable<PlaylistDto> GetAll()
     {
-        return _playlistRepository.GetAllAsNoTracking().Select(playlist => playlist.ToDto());
+        return _playlistRepository.GetAllAsNoTracking()
+            .Select(playlist => playlist.ToDto(true, true, true));
     }
 
     public async Task<PlaylistDto> CreateAsync(PlaylistDto playlistDto)

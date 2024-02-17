@@ -6,7 +6,7 @@ namespace MeTube.Model.Mappings.Channels;
 
 public static class ChannelVideoHistoryMappingConfiguration
 {
-    public static ChannelVideoHistoryMapping ToEntity(this ChannelVideoHistoryMappingDto channelVideoHistoryMappingDto) 
+    public static ChannelVideoHistoryMapping ToEntity(this ChannelVideoHistoryMappingDto channelVideoHistoryMappingDto)
     {
         ChannelVideoHistoryMapping channelVideoHistoryMapping = new ChannelVideoHistoryMapping();
 
@@ -18,14 +18,18 @@ public static class ChannelVideoHistoryMappingConfiguration
         return channelVideoHistoryMapping;
     }
 
-    public static ChannelVideoHistoryMappingDto ToDto(this ChannelVideoHistoryMapping channelVideoHistoryMapping)
+    public static ChannelVideoHistoryMappingDto ToDto(this ChannelVideoHistoryMapping channelVideoHistoryMapping,
+        bool includeChannel = true)
     {
         ChannelVideoHistoryMappingDto channelVideoHistoryMappingDto = new ChannelVideoHistoryMappingDto();
 
         channelVideoHistoryMappingDto.Id = channelVideoHistoryMapping.Id;
         channelVideoHistoryMappingDto.Timestamp = channelVideoHistoryMapping.Timestamp;
         channelVideoHistoryMappingDto.Video = channelVideoHistoryMapping.Video.ToDto();
-        channelVideoHistoryMappingDto.Channel = channelVideoHistoryMapping.Channel.ToDto();
+
+        channelVideoHistoryMappingDto.Channel = includeChannel
+            ? channelVideoHistoryMapping.Channel.ToDto(includeHistory:false)
+            : null;
 
         return channelVideoHistoryMappingDto;
     }

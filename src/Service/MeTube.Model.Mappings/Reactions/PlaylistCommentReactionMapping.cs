@@ -21,14 +21,18 @@ public static class PlaylistCommentReactionMapping
         return playlistCommentReaction;
     }
 
-    public static PlaylistCommentReactionDto ToDto(this PlaylistCommentReaction playlistCommentReaction)
+    public static PlaylistCommentReactionDto ToDto(this PlaylistCommentReaction playlistCommentReaction,
+        bool includeComment = true)
     {
         PlaylistCommentReactionDto playlistCommentReactionDto = new PlaylistCommentReactionDto();
 
         playlistCommentReactionDto.Id = playlistCommentReaction.Id;
-        playlistCommentReactionDto.Comment = playlistCommentReaction.Comment.ToDto();
         playlistCommentReactionDto.Channel = playlistCommentReaction.Channel.ToDto();
         playlistCommentReactionDto.Type = playlistCommentReaction.Type.ToDto();
+
+        playlistCommentReactionDto.Comment = includeComment
+            ? playlistCommentReaction.Comment.ToDto(includeReactions: false)
+            : null;
 
         return playlistCommentReactionDto;
     }

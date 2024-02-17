@@ -22,7 +22,7 @@ public static class VideoMapping
         return video;
     }
 
-    public static VideoDto ToDto(this Video video)
+    public static VideoDto ToDto(this Video video, bool includeComments = true, bool includeReactions = true)
     {
         VideoDto videoDto = new VideoDto();
 
@@ -31,8 +31,14 @@ public static class VideoMapping
         videoDto.Description = video.Description;
         videoDto.VideoFile = video.VideoFile.ToDto();
         videoDto.Thumbnail = video.Thumbnail.ToDto();
-        videoDto.Comments = video.Comments.Select(vc => vc.ToDto()).ToList();
-        videoDto.Reactions = video.Reactions.Select(vcr => vcr.ToDto()).ToList();
+
+        videoDto.Comments = includeComments
+            ? video.Comments.Select(vc => vc.ToDto(includeVideo: false)).ToList()
+            : null;
+
+        videoDto.Reactions = includeReactions
+            ? video.Reactions.Select(vcr => vcr.ToDto(includeVideo: false)).ToList()
+            : null;
 
         return videoDto;
     }

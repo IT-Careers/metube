@@ -25,14 +25,19 @@ public static class ChannelMapping
         channel.Playlists = channelDto.Playlists?.Select(playlist => playlist.ToEntity()).ToList();
         channel.VideoReactions = channelDto.VideoReactions?.Select(videoReaction => videoReaction.ToEntity()).ToList();
         channel.VideoComments = channelDto.VideoComments?.Select(videoComment => videoComment.ToEntity()).ToList();
-        channel.PlaylistReactions = channelDto.PlaylistReactions?.Select(playlistReaction => playlistReaction.ToEntity()).ToList();
-        channel.PlaylistComments = channelDto.PlaylistComments?.Select(playlistComment => playlistComment.ToEntity()).ToList();
+        channel.PlaylistReactions = channelDto.PlaylistReactions
+            ?.Select(playlistReaction => playlistReaction.ToEntity()).ToList();
+        channel.PlaylistComments =
+            channelDto.PlaylistComments?.Select(playlistComment => playlistComment.ToEntity()).ToList();
         channel.History = channelDto.History?.Select(history => history.ToEntity()).ToList();
 
         return channel;
     }
 
-    public static ChannelDto ToDto(this Channel channel)
+    public static ChannelDto ToDto(this Channel channel,
+        bool includeVideo = true, bool includePlaylist = true, bool includeVideoReactions = true,
+        bool includePlaylistReactions = true, bool includeHistory = true, bool includeVideoComment = true,
+        bool includePlaylistComment = true, bool includeSubscribers = true, bool includeSubscriptions = true)
     {
         ChannelDto channelDto = new ChannelDto();
 
@@ -42,16 +47,43 @@ public static class ChannelMapping
         channelDto.ProfilePicture = channel.ProfilePicture?.ToDto();
         channelDto.CoverPicture = channel.CoverPicture?.ToDto();
         channelDto.User = channel.User?.ToDto();
-        channelDto.Subscribers = channel.Subscribers?.Select(subscriber => subscriber.ToDto()).ToList();
-        channelDto.Subscriptions = channel.Subscriptions?.Select(subscription => subscription.ToDto()).ToList();
-        channelDto.Videos = channel.Videos?.Select(video => video.ToDto()).ToList();
-        channelDto.Playlists = channel.Playlists?.Select(playlist => playlist.ToDto()).ToList();
-        channelDto.VideoReactions = channel.VideoReactions?.Select(videoReaction => videoReaction.ToDto()).ToList();
-        channelDto.VideoComments = channel.VideoComments?.Select(videoComment => videoComment.ToDto()).ToList();
-        channelDto.PlaylistReactions = channel.PlaylistReactions?.Select(playlistReaction => playlistReaction.ToDto()).ToList();
-        channelDto.PlaylistComments = channel.PlaylistComments?.Select(playlistComment => playlistComment.ToDto()).ToList();
-        channelDto.History = channel.History?.Select(history => history.ToDto()).ToList();
 
+        channelDto.Videos = includeVideo 
+            ? channel.Videos?.Select(video => video.ToDto()).ToList() 
+            : null;
+
+        channelDto.Playlists = includePlaylist
+            ? channel.Playlists?.Select(playlist => playlist.ToDto()).ToList()
+            : null;
+
+        channelDto.VideoReactions = includeVideoReactions
+            ? channel.VideoReactions?.Select(videoReaction => videoReaction.ToDto(includeChannel: false)).ToList()
+            : null;
+
+        channelDto.PlaylistReactions = includePlaylistReactions
+            ? channel.PlaylistReactions?.Select(playlistReaction => playlistReaction.ToDto(includeChannel: false)).ToList()
+            : null;
+
+        channelDto.History = includeHistory
+            ? channel.History?.Select(history => history.ToDto(includeChannel: false)).ToList()
+            : null;
+
+        channelDto.VideoComments = includeVideoComment
+            ? channel.VideoComments?.Select(videoComment => videoComment.ToDto()).ToList()
+            : null;
+        
+        channelDto.Subscribers = includeSubscribers
+            ? channel.Subscribers?.Select(subscriber => subscriber.ToDto()).ToList()
+            : null;
+        
+        channelDto.Subscriptions = includeSubscriptions
+            ? channel.Subscriptions?.Select(subscription => subscription.ToDto()).ToList()
+            : null;
+        
+        channelDto.PlaylistComments = includePlaylistComment
+            ? channel.PlaylistComments?.Select(playlistComment => playlistComment.ToDto(includeChannel: false)).ToList()
+            : null;
+        
         return channelDto;
     }
 }

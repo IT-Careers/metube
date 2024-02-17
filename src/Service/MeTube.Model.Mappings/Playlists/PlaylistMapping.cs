@@ -25,7 +25,8 @@ public static class PlaylistMapping
         return playlist;
     }
 
-    public static PlaylistDto ToDto(this Playlist playlist)
+    public static PlaylistDto ToDto(this Playlist playlist, bool includeVideos = true, bool includeComments = true,
+        bool includeReactions = true)
     {
         PlaylistDto playlistDto = new PlaylistDto();
 
@@ -33,9 +34,18 @@ public static class PlaylistMapping
         playlistDto.Title = playlist.Title;
         playlistDto.Description = playlist.Description;
         playlistDto.PlaylistThumbnail = playlist.PlaylistThumbnail.ToDto();
-        playlistDto.Comments = playlist.Comments.Select(plc => plc.ToDto()).ToList();
-        playlistDto.Reactions = playlist.Reactions.Select(plr => plr.ToDto()).ToList();
-        playlistDto.Videos = playlist.Videos.Select(videoEntity => videoEntity.ToDto()).ToList();
+        playlistDto.Videos = includeVideos
+            ? playlist.Videos.Select(videoEntity => videoEntity.ToDto()).ToList()
+            : null;
+
+        playlistDto.Comments = includeComments
+            ? playlist.Comments.Select(plc => plc.ToDto(includePlaylist: false)).ToList()
+            : null;
+
+        playlistDto.Reactions = includeReactions
+            ? playlist.Reactions.Select(plr => plr.ToDto(includePlaylist: false)).ToList()
+            : null;
+
 
         return playlistDto;
     }

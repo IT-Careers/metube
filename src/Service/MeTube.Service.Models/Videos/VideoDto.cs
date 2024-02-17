@@ -5,6 +5,11 @@ namespace MeTube.Service.Models.Videos;
 
 public class VideoDto : MetadataBaseEntityDto
 {
+    public VideoDto()
+    {
+        Comments = new List<VideoCommentDto>();
+        Reactions = new List<VideoReactionDto>();
+    }
     public string Title { get; set; }
 
     public string Description { get; set; }

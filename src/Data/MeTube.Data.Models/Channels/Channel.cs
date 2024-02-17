@@ -7,6 +7,19 @@ namespace MeTube.Data.Models.Channels;
 
 public class Channel : BaseEntity
 {
+    public Channel()
+    {
+        Subscribers = new List<ChannelSubscriptionsMapping>();
+        Subscriptions = new List<ChannelSubscriptionsMapping>();
+        Videos = new List<Video>();
+        Playlists = new List<Playlist>();
+        VideoReactions = new List<VideoReaction>();
+        VideoComments = new List<VideoComment>();
+        PlaylistReactions = new List<PlaylistReaction>();
+        PlaylistComments = new List<PlaylistComment>();
+        History = new List<ChannelVideoHistoryMapping>();
+    }
+    
     public string Name { get; set; }
 
     public MeTubeUser User { get; set; }

@@ -22,7 +22,8 @@ public class PlaylistCommentService : IPlaylistCommentService
 
     public IQueryable<PlaylistCommentDto> GetAll()
     {
-        return _playlistCommentRepository.GetAllAsNoTracking().Select(playlistComment => playlistComment.ToDto());
+        return _playlistCommentRepository.GetAllAsNoTracking()
+            .Select(playlistComment => playlistComment.ToDto(true, true, true));
     }
 
     public async Task<PlaylistCommentDto> CreateAsync(PlaylistCommentDto playlistCommentDto)

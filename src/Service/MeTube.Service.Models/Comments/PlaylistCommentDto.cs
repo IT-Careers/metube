@@ -5,6 +5,12 @@ namespace MeTube.Service.Models.Comments;
 
 public class PlaylistCommentDto : CommentDto
 {
+    public PlaylistCommentDto()
+    {
+        Reactions = new List<PlaylistCommentReactionDto>();
+        Replies = new List<PlaylistCommentDto>();
+    }
+    
     public PlaylistDto Playlist { get; set; }
 
     public List<PlaylistCommentReactionDto> Reactions { get; set; }
