@@ -2,6 +2,10 @@ body {
     font-family: 'Montserrat';
 }
 
+.container-fluid {
+    padding-left: 0 !important;
+}
+
 .bg-main {
     background-color: #84C3BE;
 }
@@ -40,4 +44,333 @@ body {
 
 .hr-4 {
     height: 4px;
+}
+
+.sidebar {
+    height: 100vh;
+    border-right: 1px solid #ebebeb;
+    position: fixed;
+    left: 0;
+}
+
+.main-content {
+    height: 100vh;
+    position: fixed;
+    overflow-y: auto;
+}
+
+.sidebar-expanded {
+    width: 10%;
+    transition: width 0.5s;
+}
+
+.sidebar-collapsed {
+    width: 5%;
+    transition: width 0.5s;
+}
+
+    .sidebar-collapsed .sidebar-navigation {
+        padding-left: 0;
+    }
+
+    .sidebar-collapsed .sidebar-navigation-link img {
+        width: 30px;
+        height: 30px;
+        margin: auto;
+    }
+
+    .sidebar-collapsed .sidebar-navigation-link span {
+        display: none;
+    }
+
+    .sidebar-collapsed .sidebar-navigation-bottom-container {
+        width: 5%;
+    }
+
+.main-content-expanded {
+    width: 95%;
+    left: 5%;
+    transition: width 0.5s;
+}
+
+.main-content-collapsed {
+    width: 90%;
+    left: 10%;
+    transition: width 0.5s;
+}
+
+.sidebar-collapse-button, .sidebar-expand-button {
+    width: 30px;
+    padding: 5px;
+    border-radius: 50%;
+    border: 1px solid #282828;
+    position: fixed;
+    background-color: #FFFFFF;
+    left: calc(10% - 17px);
+    top: 4%;
+}
+
+.sidebar-collapse-button-collapsed {
+    left: calc(5% - 17px);
+}
+
+.sidebar-brand img {
+    margin-top: 10px;
+    width: 75px;
+    height: 75px;
+}
+
+.sidebar-navigation {
+    list-style: none;
+    padding-left: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar-navigation-bottom-container {
+    position: fixed;
+    bottom: 0;
+    width: 10%;
+}
+
+.sidebar-navigation-divisor {
+    width: 90%;
+}
+
+.sidebar-navigation-item {
+    padding: 10px 0px 10px 0px;
+}
+
+.sidebar-navigation-link {
+    display: flex;
+    justify-content: start;
+    text-decoration: none;
+    font-family: 'Montserrat';
+}
+
+.sidebar-navigation-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+.main-content .search-bar-container {
+    position: relative;
+    width: 50%;
+    margin: auto;
+    margin-top: 15px;
+}
+
+    .main-content .search-bar-container .search-bar {
+        width: 100%;
+        padding: 10px calc(20px + 1.5%) 10px 15px;
+        font-family: 'Montserrat';
+        font-weight: bold;
+        border-radius: 10px;
+    }
+
+    .main-content .search-bar-container .search-bar-icon {
+        width: 28px;
+        height: 28px;
+        position: absolute;
+        right: 1%;
+        top: calc(20%);
+    }
+
+.main-content main {
+    margin-left: 15px;
+    margin-top: 25px;
+}
+
+.subscription-videos {
+}
+
+.trending-videos {
+}
+
+.random-videos {
+    width: 95%;
+}
+
+.videos-row {
+    display: flex;
+    justify-content: space-between;
+}
+
+.videos-card {
+    max-width: 250px;
+    min-width: 250px;
+    border-radius: 5%;
+    margin: 10px;
+}
+
+    .videos-card .videos-thumbnail {
+        border-radius: 5% 5% 0 0;
+        width: 250px;
+        height: 250px;
+    }
+
+    .videos-card .videos-data {
+        border-radius: 0 0 5% 5%;
+        display: flex;
+        justify-content: space-between;
+        margin-top: 10px;
+    }
+
+    .videos-card .videos-channel-profile-picture {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid black;
+    }
+
+    .videos-card .videos-details {
+        width: calc(100% - 65px);
+    }
+
+    .videos-card .videos-title {
+        text-wrap: wrap;
+        font-weight: bold;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+    }
+
+    .videos-card .videos-channel-name {
+        margin-top: 5px;
+    }
+
+    .videos-card .videos-metrics {
+        display: flex;
+        justify-content: start;
+    }
+
+    .videos-card .videos-views {
+    }
+
+
+    .videos-card .videos-views-date-separator {
+        background-color: #45322E;
+        border-radius: 50%;
+        width: 5px;
+        height: 5px;
+        margin: 7.5px 5px 0 5px;
+    }
+
+    .videos-card .videos-date {
+    }
+
+/* ANIMATIONS */
+
+.slide-left {
+    animation-name: slide-left;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide-left {
+    0% {
+        left: calc(10% - 17px);
+    }
+}
+
+@keyframes slide-left {
+    100% {
+        left: calc(5% - 17px);
+    }
+}
+
+.slide-right {
+    animation-name: slide-right;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide-right {
+    0% {
+        left: calc(5% - 17px);
+    }
+}
+
+@keyframes slide-right {
+    100% {
+        left: calc(10% - 17px);
+    }
+}
+
+.slide-left-content {
+    animation-name: slide-left-content;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide-left-content {
+    0% {
+        left: calc(10%);
+    }
+}
+
+@keyframes slide-left-content {
+    100% {
+        left: calc(5%);
+    }
+}
+
+.slide-right-content {
+    animation-name: slide-right-content;
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+@keyframes slide-right-content {
+    0% {
+        left: calc(5%);
+    }
+}
+
+@keyframes slide-right-content {
+    100% {
+        left: calc(10%);
+    }
+}
+
+
+/* RESPONSIVE */
+
+@media screen and (max-width: 1720px) {
+    .sidebar-collapse-button, .sidebar-expand-button {
+        display: none;
+    }
+
+    .sidebar {
+        width: 5%;
+    }
+
+    .main-content {
+        width: 95%;
+    }
+
+    .sidebar .sidebar-navigation-link img {
+        width: 30px;
+        height: 30px;
+        margin: auto;
+    }
+
+    .sidebar .sidebar-navigation-link span {
+        display: none;
+    }
+
+    .sidebar .sidebar-navigation {
+        padding-left: 0;
+    }
+
+    .sidebar .sidebar-navigation-bottom-container {
+        width: 5%;
+    }
 }

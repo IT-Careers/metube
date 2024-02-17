@@ -18,7 +18,7 @@ public class VideoFacade : IVideoFacade
         this.attachmentService = attachmentService;
     }
 
-    public async void Create(VideoCreateModel model)
+    public async Task Create(VideoCreateModel model, string userId)
     {
         ValidateVideoExtensions(model.Video);
 
@@ -33,7 +33,7 @@ public class VideoFacade : IVideoFacade
             Thumbnail = attachmentService.CreateAttachmentFromCloudinaryPayload(thumbnailData)
         };
 
-        await videoService.CreateAsync(dto);
+        await videoService.CreateAsync(dto, userId);
     }
 
     private void ValidateVideoExtensions(IFormFile formFile) {
