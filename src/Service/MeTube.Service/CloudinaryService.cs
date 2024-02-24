@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Security.Cryptography;
 using System.Text;
@@ -11,11 +12,14 @@ namespace MeTube.Service
     {
         private readonly IConfiguration configuration;
 
+        private readonly ILogger<CloudinaryService> _logger;
+
         private const string CloudinaryUrl = "https://api.cloudinary.com/v1_1/{0}/auto/upload";
 
-        public CloudinaryService(IConfiguration configuration)
+        public CloudinaryService(IConfiguration configuration, ILogger<CloudinaryService> logger)
         {
             this.configuration = configuration;
+            this._logger = logger;
         }
 
         private string GetUnixTimestamp()
@@ -70,7 +74,7 @@ namespace MeTube.Service
         {
             var currentTimestamp = this.GetUnixTimestamp();
             var apiKey = this.GetApiKey();
-            var publicId = formFile.FileName;
+            var publicId = Guid.NewGuid().ToString() + ":" + formFile.FileName;
             var signature = this.GetSignature(currentTimestamp, publicId);
 
             string file = Convert.ToBase64String(this.ReadFileBytes(formFile));
@@ -87,7 +91,7 @@ namespace MeTube.Service
             {
                 Content = new StringContent(json, Encoding.UTF8, "application/json")
             };
-
+             
             var httpClient = new HttpClient();
             var httpResponse = await httpClient.SendAsync(httpRequest);
 
@@ -96,6 +100,9 @@ namespace MeTube.Service
                 var responseJson = await httpResponse.Content.ReadAsStringAsync();
                 return JsonConvert.DeserializeObject<Dictionary<string, object>>(responseJson);
             }
+
+            var deserializedResponse = JsonConvert.DeserializeObject<Dictionary<string, object>>(await httpResponse.Content.ReadAsStringAsync());
+            this._logger.LogError(deserializedResponse["error"].ToString());
 
             return null;
         }

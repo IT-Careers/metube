@@ -53,6 +53,9 @@ namespace MeTube.Web
                 .AddEntityFrameworkStores<MeTubeDbContext>();
             builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
+
+            builder.Logging.ClearProviders();
+            builder.Logging.AddConsole();
         }
 
         public static void ConfigureApp(WebApplication app)
