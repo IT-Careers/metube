@@ -6,6 +6,8 @@ public interface IVideoService
 {
     Task<VideoDto> GetByIdAsync(string id);
 
+    Task<VideoDto> ViewVideoByIdAsync(string videoId);
+
     IQueryable<VideoDto> GetAll();
 
     Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId);

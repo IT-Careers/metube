@@ -4,26 +4,140 @@
     ViewData["Title"] = "Create Video";
 }
 
-<form asp-controller="Video" asp-method="Create" method="POST" enctype="multipart/form-data">
-    <div class="m-2">
-        <label for="title">Title</label>
-        <input id="title" type="text" asp-for="@Model.Title">
+<form asp-controller="Video" asp-method="Create" method="POST" enctype="multipart/form-data" id="upload-video-form" class="d-flex justify-content-between">
+    <input type="file" id="upload-video-input" accept="video/*" asp-for="Video">
+    <input type="file" id="upload-thumbnail-input" accept="image/*" asp-for="Thumbnail">
+    <div class="left-side w-48">
+        <div class="form-group">
+            <label class="video-title-label" for="title">Title</label>
+            <input type="text" class="form-control mt-2 video-title-input" placeholder="Video title..." asp-for="Title">
+        </div>
+        <div class="form-group mt-3">
+            <label class="video-description-label" for="description">Description</label>
+            <textarea class="form-control mt-2 video-description-input" placeholder="Video description..." rows="5" asp-for="Description"></textarea>
+        </div>
+        <div class="button-holder">
+            <button type="submit" class="btn btn-main video-submit-button">Post video</button>
+        </div>
     </div>
-    
-    <div class="m-2">
-        <label for="description">Description</label>
-        <input id="description" type="text" asp-for="@Model.Description">
+    <div class="right-side w-48">
+        <div id="upload-video-drop-zone">
+            <span id="upload-video-drop-zone-label">Drag & Drop video file here</span>
+        </div>
+        <div id="upload-thumbnail-drop-zone">
+            <span id="upload-thumbnail-drop-zone-label">Drag & Drop thumbnail image file here</span>
+        </div>
     </div>
-
-    <div class="m-2">
-        <label for="video">Video</label>
-        <input id="video" type="file" asp-for="@Model.Video">
-    </div>
-
-    <div class="m-2">
-        <label for="thumbnail">Thumbnail</label>
-        <input id="thumbnail" type="file" asp-for="@Model.Thumbnail">
-    </div>
-
-    <input class="btn btn-primary" type="submit" value="Submit"/>
 </form>
+
+<script>
+    const videoFileUploadConfiguration = (() => {
+        var videoFileInput = document.getElementById('upload-video-input');
+        var videoDropZone = document.getElementById('upload-video-drop-zone');
+        var videoDropZoneLabel = document.getElementById('upload-video-drop-zone-label');
+
+        videoDropZone.addEventListener('click', () => {
+            videoFileInput.click();
+        });
+
+        videoFileInput.addEventListener('change', function () {
+            renderVideo(this.files[0]);
+        });
+
+        videoDropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            videoDropZone.classList.add('highlight');
+        });
+
+        videoDropZone.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            videoDropZone.classList.remove('highlight');
+        });
+
+        videoDropZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            videoDropZone.classList.remove('highlight');
+            var droppedFile = e.dataTransfer.files[0];
+            videoFileInput.files = e.dataTransfer.files;
+            renderVideo(droppedFile);
+        });
+
+        const renderVideo = (file) => {
+            var reader = new FileReader();
+
+            reader.onload = (function (file) {
+                return function (e) {
+                    var fileType = file.type.split('/')[0];
+
+                    if (fileType !== 'video') {
+                        return;
+                    }
+
+                    videoElement = document.createElement('video');
+                    videoElement.controls = true;
+                    videoElement.setAttribute('height', '400px');
+                    videoElement.src = e.target.result;
+                    videoDropZoneLabel.style.display = 'none';
+                    videoDropZone.appendChild(videoElement);
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+    })();
+
+    const thumbnailFileUploadConfiguration = (() => {
+        var thumbnailFileInput = document.getElementById('upload-thumbnail-input');
+        var thumbnailDropZone = document.getElementById('upload-thumbnail-drop-zone');
+        var thumbnailDropZoneLabel = document.getElementById('upload-thumbnail-drop-zone-label');
+
+        thumbnailDropZone.addEventListener('click', () => {
+            thumbnailFileInput.click();
+        });
+
+        thumbnailFileInput.addEventListener('change', function () {
+            renderThumbnail(this.files[0]);
+        });
+
+        thumbnailDropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            thumbnailDropZone.classList.add('highlight');
+        });
+
+        thumbnailDropZone.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            thumbnailDropZone.classList.remove('highlight');
+        });
+
+        thumbnailDropZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            thumbnailDropZone.classList.remove('highlight');
+            var droppedFile = e.dataTransfer.files[0];
+            thumbnailFileInput.files = e.dataTransfer.files;
+            renderThumbnail(droppedFile);
+        });
+
+        const renderThumbnail = (file) => {
+            var reader = new FileReader();
+
+            reader.onload = (function (file) {
+                return function (e) {
+                    var fileType = file.type.split('/')[0];
+
+                    if (fileType !== 'image') {
+                        return;
+                    }
+
+                    thumbnailElement = document.createElement('img');
+                    thumbnailElement.setAttribute('height', '400px');
+                    thumbnailElement.src = e.target.result;
+                    thumbnailDropZoneLabel.style.display = 'none';
+                    thumbnailDropZone.appendChild(thumbnailElement);
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+    })();
+
+</script>

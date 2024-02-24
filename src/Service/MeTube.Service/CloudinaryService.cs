@@ -74,7 +74,7 @@ namespace MeTube.Service
         {
             var currentTimestamp = this.GetUnixTimestamp();
             var apiKey = this.GetApiKey();
-            var publicId = Guid.NewGuid().ToString() + ":" + formFile.FileName;
+            var publicId = Guid.NewGuid().ToString() + ":" + this.StripExtension(formFile.FileName);
             var signature = this.GetSignature(currentTimestamp, publicId);
 
             string file = Convert.ToBase64String(this.ReadFileBytes(formFile));
@@ -105,6 +105,17 @@ namespace MeTube.Service
             this._logger.LogError(deserializedResponse["error"].ToString());
 
             return null;
+        }
+
+        private string StripExtension(string fileName)
+        {
+            return fileName
+                .Replace(".png", "")
+                .Replace(".jpg", "")
+                .Replace(".jpeg", "")
+                .Replace(".gif", "")
+                .Replace(".mp4", "")
+                .Replace(".mkv", "");
         }
     }
 }

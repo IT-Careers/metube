@@ -11,12 +11,15 @@ namespace MeTube.Web.Controllers
     {
         private readonly IVideoFacade _videoFacade;
 
+        private readonly IVideoService _videoService;
+
         private readonly UserManager<MeTubeUser> _userManager;
 
-        public VideoController(IVideoFacade videoFacade, UserManager<MeTubeUser> userManager)
+        public VideoController(IVideoFacade videoFacade, UserManager<MeTubeUser> userManager, IVideoService videoService)
         {
             this._videoFacade = videoFacade;
             this._userManager = userManager;
+            this._videoService = videoService;
         }
 
         [HttpGet]
@@ -31,6 +34,12 @@ namespace MeTube.Web.Controllers
             await _videoFacade.Create(model, currentUser.Id);
     
             return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details([FromQuery(Name = "v")] string videoId)
+        {
+            return View(await this._videoService.ViewVideoByIdAsync(videoId));
         }
     }
 }
