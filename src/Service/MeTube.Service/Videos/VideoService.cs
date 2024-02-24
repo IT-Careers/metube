@@ -3,8 +3,6 @@ using MeTube.Data.Models.Videos;
 using MeTube.Data.Repository.Channels;
 using MeTube.Data.Repository.Videos;
 using MeTube.Model.Mappings.Videos;
-using MeTube.Service.Channels;
-using MeTube.Service.Models.Channels;
 using MeTube.Service.Models.Videos;
 using MeTube.Service.Playlists;
 using Microsoft.EntityFrameworkCore;
@@ -81,6 +79,24 @@ public class VideoService : IVideoService
     private async Task<Video> GetByIdInternalAsync(string id)
     {
         return await this._videoRepository.GetAll()
+            .Include(video => video.Thumbnail)
+            .Include(video => video.VideoFile)
+            .Include(video => video.Comments)
+            .Include(video => video.Reactions)
+            .Include(video => video.CreatedBy)
+            .   ThenInclude(channel => channel.ProfilePicture)
+            .Include(video => video.CreatedBy)
+                .ThenInclude(channel => channel.CoverPicture)
+            .Include(video => video.CreatedBy)
+            .   ThenInclude(channel => channel.Subscribers)
             .SingleOrDefaultAsync(video => video.Id == id);
+    }
+
+    public async Task<VideoDto> ViewVideoByIdAsync(string videoId)
+    {
+        Video video = await this.GetByIdInternalAsync(videoId);
+        video.Views++;
+        await this._videoRepository.EditAsync(video);
+        return video.ToDto();
     }
 }

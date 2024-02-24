@@ -15,6 +15,7 @@ public static class VideoMapping
         video.Id = videoDto.Id ?? video.Id;
         video.Title = videoDto.Title;
         video.Description = videoDto.Description;
+        video.Views = videoDto.Views;
         video.VideoFile = videoDto.VideoFile.ToEntity();
         video.Thumbnail = videoDto.Thumbnail.ToEntity();
         video.Comments = videoDto.Comments.Select(vcDto => vcDto.ToEntity()).ToList();
@@ -33,6 +34,7 @@ public static class VideoMapping
         videoDto.Id = video.Id;
         videoDto.Title = video.Title;
         videoDto.Description = video.Description;
+        videoDto.Views = video.Views;
         videoDto.VideoFile = video.VideoFile.ToDto();
         videoDto.Thumbnail = video.Thumbnail.ToDto();
 

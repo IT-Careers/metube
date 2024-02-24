@@ -14,6 +14,8 @@ namespace MeTube.Data.Models.Videos
         public string Title { get; set; }
 
         public string Description { get; set; }
+        
+        public int Views { get; set; }
 
         public Attachment? VideoFile { get; set; }
 

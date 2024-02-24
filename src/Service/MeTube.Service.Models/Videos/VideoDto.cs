@@ -14,6 +14,8 @@ public class VideoDto : MetadataBaseEntityDto
 
     public string Description { get; set; }
 
+    public int Views { get; set; }
+
     public AttachmentDto VideoFile { get; set; }
 
     public AttachmentDto Thumbnail { get; set; }

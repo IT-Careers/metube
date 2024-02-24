@@ -26,7 +26,7 @@
                 <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
                 <ul class="sidebar-navigation mt-3">
                     <li class="sidebar-navigation-item">
-                        <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                        <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/">
                             <img class="sidebar-navigation-icon" src="~/images/icons8-home-500.png" />
                             <span>Home</span>
                         </a>
@@ -37,16 +37,73 @@
                             <span>Trending</span>
                         </a>
                     </li>
-                    <li class="sidebar-navigation-item">
-                        <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                            <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                            <span>Channels</span>
-                        </a>
-                    </li>
+                    @if (!SignInManager.IsSignedIn(User))
+                    {
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                <span>Channels</span>
+                            </a>
+                        </li>
+                    }
                 </ul>
                 @if (SignInManager.IsSignedIn(User))
                 {
+                    <h5 class="sidebar-navigation-section-label fw-bold w-75">For you</h5>
+                    <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                    <ul class="sidebar-navigation mt-3">
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                <span>Reacted Videos</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                <span>Reacted Playlists</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                <span>History</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <h5 class="sidebar-navigation-section-label fw-bold w-75">Studio</h5>
+                    <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                    <ul class="sidebar-navigation mt-3">
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Video/Create">
+                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                <span>Post video</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                <span>Create playlist</span>
+                            </a>
+                        </li>
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                <span>My channel</span>
+                            </a>
+                        </li>
+                    </ul>
+                    <h5 class="sidebar-navigation-section-label fw-bold w-75">Subscriptions</h5>
+                    <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                    <ul class="sidebar-navigation mt-3">
+                        <li class="sidebar-navigation-item">
+                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
+                                <span>Petar Petrov</span>
+                            </a>
+                        </li>
 
+                    </ul>
                     <div class="sidebar-navigation-bottom-container">
                         <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
                         <ul class="sidebar-navigation">
@@ -85,6 +142,51 @@
             @RenderBody()
         </div>
     </div>
+
+    <script>
+        const sidebarCollapseButton = document.querySelector('.sidebar-collapse-button');
+        const sidebarExpandButton = document.querySelector('.sidebar-expand-button');
+        const sidebar = document.querySelector('.sidebar');
+        const mainContent = document.querySelector('.main-content');
+
+        sidebarCollapseButton.addEventListener('click', () => {
+            sidebarCollapseButton.classList.add('d-none');
+            sidebarCollapseButton.classList.add('sidebar-collapse-button-collapsed');
+            sidebarExpandButton.classList.remove('d-none');
+            sidebarCollapseButton.classList.remove('slide-right');
+            sidebarExpandButton.classList.add('slide-left');
+
+            sidebar.classList.remove('sidebar-expanded');
+            sidebar.classList.add('sidebar-collapsed');
+
+            mainContent.classList.remove('slide-right-content');
+            mainContent.classList.add('slide-left-content');
+
+            setTimeout(() => {
+                mainContent.classList.add('main-content-expanded');
+                mainContent.classList.remove('main-content-collapsed');
+            }, 500);
+        });
+
+        sidebarExpandButton.addEventListener('click', () => {
+            sidebarCollapseButton.classList.remove('d-none');
+            sidebarExpandButton.classList.add('d-none');
+            sidebarCollapseButton.classList.add('slide-right');
+            sidebarExpandButton.classList.remove('slide-left');
+
+            sidebar.classList.add('sidebar-expanded');
+            sidebar.classList.remove('sidebar-collapsed');
+
+            mainContent.classList.remove('slide-left-content');
+            mainContent.classList.add('slide-right-content');
+
+            setTimeout(() => {
+                sidebarCollapseButton.classList.remove('sidebar-collapse-button-collapsed');
+                mainContent.classList.remove('main-content-expanded');
+                mainContent.classList.add('main-content-collapsed');
+            }, 500);
+        });
+    </script>
 
     <partial name="_LoginModalPartial">
     <partial name="_RegistrationModalPartial">

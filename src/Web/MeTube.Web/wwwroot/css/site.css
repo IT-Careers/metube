@@ -10,6 +10,15 @@ body {
     background-color: #84C3BE;
 }
 
+.btn-main {
+    background-color: #84C3BE;
+    color: #EBEBEB;
+}
+
+    .btn-main:hover {
+        border: 10px solid #ebebeb;
+    }
+
 .bg-primary-light {
     background-color: #ebebeb;
 }
@@ -60,7 +69,7 @@ body {
 }
 
 .sidebar-expanded {
-    width: 10%;
+    width: 15%;
     transition: width 0.5s;
 }
 
@@ -94,8 +103,8 @@ body {
 }
 
 .main-content-collapsed {
-    width: 90%;
-    left: 10%;
+    width: 85%;
+    left: 15%;
     transition: width 0.5s;
 }
 
@@ -106,7 +115,7 @@ body {
     border: 1px solid #282828;
     position: fixed;
     background-color: #FFFFFF;
-    left: calc(10% - 17px);
+    left: calc(15% - 17px);
     top: 4%;
 }
 
@@ -130,7 +139,15 @@ body {
 .sidebar-navigation-bottom-container {
     position: fixed;
     bottom: 0;
-    width: 10%;
+    width: 15%;
+}
+
+.sidebar-collapsed .sidebar-navigation-section-label {
+    display: none;
+}
+
+.sidebar-navigation-section-label {
+    margin-left: 15px;
 }
 
 .sidebar-navigation-divisor {
@@ -197,6 +214,22 @@ body {
     justify-content: space-between;
 }
 
+.video-card-link {
+    color: #000000;
+    text-decoration: none;
+}
+
+    .video-card-link:hover {
+        color: #000000;
+        text-decoration: none;
+    }
+
+    .video-card-link:focus {
+        color: #000000;
+        outline: none;
+        text-decoration: none;
+    }
+
 .videos-card {
     max-width: 250px;
     min-width: 250px;
@@ -262,8 +295,137 @@ body {
     .videos-card .videos-date {
     }
 
-/* ANIMATIONS */
+/* UPLOAD VIDEO STYLES */
+#upload-thumbnail-input,
+#upload-video-input {
+    display: none;
+}
 
+#upload-video-form {
+    padding: 25px 50px 0 50px;
+    height: calc(100vh - 50px);
+}
+
+#upload-thumbnail-drop-zone,
+#upload-video-drop-zone {
+    border: 8px dashed #ccc;
+    border-radius: 25px;
+    text-align: center;
+    height: 400px;
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#upload-thumbnail-drop-zone-label,
+#upload-video-drop-zone-label {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+#upload-thumbnail-drop-zone.highlight,
+#upload-video-drop-zone.highlight {
+    background-color: #eaf6ff;
+}
+
+#upload-thumbnail-drop-zone img,
+#upload-video-drop-zone video {
+    height: 390px;
+    width: 100%;
+    border-radius: 25px;
+}
+
+.video-upload-container {
+    margin-left: 15%;
+}
+
+textarea {
+    resize: none;
+}
+
+.w-48 {
+    width: 48%;
+}
+
+.video-title-label {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.video-description-label {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+.video-title-input {
+    font-size: 1.25rem;
+}
+
+.video-description-input {
+    font-size: 1.25rem;
+}
+
+.left-side, .right-side {
+    position: relative;
+}
+
+#upload-thumbnail-drop-zone {
+    margin-top: 50px;
+}
+
+.button-holder {
+    position: absolute;
+    width: 100%;
+    top: 90%;
+}
+
+.video-submit-button {
+    padding: 25px;
+    width: 100%;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+/* VIDEO WATCH */
+
+.video-visualizer {
+    width: 1280px;
+    height: 720px;
+}
+
+.video-metadata {
+    width: 1280px;
+}
+
+.video-metadata-channel {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.video-matadata-channel-profile-picture {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.video-matadata-channel-data {
+    margin-top: 10px;
+    margin-left: 20px;
+}
+
+
+.video-matadata-channel-data h6 {
+    margin-top: 10px;
+}
+
+.video-metadata-description {
+    border-radius: 15px;
+    padding: 15px;
+    background-color: #EBEBEB;
+}
+
+/* ANIMATIONS */
 .slide-left {
     animation-name: slide-left;
     animation-duration: 0.5s;
@@ -273,7 +435,7 @@ body {
 
 @keyframes slide-left {
     0% {
-        left: calc(10% - 17px);
+        left: calc(15% - 17px);
     }
 }
 
@@ -298,7 +460,7 @@ body {
 
 @keyframes slide-right {
     100% {
-        left: calc(10% - 17px);
+        left: calc(15% - 17px);
     }
 }
 
@@ -311,7 +473,7 @@ body {
 
 @keyframes slide-left-content {
     0% {
-        left: calc(10%);
+        left: calc(15%);
     }
 }
 
@@ -336,7 +498,7 @@ body {
 
 @keyframes slide-right-content {
     100% {
-        left: calc(10%);
+        left: calc(15%);
     }
 }
 
