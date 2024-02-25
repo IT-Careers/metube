@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Video";
+    var reactionTypes = (List<ReactionTypeDto>) ViewData["ReactionTypes"];
 }
 
 <header>
@@ -11,10 +12,22 @@
     </div>
 </header>
 <main>
+    <span id="video-id-@Model.Id" hidden></span>
     <div class="video-visualizer">
         <video controls src="@Model.VideoFile.CloudURL"></video>
     </div>
-    <h3 class="video-title fw-bold mt-3">@Model.Title</h3>
+    <div class="video-title-and-reactions d-flex justify-content-between mt-3">
+        <h3 class="video-title fw-bold w-50">@Model.Title</h3>
+        <div class="video-reactions d-flex justify-content-end w-50">
+            @foreach (var reactionType in reactionTypes.OrderByDescending(rt => Model.Reactions.Count(reaction => reaction.Type.Type == rt.Type)))
+            {
+                <div class="video-reaction-type-card p-3 d-flex justify-content-around" id="reaction-type-@reactionType.Id">
+                    <img width="25px" height="25px" src="@reactionType.ReactionIcon.CloudURL" />
+                    <span class="fw-bold">@Model.Reactions.Count(reaction => reaction.Type.Type == reactionType.Type)</span>
+                </div>
+            }
+        </div>
+    </div>
     <div class="video-metadata mt-3">
         <div class="video-metadata-channel">
             <img class="video-matadata-channel-profile-picture" src="@Model.CreatedBy.ProfilePicture.CloudURL" />
@@ -31,3 +44,37 @@
         </div>
     </div>
 </main>
+
+<script>
+    [...document.querySelectorAll('.video-reaction-type-card')].forEach(videoReactionTypeCard => videoReactionTypeCard.addEventListener('click', function (e) {
+        const reactionTypeId = this.id.replace('reaction-type-', '');
+        const videoId = document.querySelector('span[id^="video-id-"]').id.replace('video-id-', '');
+
+        fetch(`/Video/React?videoId=${videoId}&reactionTypeId=${reactionTypeId}`, {
+            method: 'POST'
+        })
+            .then(res => res.json())
+            .then(json => {
+                const reactionTypes = json.reactions.map(reaction => reaction.type);
+                const reactionTypeCountById = {};
+                for (var reactionType of reactionTypes) {
+                    if (!reactionTypeCountById[reactionType.id]) {
+                        reactionTypeCountById[reactionType.id] = 0;
+                    }
+
+                    reactionTypeCountById[reactionType.id]++;
+                }
+                [...document.querySelectorAll('div[id^="reaction-type-"]')].forEach(function (e) {
+                    const reactionTypeId = e.id.replace('reaction-type-', '');
+                    const span = e.querySelector('span');
+                    
+                    if (reactionTypeCountById[reactionTypeId]) {
+                        span.textContent = reactionTypeCountById[reactionTypeId];
+                        return;
+                    }
+
+                    span.textContent = 0;
+                });
+            });
+    }))
+</script>

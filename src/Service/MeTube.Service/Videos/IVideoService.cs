@@ -17,4 +17,6 @@ public interface IVideoService
     Task<VideoDto> EditAsync(VideoDto attachmentDto);
 
     Task<VideoDto> DeleteByIdAsync(string id);
+    
+    Task<VideoDto> React(string videoId, string reactionTypeId, string userId);
 }

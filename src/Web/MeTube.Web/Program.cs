@@ -4,13 +4,17 @@ using MeTube.Data.Repository;
 using MeTube.Data.Repository.Channels;
 using MeTube.Data.Repository.Comments;
 using MeTube.Data.Repository.Playlists;
+using MeTube.Data.Repository.Reactions;
 using MeTube.Data.Repository.Videos;
 using MeTube.Service;
 using MeTube.Service.Attachments;
 using MeTube.Service.Channels;
 using MeTube.Service.Comments;
 using MeTube.Service.Playlists;
+using MeTube.Service.Reactions;
 using MeTube.Service.Videos;
+using MeTube.Web.Seed;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Web
@@ -26,19 +30,23 @@ namespace MeTube.Web
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddTransient<AttachmentRepository, AttachmentRepository>();
+            builder.Services.AddTransient<ReactionTypeRepository, ReactionTypeRepository>();
             builder.Services.AddTransient<ChannelRepository, ChannelRepository>();
             builder.Services.AddTransient<VideoRepository, VideoRepository>();
             builder.Services.AddTransient<PlaylistRepository, PlaylistRepository>();
             builder.Services.AddTransient<VideoCommentRepository, VideoCommentRepository>();
+            builder.Services.AddTransient<VideoReactionRepository, VideoReactionRepository>();
             builder.Services.AddTransient<PlaylistCommentRepository, PlaylistCommentRepository>();
+            builder.Services.AddTransient<PlaylistReactionRepository, PlaylistReactionRepository>();
 
             builder.Services.AddTransient<ICloudinaryService, CloudinaryService>();
             builder.Services.AddTransient<IAttachmentService, AttachmentService>();
+            builder.Services.AddTransient<IReactionTypeService, ReactionTypeService>();
             builder.Services.AddTransient<IVideoService, VideoService>();
             builder.Services.AddTransient<IPlaylistService, PlaylistService>();
             builder.Services.AddTransient<IVideoCommentService, VideoCommentService>();
             builder.Services.AddTransient<IPlaylistCommentService, PlaylistCommentService>();
-            builder.Services.AddTransient<IChannelService,  ChannelService>();
+            builder.Services.AddTransient<IChannelService, ChannelService>();
 
             builder.Services.AddTransient<IVideoFacade, VideoFacade>();
 
@@ -50,6 +58,7 @@ namespace MeTube.Web
                 options.Password.RequireNonAlphanumeric = false;
                 options.Password.RequiredLength = 3;
             })
+                .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<MeTubeDbContext>();
             builder.Services.AddRazorPages();
             builder.Services.AddControllersWithViews();
@@ -72,6 +81,8 @@ namespace MeTube.Web
                 app.UseHsts();
             }
 
+            app.SeedRoles();
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
 
@@ -79,6 +90,10 @@ namespace MeTube.Web
 
             app.UseAuthentication();
             app.UseAuthorization();
+
+            app.MapControllerRoute(
+                name: "AdminArea",
+                pattern: "{area:exists}/{controller=Home}/{action=Index}/{id?}");
 
             app.MapControllerRoute(
                 name: "default",

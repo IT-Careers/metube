@@ -24,100 +24,31 @@
                     <img src="~/images/logo.png">
                 </div>
                 <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
-                <ul class="sidebar-navigation mt-3">
-                    <li class="sidebar-navigation-item">
-                        <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/">
-                            <img class="sidebar-navigation-icon" src="~/images/icons8-home-500.png" />
-                            <span>Home</span>
-                        </a>
-                    </li>
-                    <li class="sidebar-navigation-item">
-                        <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                            <img class="sidebar-navigation-icon" src="~/images/trend.png" /> <!-- CREDIT: https://www.flaticon.com/authors/lalawidi -->
-                            <span>Trending</span>
-                        </a>
-                    </li>
-                    @if (!SignInManager.IsSignedIn(User))
-                    {
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                                <span>Channels</span>
-                            </a>
-                        </li>
-                    }
-                </ul>
-                @if (SignInManager.IsSignedIn(User))
+                @if (!SignInManager.IsSignedIn(User))
                 {
-                    <h5 class="sidebar-navigation-section-label fw-bold w-75">For you</h5>
-                    <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
-                    <ul class="sidebar-navigation mt-3">
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                                <span>Reacted Videos</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                                <span>Reacted Playlists</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                                <span>History</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <h5 class="sidebar-navigation-section-label fw-bold w-75">Studio</h5>
-                    <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
-                    <ul class="sidebar-navigation mt-3">
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Video/Create">
-                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                                <span>Post video</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                                <span>Create playlist</span>
-                            </a>
-                        </li>
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
-                                <span>My channel</span>
-                            </a>
-                        </li>
-                    </ul>
-                    <h5 class="sidebar-navigation-section-label fw-bold w-75">Subscriptions</h5>
-                    <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
-                    <ul class="sidebar-navigation mt-3">
-                        <li class="sidebar-navigation-item">
-                            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
-                                <span>Petar Petrov</span>
-                            </a>
-                        </li>
-
-                    </ul>
-                    <div class="sidebar-navigation-bottom-container">
-                        <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
-                        <ul class="sidebar-navigation">
+                    <div class="sidebar-navigation-main-container">
+                        <ul class="sidebar-navigation mt-3">
                             <li class="sidebar-navigation-item">
-                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Identity/Account/Logout">
-                                    <img class="sidebar-navigation-icon" src="~/images/icons8-register-90.png" />
-                                    <span>Sign out</span>
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-home-500.png" />
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/trend.png" /> <!-- CREDIT: https://www.flaticon.com/authors/lalawidi -->
+                                    <span>Trending</span>
+                                </a>
+                            </li>
+
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                    <span>Channels</span>
                                 </a>
                             </li>
                         </ul>
                     </div>
-                }
-                else
-                {
                     <div class="sidebar-navigation-bottom-container">
                         <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
                         <ul class="sidebar-navigation">
@@ -131,6 +62,128 @@
                                 <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#" data-bs-toggle="modal" data-bs-target="#registerModal">
                                     <img class="sidebar-navigation-icon" src="~/images/icons8-register-90.png" />
                                     <span>Sign up</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
+                @if (SignInManager.IsSignedIn(User))
+                {
+                    <div class="sidebar-navigation-main-container">
+                        <ul class="sidebar-navigation mt-3">
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-home-500.png" />
+                                    <span>Home</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/trend.png" /> <!-- CREDIT: https://www.flaticon.com/authors/lalawidi -->
+                                    <span>Trending</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <h5 class="sidebar-navigation-section-label fw-bold w-75">For you</h5>
+                        <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                        <ul class="sidebar-navigation mt-3">
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                    <span>Reacted Videos</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                    <span>Reacted Playlists</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                    <span>History</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <h5 class="sidebar-navigation-section-label fw-bold w-75">Studio</h5>
+                        <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                        <ul class="sidebar-navigation mt-3">
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Video/Create">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                    <span>Post video</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                    <span>Create playlist</span>
+                                </a>
+                            </li>
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
+                                    <span>My channel</span>
+                                </a>
+                            </li>
+                        </ul>
+                        <h5 class="sidebar-navigation-section-label fw-bold w-75">Subscriptions</h5>
+                        <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                        <ul class="sidebar-navigation mt-3">
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                    <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
+                                    <span>Petar Petrov</span>
+                                </a>
+                            </li>
+                        </ul>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <h5 class="sidebar-navigation-section-label fw-bold w-75">Administartion</h5>
+                            <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                            <ul class="sidebar-navigation mt-3">
+                                <li class="sidebar-navigation-item">
+                                    <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                        <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
+                                        <span>Channel Administration</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-navigation-item">
+                                    <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                        <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
+                                        <span>Video Administration</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-navigation-item">
+                                    <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                        <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
+                                        <span>Playlist Administration</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-navigation-item">
+                                    <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                        <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
+                                        <span>Comment Administration</span>
+                                    </a>
+                                </li>
+                                <li class="sidebar-navigation-item">
+                                    <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Admin/AdminReactionType/Index">
+                                        <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
+                                        <span>Reaction Administration</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                    <div class="sidebar-navigation-bottom-container">
+                        <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+                        <ul class="sidebar-navigation">
+                            <li class="sidebar-navigation-item">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Identity/Account/Logout">
+                                    <img class="sidebar-navigation-icon" src="~/images/icons8-register-90.png" />
+                                    <span>Sign out</span>
                                 </a>
                             </li>
                         </ul>
@@ -189,6 +242,6 @@
     </script>
 
     <partial name="_LoginModalPartial">
-    <partial name="_RegistrationModalPartial">
+        <partial name="_RegistrationModalPartial">
 </body>
 </html>
