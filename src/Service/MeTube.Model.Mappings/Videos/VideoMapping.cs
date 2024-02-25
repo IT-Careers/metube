@@ -43,10 +43,10 @@ public static class VideoMapping
             : null;
 
         videoDto.Reactions = includeReactions
-            ? video.Reactions.Select(vcr => vcr.ToDto(includeVideo: false)).ToList()
+            ? video.Reactions.Select(vcr => vcr.ToDto(includeVideo: false, includeChannel: false)).ToList()
             : null;
 
-        videoDto.CreatedBy = video.CreatedBy.ToDto(includeVideo: false);
+        videoDto.CreatedBy = video.CreatedBy.ToDto(includeVideo: false, includeVideoReactions: false);
 
         return videoDto;
     }

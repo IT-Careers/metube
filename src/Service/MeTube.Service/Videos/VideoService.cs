@@ -1,6 +1,8 @@
 using MeTube.Data.Models.Channels;
+using MeTube.Data.Models.Reactions;
 using MeTube.Data.Models.Videos;
 using MeTube.Data.Repository.Channels;
+using MeTube.Data.Repository.Reactions;
 using MeTube.Data.Repository.Videos;
 using MeTube.Model.Mappings.Videos;
 using MeTube.Service.Models.Videos;
@@ -15,13 +17,24 @@ public class VideoService : IVideoService
 
     private readonly ChannelRepository _channelRepository;
 
+    private readonly VideoReactionRepository _videoReactionRepository;
+
+    private readonly ReactionTypeRepository _reactionTypeRepository;
+
     private readonly IPlaylistService _playlistService;
 
-    public VideoService(VideoRepository videoRepository, ChannelRepository channelRepository, IPlaylistService playlistService)
+    public VideoService(
+        VideoRepository videoRepository, 
+        ChannelRepository channelRepository, 
+        IPlaylistService playlistService, 
+        VideoReactionRepository videoReactionRepository, 
+        ReactionTypeRepository reactionTypeRepository)
     {
         this._videoRepository = videoRepository;
         this._channelRepository = channelRepository;
         this._playlistService = playlistService;
+        this._videoReactionRepository = videoReactionRepository;
+        this._reactionTypeRepository = reactionTypeRepository;
     }
 
     public async Task<VideoDto> GetByIdAsync(string id)
@@ -32,11 +45,15 @@ public class VideoService : IVideoService
     public IQueryable<VideoDto> GetAll()
     {
         return this._videoRepository.GetAllAsNoTracking()
-            .Include(video => video.VideoFile)
+            .Include(video => video.VideoFile) 
             .Include(video => video.Thumbnail)
             .Include(video => video.CreatedBy).ThenInclude(channel => channel.ProfilePicture)
             .Include(video => video.Comments)
             .Include(video => video.Reactions)
+                .ThenInclude(videoReaction => videoReaction.Channel)
+            .Include(video => video.Reactions)
+                .ThenInclude(videoReaction => videoReaction.Type)
+                .ThenInclude(reactionType => reactionType.ReactionIcon)
             .Select(video => video.ToDto(true, true));
     }
 
@@ -83,6 +100,8 @@ public class VideoService : IVideoService
             .Include(video => video.VideoFile)
             .Include(video => video.Comments)
             .Include(video => video.Reactions)
+                .ThenInclude(reaction => reaction.Type)
+                .ThenInclude(reactionType => reactionType.ReactionIcon)
             .Include(video => video.CreatedBy)
             .   ThenInclude(channel => channel.ProfilePicture)
             .Include(video => video.CreatedBy)
@@ -98,5 +117,42 @@ public class VideoService : IVideoService
         video.Views++;
         await this._videoRepository.EditAsync(video);
         return video.ToDto();
+    }
+
+    public async Task<VideoDto> React(string videoId, string reactionTypeId, string userId)
+    {
+        Channel? channel = this._channelRepository.GetAll()
+            .Include(channel => channel.User)
+            .SingleOrDefault(channel => channel.User.Id == userId);
+
+        ReactionType? reactionType = this._reactionTypeRepository.GetAll()
+            .Include(reactionType => reactionType.ReactionIcon)
+            .SingleOrDefault(reactionType => reactionType.Id == reactionTypeId);
+
+        Video videoEntity = await this.GetByIdInternalAsync(videoId);
+
+        List<VideoReaction> existentVideoReactions = await this._videoReactionRepository.GetAll()
+            .Include(videoReaction => videoReaction.Channel)
+            .Include(videoReaction => videoReaction.Video)
+            .Where(videoReaction => videoReaction.Video.Id == videoId && videoReaction.Channel.Id == channel.Id)
+            .ToListAsync();
+
+        if(existentVideoReactions.Count > 0)
+        {
+            foreach (var videoReactionToDelete in existentVideoReactions)
+            {
+                await this._videoReactionRepository.DeleteAsync(videoReactionToDelete);
+            }
+        }
+
+        VideoReaction videoReaction = new VideoReaction
+        {
+            Channel = channel,
+            Type = reactionType
+        };
+
+        videoEntity.Reactions.Add(videoReaction);
+
+        return (await this._videoRepository.EditAsync(videoEntity)).ToDto();
     }
 }

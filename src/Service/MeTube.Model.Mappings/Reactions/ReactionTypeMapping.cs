@@ -9,7 +9,7 @@ public static class ReactionTypeMapping
     {
         ReactionType reactionType = new ReactionType();
 
-        reactionType.Id = reactionTypeDto.Id;
+        reactionType.Id = reactionTypeDto.Id ?? reactionType.Id;
         reactionType.Type = reactionTypeDto.Type;
         reactionType.ReactionIcon = reactionTypeDto.ReactionIcon.ToEntity();
 
@@ -20,8 +20,8 @@ public static class ReactionTypeMapping
     {
         ReactionTypeDto reactionTypeDto = new ReactionTypeDto();
 
-        reactionTypeDto.Id = reactionTypeDto.Id;
-        reactionTypeDto.Type = reactionTypeDto.Type;
+        reactionTypeDto.Id = reactionType.Id;
+        reactionTypeDto.Type = reactionType.Type;
         reactionTypeDto.ReactionIcon = reactionType.ReactionIcon.ToDto();
 
         return reactionTypeDto;

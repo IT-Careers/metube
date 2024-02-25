@@ -136,6 +136,12 @@ body {
     flex-direction: column;
 }
 
+.sidebar-navigation-main-container {
+    max-height: 80vh;
+    height: 80vh;
+    overflow-y: auto;
+}
+
 .sidebar-navigation-bottom-container {
     position: fixed;
     bottom: 0;
@@ -295,8 +301,9 @@ body {
     .videos-card .videos-date {
     }
 
-/* UPLOAD VIDEO STYLES */
+/* UPLOAD ZONE STYLES */
 #upload-thumbnail-input,
+#upload-icon-input,
 #upload-video-input {
     display: none;
 }
@@ -307,6 +314,7 @@ body {
 }
 
 #upload-thumbnail-drop-zone,
+#upload-icon-drop-zone,
 #upload-video-drop-zone {
     border: 8px dashed #ccc;
     border-radius: 25px;
@@ -319,17 +327,20 @@ body {
 }
 
 #upload-thumbnail-drop-zone-label,
+#upload-icon-drop-zone-label,
 #upload-video-drop-zone-label {
     font-size: 1.75rem;
     font-weight: bold;
 }
 
 #upload-thumbnail-drop-zone.highlight,
+#upload-icon-drop-zone.highlight,
 #upload-video-drop-zone.highlight {
     background-color: #eaf6ff;
 }
 
 #upload-thumbnail-drop-zone img,
+#upload-icon-drop-zone img,
 #upload-video-drop-zone video {
     height: 390px;
     width: 100%;
@@ -346,6 +357,14 @@ textarea {
 
 .w-48 {
     width: 48%;
+}
+
+.w-95 {
+    width: 95%;
+}
+
+.w-90 {
+    width: 90%;
 }
 
 .video-title-label {
@@ -392,6 +411,18 @@ textarea {
 .video-visualizer {
     width: 1280px;
     height: 720px;
+}
+
+.video-title-and-reactions {
+    width: 1280px;
+}
+
+.video-reaction-type-card {
+    margin-left: 10px;
+    width: 100px;
+    height: 55px;
+    border-radius: 25px;
+    background-color: #EBEBEB;
 }
 
 .video-metadata {

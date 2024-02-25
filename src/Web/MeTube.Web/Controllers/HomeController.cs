@@ -12,7 +12,7 @@ namespace MeTube.Web.Controllers
             this._videoService = videoService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             return View(this._videoService.GetAll().ToList());
         }
