@@ -3,7 +3,7 @@
 #nullable disable
 
 using MeTube.Data.Models;
-using MeTube.Model.Mappings;
+using MeTube.Service.Mappings;
 using MeTube.Service;
 using MeTube.Service.Attachments;
 using MeTube.Service.Channels;

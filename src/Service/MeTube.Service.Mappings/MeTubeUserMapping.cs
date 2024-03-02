@@ -1,11 +1,11 @@
 ﻿using MeTube.Data.Models;
 using MeTube.Service.Models;
 
-namespace MeTube.Model.Mappings;
+namespace MeTube.Service.Mappings;
 
 public static class MeTubeUserMapping
 {
-    public static MeTubeUser ToEntity(this MeTubeUserDto meTubeUserDto)
+    public static MeTubeUser ToMeTubeUserEntity(this MeTubeUserDto meTubeUserDto)
     {
         MeTubeUser meTubeUser = new MeTubeUser();
 
@@ -17,7 +17,7 @@ public static class MeTubeUserMapping
         return meTubeUser;
     }
 
-    public static MeTubeUserDto ToDto(this MeTubeUser meTubeUser)
+    public static MeTubeUserDto ToMeTubeUserDto(this MeTubeUser meTubeUser)
     {
         MeTubeUserDto meTubeUserDto = new MeTubeUserDto();
 

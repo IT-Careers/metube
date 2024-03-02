@@ -1,34 +1,34 @@
 ﻿using MeTube.Data.Models.Channels;
-using MeTube.Model.Mappings.Videos;
+using MeTube.Service.Mappings.Videos;
 using MeTube.Service.Models.Channels;
 
-namespace MeTube.Model.Mappings.Channels;
+namespace MeTube.Service.Mappings.Channels;
 
 public static class ChannelVideoHistoryMappingConfiguration
 {
-    public static ChannelVideoHistoryMapping ToEntity(this ChannelVideoHistoryMappingDto channelVideoHistoryMappingDto)
+    public static ChannelVideoHistoryMapping ToChannelVideoHistoryMappingEntity(this ChannelVideoHistoryMappingDto channelVideoHistoryMappingDto)
     {
         ChannelVideoHistoryMapping channelVideoHistoryMapping = new ChannelVideoHistoryMapping();
 
         channelVideoHistoryMapping.Id = channelVideoHistoryMappingDto.Id ?? channelVideoHistoryMapping.Id;
         channelVideoHistoryMapping.Timestamp = channelVideoHistoryMappingDto.Timestamp;
-        channelVideoHistoryMapping.Video = channelVideoHistoryMappingDto.Video.ToEntity();
-        channelVideoHistoryMapping.Channel = channelVideoHistoryMappingDto.Channel.ToEntity();
+        channelVideoHistoryMapping.Video = channelVideoHistoryMappingDto.Video?.ToVideoEntity();
+        channelVideoHistoryMapping.Channel = channelVideoHistoryMappingDto.Channel?.ToChannelEntity();
 
         return channelVideoHistoryMapping;
     }
 
-    public static ChannelVideoHistoryMappingDto ToDto(this ChannelVideoHistoryMapping channelVideoHistoryMapping,
+    public static ChannelVideoHistoryMappingDto ToChannelVideoHistoryMappingDto(this ChannelVideoHistoryMapping channelVideoHistoryMapping,
         bool includeChannel = true)
     {
         ChannelVideoHistoryMappingDto channelVideoHistoryMappingDto = new ChannelVideoHistoryMappingDto();
 
         channelVideoHistoryMappingDto.Id = channelVideoHistoryMapping.Id;
         channelVideoHistoryMappingDto.Timestamp = channelVideoHistoryMapping.Timestamp;
-        channelVideoHistoryMappingDto.Video = channelVideoHistoryMapping.Video.ToDto();
+        channelVideoHistoryMappingDto.Video = channelVideoHistoryMapping.Video?.ToVideoDto();
 
         channelVideoHistoryMappingDto.Channel = includeChannel
-            ? channelVideoHistoryMapping.Channel.ToDto(includeHistory:false)
+            ? channelVideoHistoryMapping.Channel?.ToChannelDto(includeHistory:false)
             : null;
 
         return channelVideoHistoryMappingDto;

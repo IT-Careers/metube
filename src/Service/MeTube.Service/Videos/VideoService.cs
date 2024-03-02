@@ -1,10 +1,11 @@
 using MeTube.Data.Models.Channels;
+using MeTube.Data.Models.Comments;
 using MeTube.Data.Models.Reactions;
 using MeTube.Data.Models.Videos;
 using MeTube.Data.Repository.Channels;
 using MeTube.Data.Repository.Reactions;
 using MeTube.Data.Repository.Videos;
-using MeTube.Model.Mappings.Videos;
+using MeTube.Service.Mappings.Videos;
 using MeTube.Service.Models.Videos;
 using MeTube.Service.Playlists;
 using Microsoft.EntityFrameworkCore;
@@ -39,7 +40,7 @@ public class VideoService : IVideoService
 
     public async Task<VideoDto> GetByIdAsync(string id)
     {
-        return (await this.GetByIdInternalAsync(id)).ToDto();
+        return (await this.GetByIdInternalAsync(id)).ToVideoDto();
     }
 
     public IQueryable<VideoDto> GetAll()
@@ -49,12 +50,13 @@ public class VideoService : IVideoService
             .Include(video => video.Thumbnail)
             .Include(video => video.CreatedBy).ThenInclude(channel => channel.ProfilePicture)
             .Include(video => video.Comments)
+                .ThenInclude(videoComment => videoComment.CreatedBy)
             .Include(video => video.Reactions)
                 .ThenInclude(videoReaction => videoReaction.Channel)
             .Include(video => video.Reactions)
                 .ThenInclude(videoReaction => videoReaction.Type)
                 .ThenInclude(reactionType => reactionType.ReactionIcon)
-            .Select(video => video.ToDto(true, true));
+            .Select(video => video.ToVideoDto(true, true, true));
     }
 
     public async Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId)
@@ -73,24 +75,24 @@ public class VideoService : IVideoService
             throw new Exception("Channel with the given user id does not exist.");
         }
 
-        Video video = videoDto.ToEntity();
+        Video video = videoDto.ToVideoEntity();
         video.CreatedBy = channel;
 
-        return (await _videoRepository.CreateAsync(video)).ToDto(true);
+        return (await _videoRepository.CreateAsync(video)).ToVideoDto(true);
     }
 
     public async Task<VideoDto> EditAsync(VideoDto videoDto)
     {
-        Video video = videoDto.ToEntity();
+        Video video = videoDto.ToVideoEntity();
 
-        return (await _videoRepository.EditAsync(video)).ToDto();
+        return (await _videoRepository.EditAsync(video)).ToVideoDto();
     }
 
     public async Task<VideoDto> DeleteByIdAsync(string id)
     {
         Video video = await this.GetByIdInternalAsync(id);
 
-        return (await _videoRepository.DeleteAsync(video)).ToDto();
+        return (await _videoRepository.DeleteAsync(video)).ToVideoDto();
     }
 
     private async Task<Video> GetByIdInternalAsync(string id)
@@ -116,7 +118,7 @@ public class VideoService : IVideoService
         Video video = await this.GetByIdInternalAsync(videoId);
         video.Views++;
         await this._videoRepository.EditAsync(video);
-        return video.ToDto();
+        return video.ToVideoDto();
     }
 
     public async Task<VideoDto> React(string videoId, string reactionTypeId, string userId)
@@ -153,6 +155,24 @@ public class VideoService : IVideoService
 
         videoEntity.Reactions.Add(videoReaction);
 
-        return (await this._videoRepository.EditAsync(videoEntity)).ToDto();
+        return (await this._videoRepository.EditAsync(videoEntity)).ToVideoDto();
+    }
+
+    public async Task<VideoDto> Comment(string videoId, string content, string userId)
+    {
+        Channel? channel = this._channelRepository.GetAll()
+            .Include(channel => channel.User)
+            .SingleOrDefault(channel => channel.User.Id == userId);
+    
+        Video videoEntity = await this.GetByIdInternalAsync(videoId);
+
+        VideoComment videoComment = new VideoComment
+        {
+            CreatedBy = channel,
+            Content = content,
+        };
+
+        videoEntity.Comments.Add(videoComment);
+        return (await this._videoRepository.EditAsync(videoEntity)).ToVideoDto();
     }
 }

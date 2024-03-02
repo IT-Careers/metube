@@ -1,11 +1,11 @@
 ﻿using MeTube.Data.Models;
 using MeTube.Service.Models;
 
-namespace MeTube.Model.Mappings;
+namespace MeTube.Service.Mappings;
 
 public static class AttachmentMapping
 {
-    public static Attachment ToEntity(this AttachmentDto attachmentDto)
+    public static Attachment ToAttachmentEntity(this AttachmentDto attachmentDto)
     {
         Attachment attachment = new Attachment();
 
@@ -16,7 +16,7 @@ public static class AttachmentMapping
         return attachment;
     }
 
-    public static AttachmentDto ToDto(this Attachment attachment)
+    public static AttachmentDto ToAttachmentDto(this Attachment attachment)
     {
         AttachmentDto attachmentDto = new AttachmentDto();
         

@@ -1,6 +1,6 @@
 using MeTube.Web.Models.Video;
 
-namespace MeTube.Service.Videos;
+namespace MeTube.Web.Utilities;
 
 public interface IVideoFacade 
 {

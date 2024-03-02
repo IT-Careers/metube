@@ -35,7 +35,7 @@
                                     <div class="videos-title">@Model[randomVideoIndex].Title</div>
                                     <div class="videos-channel-name">@Model[randomVideoIndex].CreatedBy.Name</div>
                                     <div class="videos-metrics">
-                                        <div class="videos-views">0</div>
+                                        <div class="videos-views">@Model[randomVideoIndex].Views</div>
                                         <div class="videos-views-date-separator"></div>
                                         <div class="videos-date">@Model[randomVideoIndex].CreatedOn.ToString("dd/MM/yyyy")</div>
                                     </div>

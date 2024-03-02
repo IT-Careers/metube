@@ -2,7 +2,8 @@
 
 @{
     ViewData["Title"] = "Video";
-    var reactionTypes = (List<ReactionTypeDto>) ViewData["ReactionTypes"];
+    var reactionTypes = (List<ReactionTypeDto>)ViewData["ReactionTypes"];
+    var currentUserChannel = (ChannelDto)ViewData["Channel"];
 }
 
 <header>
@@ -42,13 +43,45 @@
                 @Model.Description
             </p>
         </div>
+        <div class="comment-section mt-3">
+            <div class="comment-container comment-writer d-flex justify-content-start mt-4">
+                <img class="comment-channel-profile-picture" width="65px" height="65px" src="@currentUserChannel.ProfilePicture.CloudURL" />
+                <div class="comment-writer-input-container w-100">
+                    <input id="comment-writer-input" class="form-control" type="text" placeholder="Enter comment here..." />
+                </div>
+            </div>
+            <div class="comments-wrapper">
+                @foreach (var comment in Model.Comments)
+                {
+                    <div class="comment-container d-flex justify-content-start mt-4">
+                        <span class="comment-id-container" id="@comment.Id" hidden></span>
+                        <img class="comment-channel-profile-picture" width="65px" height="65px" src="@comment.CreatedBy.ProfilePicture.CloudURL" />
+                        <div class="comment-data">
+                            <div class="comment-channel-metadata">
+                                <span class="comment-channel-name">@@@comment.CreatedBy.Name</span>
+                                <span class="comment-date text-faded">@comment.CreatedOn.ToString("dd/MM/yyyy")</span>
+                            </div>
+                            <p class="comment-content mt-2">
+                                @comment.Content
+                            </p>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
     </div>
 </main>
 
 <script>
+    // GENERIC SCRIPTS
+    const videoId = document.querySelector('span[id^="video-id-"]').id.replace('video-id-', '');
+</script>
+
+<script>
+    // REACTIONS SCRIPTS
+
     [...document.querySelectorAll('.video-reaction-type-card')].forEach(videoReactionTypeCard => videoReactionTypeCard.addEventListener('click', function (e) {
         const reactionTypeId = this.id.replace('reaction-type-', '');
-        const videoId = document.querySelector('span[id^="video-id-"]').id.replace('video-id-', '');
 
         fetch(`/Video/React?videoId=${videoId}&reactionTypeId=${reactionTypeId}`, {
             method: 'POST'
@@ -67,7 +100,7 @@
                 [...document.querySelectorAll('div[id^="reaction-type-"]')].forEach(function (e) {
                     const reactionTypeId = e.id.replace('reaction-type-', '');
                     const span = e.querySelector('span');
-                    
+
                     if (reactionTypeCountById[reactionTypeId]) {
                         span.textContent = reactionTypeCountById[reactionTypeId];
                         return;
@@ -77,4 +110,71 @@
                 });
             });
     }))
+</script>
+
+<script>
+    // COMMENT SCRIPTS
+    const commentInput = document.querySelector('#comment-writer-input');
+    const commentsWrapper = document.querySelector('.comments-wrapper');
+
+    const commentTemplate = `
+        <div class="comment-container d-flex justify-content-start mt-4">
+            <span class="comment-id-container" id="{commentId}" hidden></span>
+            <img class="comment-channel-profile-picture" width="65px" height="65px" src="{commentChannelProfilePicture}" />
+            <div class="comment-data">
+                <div class="comment-channel-metadata">
+                    <span class="comment-channel-name">@@{commentChannelName}</span>
+                    <span class="comment-date text-faded">@@{commentDate}</span>
+                </div>
+                <p class="comment-content mt-2">{commentContent}</p>
+            </div>
+        </div>`;
+
+    commentInput.addEventListener('keydown', (e) => {
+        const commentInputValue = commentInput.value;
+        if (e.key === 'Enter') {
+            fetch(`/Video/Comment?videoId=${videoId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    "content": commentInputValue
+                })
+            })
+                .then(res => res.json())
+                .then(json => {
+                    commentInput.value = '';
+                    const commentIds = [...document.querySelectorAll('.comment-id-container')].map(element => element.id);
+                    const newComments = json.comments.filter(comment => !commentIds.includes(comment.id));
+
+                    newComments.forEach(newComment => {
+                        const commentId = newComment.id;
+                        const commentChannelProfilePicture = newComment.createdBy.profilePicture.cloudURL;
+                        const commentChannelName = newComment.createdBy.name;
+                        const unparsedCommentDate = new Date(newComment.createdOn);
+                        const commentDate = `${unparsedCommentDate.getDate()}/${unparsedCommentDate.getMonth() + 1}/${unparsedCommentDate.getFullYear()}`;
+                        const commentContent = newComment.content;
+
+                        const commentHTML = commentTemplate
+                            .replace('{commentId}', commentId)
+                            .replace('{commentChannelProfilePicture}', commentChannelProfilePicture)
+                            .replace('{commentChannelName}', commentChannelName)
+                            .replace('{commentDate}', commentDate)
+                            .replace('{commentContent}', commentContent);
+
+                        const newNode = document.createElement('node');
+                        newNode.innerHTML = commentHTML;
+
+                        newNode.children[0].classList.add('comment-appearing');
+
+                        setTimeout(() => {
+                            newNode.children[0].classList.remove('comment-appearing');
+                        }, 2000)
+
+                        commentsWrapper.prepend(newNode.children[0]);
+                    });
+                });
+        }
+    });
 </script>

@@ -1,4 +1,5 @@
 ﻿using MeTube.Data.Models;
+using MeTube.Data.Models.Channels;
 using MeTube.Service.Models.Channels;
 
 namespace MeTube.Service.Channels;
@@ -7,7 +8,9 @@ public interface IChannelService
 {
     Task<ChannelDto> GetByIdAsync(string id);
 
-    IQueryable<ChannelDto> GetAll();
+    Task<ChannelDto> GetByUserIdAsync(string userId);
+
+    IQueryable<Channel> GetAll();
 
     Task<ChannelDto> CreateAsync(ChannelDto channelDto, MeTubeUser user);
 
