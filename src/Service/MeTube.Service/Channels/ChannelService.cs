@@ -11,9 +11,12 @@ public class ChannelService : IChannelService
 {
     private readonly ChannelRepository _channelRepository;
 
-    public ChannelService(ChannelRepository channelRepository)
+    private readonly ChannelSubscriptionMappingRepository _channelSubscriptionMappingRepository;
+
+    public ChannelService(ChannelRepository channelRepository, ChannelSubscriptionMappingRepository channelSubscriptionMappingRepository)
     {
         this._channelRepository = channelRepository;
+        this._channelSubscriptionMappingRepository = channelSubscriptionMappingRepository;
     }
 
     public async Task<ChannelDto> CreateAsync(ChannelDto channelDto, MeTubeUser meTubeUser)
@@ -39,14 +42,19 @@ public class ChannelService : IChannelService
         return (await this._channelRepository.EditAsync(channel)).ToChannelDto();
     }
 
-    public IQueryable<Channel> GetAll()
+    public IQueryable<Channel> GetAll(bool tracked = false)
     {
-        return this._channelRepository.GetAllAsNoTracking()
+        var entities = tracked ? this.GetAllTracked() : this.GetAllAsNoTracking();
+
+        return entities
             .Include(channel => channel.User)
             .Include(channel => channel.ProfilePicture)
             .Include(channel => channel.CoverPicture)
             .Include(channel => channel.Subscribers)
+                .ThenInclude(channelSubscriber => channelSubscriber.Subscriber)
             .Include(channel => channel.Subscriptions)
+                .ThenInclude(channelSubscription => channelSubscription.Subscription)
+                .ThenInclude(channelSubscription => channelSubscription.ProfilePicture)
             .Include(channel => channel.History)
                 .ThenInclude(history => history.Video)
                     .ThenInclude(video => video.Thumbnail)
@@ -77,9 +85,52 @@ public class ChannelService : IChannelService
             .ToChannelDto();
     }
 
+    public async Task SubscribeAsync(string subscriberId, string subscriptionId)
+    {
+        Channel subscriberChannel = await this.GetAll(true).SingleOrDefaultAsync(channel => channel.Id == subscriberId);
+        Channel subscriptionChannel = await this.GetAll(true).SingleOrDefaultAsync(channel => channel.Id == subscriptionId);
+
+        if(subscriberChannel.Subscriptions.Any(subscription => subscription.Subscription.Id == subscriptionId))
+        {
+            return;
+        }
+
+        await this._channelSubscriptionMappingRepository.CreateAsync(new ChannelSubscriptionsMapping
+        {
+            Subscriber = subscriberChannel,
+            Subscription = subscriptionChannel,
+            Timestamp = ((DateTimeOffset)DateTime.UtcNow).ToUnixTimeSeconds()
+        });
+    }
+
+    public async Task UnsubscribeAsync(string subscriberId, string subscriptionId)
+    {
+        var channelSubscriptionMappingToDelete = await this._channelSubscriptionMappingRepository.GetAll()
+            .Include(channelSubscriptionMapping => channelSubscriptionMapping.Subscriber)
+            .Include(channelSubscriptionMapping => channelSubscriptionMapping.Subscription)
+            .SingleOrDefaultAsync(
+            channelSubscriptionMapping => channelSubscriptionMapping.Subscriber.Id == subscriberId
+            && channelSubscriptionMapping.Subscription.Id == subscriptionId);
+
+        if(channelSubscriptionMappingToDelete != null)
+        {
+            await this._channelSubscriptionMappingRepository.DeleteAsync(channelSubscriptionMappingToDelete);
+        }
+    }
+
     private async Task<Channel> GetByIdInternalAsync(string id)
     {
         return await this.GetAll()
             .SingleOrDefaultAsync(channel => channel.Id == id);
+    }
+
+    private IQueryable<Channel> GetAllAsNoTracking()
+    {
+        return this._channelRepository.GetAllAsNoTracking();
+    }
+
+    private IQueryable<Channel> GetAllTracked()
+    {
+        return this._channelRepository.GetAll();
     }
 }

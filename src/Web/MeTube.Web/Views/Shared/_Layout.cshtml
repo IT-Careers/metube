@@ -123,22 +123,13 @@
                                 </a>
                             </li>
                             <li class="sidebar-navigation-item">
-                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
+                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Channel/Details?channelId=@User.FindFirst("ChannelId")?.Value">
                                     <img class="sidebar-navigation-icon" src="~/images/icons8-channel-100.png" />
                                     <span>My channel</span>
                                 </a>
                             </li>
                         </ul>
-                        <h5 class="sidebar-navigation-section-label fw-bold w-75">Subscriptions</h5>
-                        <hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
-                        <ul class="sidebar-navigation mt-3">
-                            <li class="sidebar-navigation-item">
-                                <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="#">
-                                    <img class="sidebar-navigation-icon" src="~/images/generic_profile_photo.jpg" />
-                                    <span>Petar Petrov</span>
-                                </a>
-                            </li>
-                        </ul>
+                        <vc:channel-subscriptions></vc:channel-subscriptions>
                         @if (User.IsInRole("Admin"))
                         {
                             <h5 class="sidebar-navigation-section-label fw-bold w-75">Administartion</h5>
@@ -242,6 +233,6 @@
     </script>
 
     <partial name="_LoginModalPartial">
-        <partial name="_RegistrationModalPartial">
+    <partial name="_RegistrationModalPartial">
 </body>
 </html>

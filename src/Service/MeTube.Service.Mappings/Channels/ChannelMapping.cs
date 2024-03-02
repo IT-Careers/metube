@@ -63,7 +63,7 @@ public static class ChannelMapping
             : null;
 
         channelDto.VideoReactions = includeVideoReactions
-            ? channel.VideoReactions?.Select(videoReaction => videoReaction.ToVideoReactionDto(includeChannel: false)).ToList()
+            ? channel.VideoReactions?.Select(videoReaction => videoReaction.ToVideoReactionDto(includeChannel: false, includeVideo: includeVideo)).ToList()
             : null;
 
         channelDto.PlaylistReactions = includePlaylistReactions
@@ -75,15 +75,15 @@ public static class ChannelMapping
             : null;
 
         channelDto.VideoComments = includeVideoComments
-            ? channel.VideoComments?.Select(videoComment => videoComment.ToVideoCommentDto(includeChannel: false)).ToList()
+            ? channel.VideoComments?.Select(videoComment => videoComment.ToVideoCommentDto(includeChannel: false, includeVideo: includeVideo)).ToList()
             : null;
         
         channelDto.Subscribers = includeSubscribers
-            ? channel.Subscribers?.Select(subscriber => subscriber.ToChannelSubscriptionsMappingDto()).ToList()
+            ? channel.Subscribers?.Select(subscriber => subscriber.ToChannelSubscriptionsMappingDto(includeSubscriptions: false, includeVideo: includeVideo)).ToList()
             : null;
         
         channelDto.Subscriptions = includeSubscriptions
-            ? channel.Subscriptions?.Select(subscription => subscription.ToChannelSubscriptionsMappingDto()).ToList()
+            ? channel.Subscriptions?.Select(subscription => subscription.ToChannelSubscriptionsMappingDto(includeSubscribers: false, includeVideo: includeVideo)).ToList()
             : null;
         
         channelDto.PlaylistComments = includePlaylistComments

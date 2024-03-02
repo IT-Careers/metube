@@ -1,4 +1,5 @@
-﻿using MeTube.Service.Videos;
+﻿using MeTube.Service.Channels;
+using MeTube.Service.Videos;
 using Microsoft.AspNetCore.Mvc;
 
 namespace MeTube.Web.Controllers

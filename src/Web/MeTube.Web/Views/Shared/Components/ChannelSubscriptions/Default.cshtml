@@ -1,0 +1,14 @@
+﻿@model List<ChannelDto>
+
+<h5 class="sidebar-navigation-section-label fw-bold w-75">Subscriptions</h5>
+<hr class="hr-4 bg-primary-dark sidebar-navigation-divisor mx-auto" />
+<ul class="sidebar-navigation mt-3
+    @foreach(var channel in Model) {
+        <li class="sidebar-navigation-item">
+            <a class="sidebar-navigation-link fw-bolder text-primary-dark" href="/Channel/Details?channelId=@channel.Id">
+                <img class="sidebar-navigation-icon" src="@channel.ProfilePicture.CloudURL" />
+                <span>@channel.Name</span>
+            </a>
+        </li>
+    }
+</ul>

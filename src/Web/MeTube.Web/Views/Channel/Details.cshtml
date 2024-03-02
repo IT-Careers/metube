@@ -1,0 +1,96 @@
+﻿@model ChannelDto
+
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+}
+
+<div class="channel-page">
+    <div class="channel-cover-picture-container">
+        <img class="channel-cover-picture-image" src="@Model.CoverPicture.CloudURL">
+    </div>
+    <div class="channel-metadata">
+        <div class="channel-profile-picture-container">
+            <img class="channel-profile-picture-image" src="@Model.ProfilePicture.CloudURL" />
+        </div>
+        <div class="channel-profile-data">
+            <h1 class="channel-name">@@@Model.Name</h1>
+            <p class="channel-stats">
+                <span class="channel-subscribers">@Model.Subscribers.Count Subscribers</span>
+                <span class="channel-videos">@Model.Videos.Count Videos</span>
+            </p>
+            @if ((bool)this.ViewData["IsSubscribedToChannel"])
+            {
+                <div class="channel-subscribe">
+                    <form method="post" action="/Channel/Unsubscribe?channelId=@Model.Id">
+                        <button class="btn">Unsubscribe</button>
+                    </form>
+                </div>
+            }
+            else
+            {
+                <div class="channel-subscribe">
+                    <form method="post" action="/Channel/Subscribe?channelId=@Model.Id">
+                        <button class="btn">Subscribe</button>
+                    </form>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="channel-tab-navigation">
+        <span class="channel-tab-navigation-item channel-tab-navigation-item-selected" id="channel-videos-tab-selector">Videos</span>
+        <span class="channel-tab-navigation-item" id="channel-playlists-tab-selector">Playlists</span>
+    </div>
+    <div class="channel-tab" id="channel-videos-tab">
+        @{
+            int randomVideoIndex = 0;
+            int leftoverVideoContainers = 0;
+        }
+        @for (int row = 0; row < (Model.Videos.Count / 5) + 1; row++)
+        {
+            {
+                leftoverVideoContainers = 0;
+            }
+            <div class="videos-row">
+                @for (int currentRowIndex = 0; currentRowIndex < 5 && randomVideoIndex < Model.Videos.Count; currentRowIndex++, randomVideoIndex++, leftoverVideoContainers++)
+                {
+                    <a class="video-card-link" href="/Video/Details?v=@Model.Videos[randomVideoIndex].Id">
+                        <div class="videos-card">
+                            <img class="videos-thumbnail" src="@Model.Videos[randomVideoIndex].Thumbnail.CloudURL">
+                            <div class="videos-data">
+                                <div class="videos-details">
+                                    <div class="videos-title">@Model.Videos[randomVideoIndex].Title</div>
+                                    <div class="videos-metrics">
+                                        <div class="videos-views">@Model.Videos[randomVideoIndex].Views Views</div>
+                                        <div class="videos-views-date-separator"></div>
+                                        <div class="videos-date">@Model.Videos[randomVideoIndex].CreatedOn.ToString("dd/MM/yyyy")</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                }
+                @for (; leftoverVideoContainers < 5; leftoverVideoContainers++)
+                {
+                    <div class="videos-card"></div>
+                }
+            </div>
+        }
+    </div>
+    <div class="channel-tab channel-tab-hidden" id="channel-playlists-tab">
+        <h1>Playlists</h1>
+    </div>
+</div>
+
+<script>
+    const navigationItems = [...document.querySelectorAll('.channel-tab-navigation-item')];
+    navigationItems.forEach(navigationItem => navigationItem.addEventListener('click', (e) => {
+        navigationItems.forEach(otherNavigationItem => otherNavigationItem.classList.remove('channel-tab-navigation-item-selected'));
+        navigationItem.classList.add('channel-tab-navigation-item-selected');
+        const navigationItemId = navigationItem.id.replace('-selector', '');
+        [...document.querySelectorAll('.channel-tab')].forEach(channelTab => channelTab.classList.add('channel-tab-hidden'));
+        document.querySelector('#' + navigationItemId).classList.remove('channel-tab-hidden');
+    }));
+
+</script>

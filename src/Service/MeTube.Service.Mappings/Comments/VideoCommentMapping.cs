@@ -42,7 +42,9 @@ public static class VideoCommentMapping
                 includeVideoComments: false, 
                 includeVideoReactions: false, 
                 includePlaylistReactions: false, 
-                includePlaylistComments: false)
+                includePlaylistComments: false,
+                includeSubscribers: false,
+                includeSubscriptions: false)
             : null;
 
         videoCommentDto.Reactions = includeReactions

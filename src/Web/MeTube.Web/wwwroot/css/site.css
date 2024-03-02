@@ -301,6 +301,103 @@ body {
     .videos-card .videos-date {
     }
 
+
+/* CHANNEL PAGE STYLES */
+
+.channel-page {
+    width: 90%;
+    margin: auto;
+}
+
+.channel-cover-picture-container {
+    margin-top: 5%;
+}
+
+.channel-cover-picture-image {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 25px;
+}
+
+.channel-metadata {
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.channel-profile-picture-container {
+
+}
+
+.channel-profile-picture-image {
+    height: 200px;
+    width: 200px;
+    border-radius: 50%;
+}
+
+.channel-profile-data {
+    margin-left: 60px;
+}
+
+.channel-name {
+    font-size: 40px;
+    font-weight: bold;
+}
+
+.channel-stats {
+    display: flex;
+    justify-content: flex-start;
+}
+
+.channel-subscribers {
+
+}
+
+.channel-videos {
+    margin-left: 20px;
+}
+
+.channel-tab-navigation {
+    margin-top: 25px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.channel-tab-navigation-item {
+    font-size: 26px;
+    padding-bottom: 10px;
+    border-bottom: none;
+}
+
+.channel-tab-navigation-item:not(:first-child) {
+    margin-left: 20px;
+}
+
+.channel-tab-navigation-item-selected {
+    border-bottom: 5px solid #BBBBBB;
+}
+
+.channel-tab {
+    margin-top: 40px;
+}
+
+.channel-tab-hidden {
+    display: none;
+}
+
+.channel-subscribe button {
+    font-size: 20px;
+    font-weight: bold;
+    padding: 15px 45px;
+    color: #FFFFFF;
+    background-color: #45322E;
+}
+
+.channel-subscribe button:hover {
+    border: 3px solid #45322E
+}
+
 /* UPLOAD ZONE STYLES */
 #upload-thumbnail-input,
 #upload-icon-input,
