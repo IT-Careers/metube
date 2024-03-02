@@ -19,7 +19,7 @@ public static class ChannelSubscriptionsMappingConfiguration
     }
 
     public static ChannelSubscriptionsMappingDto ToChannelSubscriptionsMappingDto(this ChannelSubscriptionsMapping channelSubscriptionsMapping,
-        bool includeSubscribers = true, bool includeSubscriptions = true)
+        bool includeSubscribers = true, bool includeSubscriptions = true, bool includeVideo = true)
     {
         ChannelSubscriptionsMappingDto channelSubscriptionsMappingDto = new ChannelSubscriptionsMappingDto();
 
@@ -27,11 +27,11 @@ public static class ChannelSubscriptionsMappingConfiguration
         channelSubscriptionsMappingDto.Timestamp = channelSubscriptionsMapping.Timestamp;
         
         channelSubscriptionsMappingDto.Subscriber = includeSubscribers
-            ? channelSubscriptionsMapping.Subscriber?.ToChannelDto(includeSubscribers: false, includeSubscriptions: false)
+            ? channelSubscriptionsMapping.Subscriber?.ToChannelDto(includeSubscribers: false, includeSubscriptions: false, includeVideo: includeVideo)
             : null;
 
         channelSubscriptionsMappingDto.Subscription = includeSubscriptions
-            ? channelSubscriptionsMapping.Subscription?.ToChannelDto(includeSubscribers: false, includeSubscriptions: false)
+            ? channelSubscriptionsMapping.Subscription?.ToChannelDto(includeSubscribers: false, includeSubscriptions: false, includeVideo: includeVideo)
             : null;
 
         return channelSubscriptionsMappingDto;

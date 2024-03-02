@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using MeTube.Data.Models;
 using MeTube.Web.Models.Identity;
+using System.Security.Claims;
+using MeTube.Service.Channels;
 
 namespace MeTube.Web.Areas.Identity.Pages.Account
 {
@@ -15,11 +17,15 @@ namespace MeTube.Web.Areas.Identity.Pages.Account
     {
         private readonly SignInManager<MeTubeUser> _signInManager;
         private readonly ILogger<LoginModel> _logger;
+        private readonly IChannelService _channelService;
+        private readonly UserManager<MeTubeUser> _userManager;
 
-        public LoginModel(SignInManager<MeTubeUser> signInManager, ILogger<LoginModel> logger)
+        public LoginModel(SignInManager<MeTubeUser> signInManager, ILogger<LoginModel> logger, IChannelService channelService, UserManager<MeTubeUser> userManager)
         {
-            _signInManager = signInManager;
-            _logger = logger;
+            this._signInManager = signInManager;
+            this._logger = logger;
+            this._channelService = channelService;
+            this._userManager = userManager;
         }
 
         [BindProperty]
@@ -38,10 +44,13 @@ namespace MeTube.Web.Areas.Identity.Pages.Account
             {
                 // This doesn't count login failures towards account lockout
                 // To enable password failures to trigger account lockout, set lockoutOnFailure: true
-                var result = await _signInManager.PasswordSignInAsync(Input.Email, Input.Password, true, lockoutOnFailure: false);
+                MeTubeUser user = await this._userManager.FindByNameAsync(Input.Email);
+                var result = await this._signInManager.CheckPasswordSignInAsync(user, Input.Password, lockoutOnFailure: false);
                 if (result.Succeeded)
                 {
-                    _logger.LogInformation("User logged in.");
+                    string channelId = await this.GetChannelIdAsync(user.Id);
+                    await this._signInManager.SignInWithClaimsAsync(user, true, new[] { new Claim("ChannelId", channelId) });
+                    this._logger.LogInformation("User logged in.");
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)
@@ -50,7 +59,7 @@ namespace MeTube.Web.Areas.Identity.Pages.Account
                 }
                 if (result.IsLockedOut)
                 {
-                    _logger.LogWarning("User account locked out.");
+                    this._logger.LogWarning("User account locked out.");
                     return RedirectToPage("./Lockout");
                 }
                 else
@@ -62,6 +71,11 @@ namespace MeTube.Web.Areas.Identity.Pages.Account
 
             // If we got this far, something failed, redisplay form
             return Page();
+        }
+
+        private async Task<string> GetChannelIdAsync(string userId)
+        {
+            return (await this._channelService.GetByUserIdAsync(userId)).Id;
         }
     }
 }

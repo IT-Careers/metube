@@ -28,7 +28,7 @@ public static class ChannelVideoHistoryMappingConfiguration
         channelVideoHistoryMappingDto.Video = channelVideoHistoryMapping.Video?.ToVideoDto();
 
         channelVideoHistoryMappingDto.Channel = includeChannel
-            ? channelVideoHistoryMapping.Channel?.ToChannelDto(includeHistory:false)
+            ? channelVideoHistoryMapping.Channel?.ToChannelDto(includeHistory: false)
             : null;
 
         return channelVideoHistoryMappingDto;

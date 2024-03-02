@@ -101,6 +101,8 @@ public class VideoService : IVideoService
             .Include(video => video.Thumbnail)
             .Include(video => video.VideoFile)
             .Include(video => video.Comments)
+                .ThenInclude(videoComment => videoComment.CreatedBy)
+                    .ThenInclude(channel => channel.ProfilePicture)
             .Include(video => video.Reactions)
                 .ThenInclude(reaction => reaction.Type)
                 .ThenInclude(reactionType => reactionType.ReactionIcon)
