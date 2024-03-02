@@ -1,6 +1,6 @@
 using MeTube.Data.Models;
 using MeTube.Data.Repository;
-using MeTube.Model.Mappings;
+using MeTube.Service.Mappings;
 using MeTube.Service.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,30 +19,30 @@ public class AttachmentService : IAttachmentService
     {
         Attachment attachment = await GetByIdInternalAsync(id);
 
-        return attachment.ToDto();
+        return attachment.ToAttachmentDto();
     }
     public IQueryable<AttachmentDto> GetAll()
     {
-        return _attachmentRepository.GetAllAsNoTracking().Select(attachment => attachment.ToDto());
+        return _attachmentRepository.GetAllAsNoTracking().Select(attachment => attachment.ToAttachmentDto());
     }
 
     public async Task<AttachmentDto> CreateAsync(AttachmentDto attachmentDto)
     {
-        Attachment attachment = attachmentDto.ToEntity();
+        Attachment attachment = attachmentDto.ToAttachmentEntity();
 
-        return (await _attachmentRepository.CreateAsync(attachment)).ToDto();
+        return (await _attachmentRepository.CreateAsync(attachment)).ToAttachmentDto();
     }
 
     public async Task<AttachmentDto> EditAsync(AttachmentDto attachmentDto)
     {
-        Attachment attachment = attachmentDto.ToEntity();
+        Attachment attachment = attachmentDto.ToAttachmentEntity();
 
-        return (await _attachmentRepository.EditAsync(attachment)).ToDto();
+        return (await _attachmentRepository.EditAsync(attachment)).ToAttachmentDto();
     }
 
     public async Task<AttachmentDto> DeleteByIdAsync(string id)
     {
-        return (await GetByIdInternalAsync(id)).ToDto();
+        return (await GetByIdInternalAsync(id)).ToAttachmentDto();
     }
 
     private async Task<Attachment> GetByIdInternalAsync(string id)

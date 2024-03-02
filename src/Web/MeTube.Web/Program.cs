@@ -14,6 +14,7 @@ using MeTube.Service.Playlists;
 using MeTube.Service.Reactions;
 using MeTube.Service.Videos;
 using MeTube.Web.Seed;
+using MeTube.Web.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

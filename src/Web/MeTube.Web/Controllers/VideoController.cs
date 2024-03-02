@@ -1,7 +1,10 @@
 using MeTube.Data.Models;
+using MeTube.Service.Channels;
 using MeTube.Service.Reactions;
 using MeTube.Service.Videos;
+using MeTube.Web.Models.Comment;
 using MeTube.Web.Models.Video;
+using MeTube.Web.Utilities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -15,16 +18,19 @@ namespace MeTube.Web.Controllers
 
         private readonly IVideoService _videoService;
 
+        private readonly IChannelService _channelService;
+
         private readonly IReactionTypeService _reactionTypeService;
 
         private readonly UserManager<MeTubeUser> _userManager;
 
-        public VideoController(IVideoFacade videoFacade, UserManager<MeTubeUser> userManager, IVideoService videoService, IReactionTypeService reactionTypeService)
+        public VideoController(IVideoFacade videoFacade, UserManager<MeTubeUser> userManager, IVideoService videoService, IReactionTypeService reactionTypeService, IChannelService channelService)
         {
             this._videoFacade = videoFacade;
             this._userManager = userManager;
             this._videoService = videoService;
             this._reactionTypeService = reactionTypeService;
+            this._channelService = channelService;
         }
 
         [HttpGet]
@@ -44,9 +50,14 @@ namespace MeTube.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Details([FromQuery(Name = "v")] string videoId)
         {
+            MeTubeUser currentUser = await this._userManager.GetUserAsync(this.User);
+
+            this.ViewData["Channel"] = await this._channelService.GetByUserIdAsync(currentUser.Id);
             this.ViewData["ReactionTypes"] = await this._reactionTypeService.GetAll().ToListAsync();
 
-            return View(await this._videoService.ViewVideoByIdAsync(videoId));
+            var video = await this._videoService.ViewVideoByIdAsync(videoId);
+
+            return View(video);
         }
 
         [HttpPost]
@@ -56,6 +67,15 @@ namespace MeTube.Web.Controllers
             MeTubeUser currentUser = await this._userManager.GetUserAsync(this.User);
 
             return Ok(await this._videoService.React(videoId, reactionTypeId, currentUser.Id));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Comment([FromQuery] string videoId, [FromBody] CommentCreateModel commentCreateModel)
+        {
+            MeTubeUser currentUser = await this._userManager.GetUserAsync(this.User);
+
+            return Ok(await this._videoService.Comment(videoId, commentCreateModel.Content, currentUser.Id));
         }
     }
 }

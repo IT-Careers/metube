@@ -1,6 +1,6 @@
 ﻿using MeTube.Data.Models.Comments;
 using MeTube.Data.Repository.Comments;
-using MeTube.Model.Mappings.Comments;
+using MeTube.Service.Mappings.Comments;
 using MeTube.Service.Models.Comments;
 using Microsoft.EntityFrameworkCore;
 
@@ -17,34 +17,34 @@ public class VideoCommentService : IVideoCommentService
 
     public async Task<VideoCommentDto> CreateAsync(VideoCommentDto videoCommentDto)
     {
-        VideoComment videoComment = videoCommentDto.ToEntity();
+        VideoComment videoComment = videoCommentDto.ToVideoCommentEntity();
 
-        return (await _videoCommentRepository.CreateAsync(videoComment)).ToDto();
+        return (await _videoCommentRepository.CreateAsync(videoComment)).ToVideoCommentDto();
     }
 
     public async Task<VideoCommentDto> DeleteByIdAsync(string id)
     {
         VideoComment videoComment = await GetByIdInternalAsync(id);
 
-        return (await _videoCommentRepository.DeleteAsync(videoComment)).ToDto();
+        return (await _videoCommentRepository.DeleteAsync(videoComment)).ToVideoCommentDto();
     }
 
     public async Task<VideoCommentDto> EditAsync(VideoCommentDto videoCommentDto)
     {
-        VideoComment videoComment = videoCommentDto.ToEntity();
+        VideoComment videoComment = videoCommentDto.ToVideoCommentEntity();
 
-        return (await _videoCommentRepository.EditAsync(videoComment)).ToDto();
+        return (await _videoCommentRepository.EditAsync(videoComment)).ToVideoCommentDto();
     }
 
     public IQueryable<VideoCommentDto> GetAll()
     {
         return _videoCommentRepository.GetAllAsNoTracking()
-            .Select(videoComment => videoComment.ToDto(true, true, true));
+            .Select(videoComment => videoComment.ToVideoCommentDto(true, true, true));
     }
 
     public async Task<VideoCommentDto> GetByIdAsync(string id)
     {
-        return (await GetByIdInternalAsync(id)).ToDto();
+        return (await GetByIdInternalAsync(id)).ToVideoCommentDto();
     }
 
     private async Task<VideoComment> GetByIdInternalAsync(string id)

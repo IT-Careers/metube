@@ -456,6 +456,69 @@ textarea {
     background-color: #EBEBEB;
 }
 
+/* COMMENT SECTION STYLES */
+
+.comment-section {
+    margin-bottom: 20%;
+}
+
+.comment-container {
+    width: 100%;
+}
+
+.comment-appearing {
+    -webkit-animation: appear 2s;
+}
+
+@-webkit-keyframes appear {
+    0% {
+        position: relative;
+        top: -50px;
+        opacity: 0;
+    }
+
+    100% {
+        position: static;
+        top: 0;
+        opacity: 1;
+    }
+}
+
+.comment-channel-profile-picture {
+    border-radius: 50%;
+}
+
+.comment-data {
+    margin-left: 25px;
+
+}
+
+.comment-channel-metadata {
+
+}
+
+.comment-channel-name {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.comment-date {
+
+}
+
+.comment-content {
+
+}
+
+.comment-writer-input-container {
+    margin-left: 25px;
+}
+
+#comment-writer-input {
+    font-size: 18px;
+    padding: 16px;
+}
+
 /* ANIMATIONS */
 .slide-left {
     animation-name: slide-left;

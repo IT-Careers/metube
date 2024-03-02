@@ -1,9 +1,10 @@
 using MeTube.Service.Models.Videos;
 using MeTube.Web.Models.Video;
 using MeTube.Service.Attachments;
-using Microsoft.AspNetCore.Http;
+using MeTube.Service;
+using MeTube.Service.Videos;
 
-namespace MeTube.Service.Videos;
+namespace MeTube.Web.Utilities;
 
 public class VideoFacade : IVideoFacade 
 {
