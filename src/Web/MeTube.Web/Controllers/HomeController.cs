@@ -1,4 +1,4 @@
-﻿using MeTube.Data.Models;
+using MeTube.Data.Models;
 using MeTube.Service.Models.Channels;
 using MeTube.Service.Models.Videos;
 using MeTube.Service.Videos;
