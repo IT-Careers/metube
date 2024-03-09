@@ -1,0 +1,89 @@
+@model PlaylistCreateModel
+
+@{
+    ViewData["Title"] = "Create Video";
+}
+
+<form asp-controller="Playlist" asp-method="Create" method="POST" enctype="multipart/form-data" id="create-playlist-form" class="d-flex justify-content-between">
+    <input type="file" id="upload-thumbnail-input" accept="image/*" asp-for="Thumbnail">
+    <div class="left-side w-48">
+        <div class="form-group">
+            <label class="video-title-label" for="title">Title</label>
+            <input type="text" class="form-control mt-2 video-title-input" placeholder="Playlist title..." asp-for="Title">
+        </div>
+        <div class="form-group mt-3">
+            <label class="video-description-label" for="description">Description</label>
+            <textarea class="form-control mt-2 video-description-input" placeholder="Playlist description..." rows="5" asp-for="Description"></textarea>
+        </div>
+        <div class="w-100">
+            <div id="upload-thumbnail-drop-zone">
+                <span id="upload-thumbnail-drop-zone-label">Drag & Drop thumbnail image file here</span>
+            </div>
+        </div>
+        <div class="create-playlist-button-holder">
+            <button type="submit" class="btn btn-main playlist-create-button">Create Playlist</button>
+        </div>
+    </div>
+    <div class="right-side w-48">
+        <div class="form-group mt-5">
+            <input type="text" class="form-control playlist-video-search" placeholder="Search for a video..." asp-for="VideoIds" />
+        </div>
+    </div>
+</form>
+
+<script>
+    const thumbnailFileUploadConfiguration = (() => {
+        var thumbnailFileInput = document.getElementById('upload-thumbnail-input');
+        var thumbnailDropZone = document.getElementById('upload-thumbnail-drop-zone');
+        var thumbnailDropZoneLabel = document.getElementById('upload-thumbnail-drop-zone-label');
+
+        thumbnailDropZone.addEventListener('click', () => {
+            thumbnailFileInput.click();
+        });
+
+        thumbnailFileInput.addEventListener('change', function () {
+            renderThumbnail(this.files[0]);
+        });
+
+        thumbnailDropZone.addEventListener('dragover', function (e) {
+            e.preventDefault();
+            thumbnailDropZone.classList.add('highlight');
+        });
+
+        thumbnailDropZone.addEventListener('dragleave', function (e) {
+            e.preventDefault();
+            thumbnailDropZone.classList.remove('highlight');
+        });
+
+        thumbnailDropZone.addEventListener('drop', function (e) {
+            e.preventDefault();
+            thumbnailDropZone.classList.remove('highlight');
+            var droppedFile = e.dataTransfer.files[0];
+            thumbnailFileInput.files = e.dataTransfer.files;
+            renderThumbnail(droppedFile);
+        });
+
+        const renderThumbnail = (file) => {
+            var reader = new FileReader();
+
+            reader.onload = (function (file) {
+                return function (e) {
+                    var fileType = file.type.split('/')[0];
+
+                    if (fileType !== 'image') {
+                        return;
+                    }
+
+                    thumbnailElement = document.createElement('img');
+                    thumbnailElement.setAttribute('height', '400px');
+                    thumbnailElement.src = e.target.result;
+                    thumbnailDropZoneLabel.style.display = 'none';
+                    thumbnailDropZone.appendChild(thumbnailElement);
+                };
+            })(file);
+
+            reader.readAsDataURL(file);
+        }
+    })();
+
+</script>

@@ -3,7 +3,8 @@
 @{
     ViewData["Title"] = "Video";
     var reactionTypes = (List<ReactionTypeDto>)ViewData["ReactionTypes"];
-    var currentUserChannel = (ChannelDto)ViewData["Channel"];
+    var currentUserChannel = this.User.Identity.IsAuthenticated ? (ChannelDto)ViewData["Channel"] : null;
+    PlaylistDto? playlist = (ViewData.ContainsKey("Playlist") ? (PlaylistDto)ViewData["Playlist"] : null);
 }
 
 <header>
@@ -13,62 +14,105 @@
     </div>
 </header>
 <main>
-    <span id="video-id-@Model.Id" hidden></span>
-    <div class="video-visualizer">
-        <video controls src="@Model.VideoFile.CloudURL"></video>
-    </div>
-    <div class="video-title-and-reactions d-flex justify-content-between mt-3">
-        <h3 class="video-title fw-bold w-50">@Model.Title</h3>
-        <div class="video-reactions d-flex justify-content-end w-50">
-            @foreach (var reactionType in reactionTypes.OrderByDescending(rt => Model.Reactions.Count(reaction => reaction.Type.Type == rt.Type)))
-            {
-                <div class="video-reaction-type-card p-3 d-flex justify-content-around" id="reaction-type-@reactionType.Id">
-                    <img width="25px" height="25px" src="@reactionType.ReactionIcon.CloudURL" />
-                    <span class="fw-bold">@Model.Reactions.Count(reaction => reaction.Type.Type == reactionType.Type)</span>
-                </div>
-            }
-        </div>
-    </div>
-    <div class="video-metadata mt-3">
-        <div class="video-metadata-channel">
-            <img class="video-matadata-channel-profile-picture" src="@Model.CreatedBy.ProfilePicture.CloudURL" />
-            <div class="video-matadata-channel-data">
-                <h5 class="fw-bold">@Model.CreatedBy.Name</h5>
-                <h6 class="text-faded fw-normal">@Model.CreatedBy.Subscribers.Count subscribers</h6>
+    <div class="video-page-content d-flex ">
+        <div class="video-play-container">
+            <span id="video-id-@Model.Id" hidden></span>
+            <div class="video-visualizer">
+                <video controls src="@Model.VideoFile.CloudURL"></video>
             </div>
-        </div>
-        <div class="video-metadata-description mt-3">
-            <h6 class="video-metadata-views-and-date fw-bold">@Model.Views views, @Model.CreatedOn.ToString("dd/MM/yyyy")</h6>
-            <p class="video-metadata-description-content text-faded">
-                @Model.Description
-            </p>
-        </div>
-        <div class="comment-section mt-3">
-            <div class="comment-container comment-writer d-flex justify-content-start mt-4">
-                <img class="comment-channel-profile-picture" width="65px" height="65px" src="@currentUserChannel.ProfilePicture.CloudURL" />
-                <div class="comment-writer-input-container w-100">
-                    <input id="comment-writer-input" class="form-control" type="text" placeholder="Enter comment here..." />
-                </div>
-            </div>
-            <div class="comments-wrapper">
-                @foreach (var comment in Model.Comments)
-                {
-                    <div class="comment-container d-flex justify-content-start mt-4">
-                        <span class="comment-id-container" id="@comment.Id" hidden></span>
-                        <img class="comment-channel-profile-picture" width="65px" height="65px" src="@comment.CreatedBy.ProfilePicture.CloudURL" />
-                        <div class="comment-data">
-                            <div class="comment-channel-metadata">
-                                <span class="comment-channel-name">@@@comment.CreatedBy.Name</span>
-                                <span class="comment-date text-faded">@comment.CreatedOn.ToString("dd/MM/yyyy")</span>
-                            </div>
-                            <p class="comment-content mt-2">
-                                @comment.Content
-                            </p>
+            <div class="video-title-and-reactions d-flex justify-content-between mt-3">
+                <h3 class="video-title fw-bold w-50">@Model.Title</h3>
+                <div class="video-reactions d-flex justify-content-end w-50">
+                    @foreach (var reactionType in reactionTypes.OrderByDescending(rt => Model.Reactions.Count(reaction => reaction.Type.Type == rt.Type)))
+                    {
+                        <div class="video-reaction-type-card p-3 d-flex justify-content-around" id="reaction-type-@reactionType.Id">
+                            <img width="25px" height="25px" src="@reactionType.ReactionIcon.CloudURL" />
+                            <span class="fw-bold">@Model.Reactions.Count(reaction => reaction.Type.Type == reactionType.Type)</span>
                         </div>
+                    }
+                </div>
+            </div>
+            <div class="video-metadata mt-3">
+                <div class="video-metadata-channel">
+                    <img class="video-matadata-channel-profile-picture" src="@Model.CreatedBy.ProfilePicture.CloudURL" />
+                    <div class="video-matadata-channel-data">
+                        <h5 class="fw-bold"><a class="link-custom" href="/Channel/Details?channelId=@Model.CreatedBy.Id">@Model.CreatedBy.Name</a></h5>
+                        <h6 class="text-faded fw-normal">@Model.CreatedBy.Subscribers.Count subscribers</h6>
                     </div>
-                }
+                </div>
+                <div class="video-metadata-description mt-3">
+                    <h6 class="video-metadata-views-and-date fw-bold">@Model.Views views, @Model.CreatedOn.ToString("dd/MM/yyyy")</h6>
+                    <p class="video-metadata-description-content text-faded">
+                        @Model.Description
+                    </p>
+                </div>
+                <div class="comment-section mt-3">
+                    @if (this.User.Identity.IsAuthenticated)
+                    {
+                        <div class="comment-container comment-writer d-flex justify-content-start mt-4">
+                            <img class="comment-channel-profile-picture" width="65px" height="65px" src="@currentUserChannel.ProfilePicture.CloudURL" />
+                            <div class="comment-writer-input-container w-100">
+                                <input id="comment-writer-input" class="form-control" type="text" placeholder="Enter comment here..." />
+                            </div>
+                        </div>
+                    }
+                    <div class="comments-wrapper">
+                        @foreach (var comment in Model.Comments)
+                        {
+                            <div class="comment-container d-flex justify-content-start mt-4">
+                                <span class="comment-id-container" id="@comment.Id" hidden></span>
+                                <img class="comment-channel-profile-picture" width="65px" height="65px" src="@comment.CreatedBy.ProfilePicture.CloudURL" />
+                                <div class="comment-data">
+                                    <div class="comment-channel-metadata">
+                                        <span class="comment-channel-name"><a class="link-custom" href="/Channel/Details?channelId=@comment.CreatedBy.Id">@@@comment.CreatedBy.Name</a></span>
+                                        <span class="comment-date text-faded">@comment.CreatedOn.ToString("dd/MM/yyyy")</span>
+                                    </div>
+                                    <p class="comment-content mt-2">
+                                        @comment.Content
+                                    </p>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
             </div>
         </div>
+        @if (playlist != null)
+        {
+            <div class="playlist-container">
+                <div class="playlist-metadata">
+                    <p class="playlist-metadata-title">@playlist.Title</p>
+                    <p class="playlist-metadata-channel">@@@playlist.CreatedBy.Name</p>
+                </div>
+                <div class="playlist-videos">
+                    @foreach (var playlistVideo in playlist.Videos)
+                    {
+                        <a class="link-custom" href="/Video/Details?v=@playlistVideo.Video.Id&pl=@playlist.Id">
+                            @if (playlistVideo.Video.Id == Model.Id)
+                            {
+                                <div class="playlist-video-row playlist-video-row-highlight" id="playlist-video-@playlistVideo.Video.Id">
+                                    <img class="playlist-video-thumbnail" src="@playlistVideo.Video.Thumbnail.CloudURL" />
+                                    <div class="playlist-video-metadata">
+                                        <div class="playlist-video-metadata-title">@playlistVideo.Video.Title</div>
+                                        <div class="playlist-video-metadata-channel">@@@playlistVideo.Video.CreatedBy.Name</div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="playlist-video-row" id="playlist-video-@playlistVideo.Video.Id">
+                                    <img class="playlist-video-thumbnail" src="@playlistVideo.Video.Thumbnail.CloudURL" />
+                                    <div class="playlist-video-metadata">
+                                        <div class="playlist-video-metadata-title">@playlistVideo.Video.Title</div>
+                                        <div class="playlist-video-metadata-channel">@@@playlistVideo.Video.CreatedBy.Name</div>
+                                    </div>
+                                </div>
+                            }
+                        </a>
+                    }
+                </div>
+            </div>
+        }
     </div>
 </main>
 
@@ -118,17 +162,17 @@
     const commentsWrapper = document.querySelector('.comments-wrapper');
 
     const commentTemplate = `
-        <div class="comment-container d-flex justify-content-start mt-4">
-            <span class="comment-id-container" id="{commentId}" hidden></span>
-            <img class="comment-channel-profile-picture" width="65px" height="65px" src="{commentChannelProfilePicture}" />
-            <div class="comment-data">
-                <div class="comment-channel-metadata">
-                    <span class="comment-channel-name">@@{commentChannelName}</span>
-                    <span class="comment-date text-faded">@@{commentDate}</span>
-                </div>
-                <p class="comment-content mt-2">{commentContent}</p>
-            </div>
-        </div>`;
+                    <div class="comment-container d-flex justify-content-start mt-4">
+                        <span class="comment-id-container" id="{commentId}" hidden></span>
+                        <img class="comment-channel-profile-picture" width="65px" height="65px" src="{commentChannelProfilePicture}" />
+                        <div class="comment-data">
+                            <div class="comment-channel-metadata">
+                                <span class="comment-channel-name">@@{commentChannelName}</span>
+                                <span class="comment-date text-faded">@@{commentDate}</span>
+                            </div>
+                            <p class="comment-content mt-2">{commentContent}</p>
+                        </div>
+                    </div>`;
 
     commentInput.addEventListener('keydown', (e) => {
         const commentInputValue = commentInput.value;

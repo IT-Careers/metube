@@ -51,6 +51,7 @@ namespace MeTube.Web
             builder.Services.AddTransient<IChannelService, ChannelService>();
 
             builder.Services.AddTransient<IVideoFacade, VideoFacade>();
+            builder.Services.AddTransient<IPlaylistFacade, PlaylistFacade>();
 
             builder.Services.AddDefaultIdentity<MeTubeUser>(options => {
                 options.SignIn.RequireConfirmedAccount = false;

@@ -3,6 +3,7 @@ using System;
 using MeTube.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace MeTube.Data.Migrations
 {
     [DbContext(typeof(MeTubeDbContext))]
-    partial class MeTubeDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240309113755_Playlist-Videos-Mapping")]
+    partial class PlaylistVideosMapping
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
