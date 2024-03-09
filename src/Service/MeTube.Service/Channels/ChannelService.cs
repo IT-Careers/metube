@@ -69,6 +69,7 @@ public class ChannelService : IChannelService
             .Include(channel => channel.VideoComments)
             .Include(channel => channel.VideoReactions)
             .Include(channel => channel.Playlists)
+                .ThenInclude(playlist => playlist.PlaylistThumbnail)
             .Include(channel => channel.PlaylistComments)
             .Include(channel => channel.PlaylistReactions);
     }

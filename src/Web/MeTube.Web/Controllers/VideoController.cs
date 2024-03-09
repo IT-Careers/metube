@@ -1,5 +1,6 @@
 using MeTube.Data.Models;
 using MeTube.Service.Channels;
+using MeTube.Service.Playlists;
 using MeTube.Service.Reactions;
 using MeTube.Service.Videos;
 using MeTube.Web.Models.Comment;
@@ -22,15 +23,24 @@ namespace MeTube.Web.Controllers
 
         private readonly IReactionTypeService _reactionTypeService;
 
+        private readonly IPlaylistService _playlistService;
+
         private readonly UserManager<MeTubeUser> _userManager;
 
-        public VideoController(IVideoFacade videoFacade, UserManager<MeTubeUser> userManager, IVideoService videoService, IReactionTypeService reactionTypeService, IChannelService channelService)
+        public VideoController(
+            IVideoFacade videoFacade, 
+            UserManager<MeTubeUser> userManager, 
+            IVideoService videoService, 
+            IReactionTypeService reactionTypeService, 
+            IChannelService channelService, 
+            IPlaylistService playlistService)
         {
             this._videoFacade = videoFacade;
             this._userManager = userManager;
             this._videoService = videoService;
             this._reactionTypeService = reactionTypeService;
             this._channelService = channelService;
+            this._playlistService = playlistService;
         }
 
         [HttpGet]
@@ -48,12 +58,21 @@ namespace MeTube.Web.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Details([FromQuery(Name = "v")] string videoId)
+        public async Task<IActionResult> Details([FromQuery(Name = "v")] string videoId, [FromQuery(Name = "pl")] string playlistId)
         {
             MeTubeUser currentUser = await this._userManager.GetUserAsync(this.User);
 
-            this.ViewData["Channel"] = await this._channelService.GetByUserIdAsync(currentUser.Id);
+            if(this.User.Identity.IsAuthenticated)
+            {
+                this.ViewData["Channel"] = await this._channelService.GetByUserIdAsync(currentUser.Id);
+            }
+
             this.ViewData["ReactionTypes"] = await this._reactionTypeService.GetAll().ToListAsync();
+
+            if(playlistId != null)
+            {
+                this.ViewData["Playlist"] = await this._playlistService.GetByIdAsync(playlistId);
+            }
 
             var video = await this._videoService.ViewVideoByIdAsync(videoId);
 

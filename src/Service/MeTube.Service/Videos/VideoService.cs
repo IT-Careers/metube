@@ -61,7 +61,8 @@ public class VideoService : IVideoService
 
     public async Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId)
     {
-        return (await this._playlistService.GetByIdAsync(playlistId)).Videos;
+        return null;
+        //return (await this._playlistService.GetByIdAsync(playlistId)).Videos;
     }
 
     public async Task<VideoDto> CreateAsync(VideoDto videoDto, string userId)
@@ -95,26 +96,6 @@ public class VideoService : IVideoService
         return (await _videoRepository.DeleteAsync(video)).ToVideoDto();
     }
 
-    private async Task<Video> GetByIdInternalAsync(string id)
-    {
-        return await this._videoRepository.GetAll()
-            .Include(video => video.Thumbnail)
-            .Include(video => video.VideoFile)
-            .Include(video => video.Comments)
-                .ThenInclude(videoComment => videoComment.CreatedBy)
-                    .ThenInclude(channel => channel.ProfilePicture)
-            .Include(video => video.Reactions)
-                .ThenInclude(reaction => reaction.Type)
-                .ThenInclude(reactionType => reactionType.ReactionIcon)
-            .Include(video => video.CreatedBy)
-            .   ThenInclude(channel => channel.ProfilePicture)
-            .Include(video => video.CreatedBy)
-                .ThenInclude(channel => channel.CoverPicture)
-            .Include(video => video.CreatedBy)
-            .   ThenInclude(channel => channel.Subscribers)
-            .SingleOrDefaultAsync(video => video.Id == id);
-    }
-
     public async Task<VideoDto> ViewVideoByIdAsync(string videoId)
     {
         Video video = await this.GetByIdInternalAsync(videoId);
@@ -141,7 +122,7 @@ public class VideoService : IVideoService
             .Where(videoReaction => videoReaction.Video.Id == videoId && videoReaction.Channel.Id == channel.Id)
             .ToListAsync();
 
-        if(existentVideoReactions.Count > 0)
+        if (existentVideoReactions.Count > 0)
         {
             foreach (var videoReactionToDelete in existentVideoReactions)
             {
@@ -165,7 +146,7 @@ public class VideoService : IVideoService
         Channel? channel = this._channelRepository.GetAll()
             .Include(channel => channel.User)
             .SingleOrDefault(channel => channel.User.Id == userId);
-    
+
         Video videoEntity = await this.GetByIdInternalAsync(videoId);
 
         VideoComment videoComment = new VideoComment
@@ -176,5 +157,45 @@ public class VideoService : IVideoService
 
         videoEntity.Comments.Add(videoComment);
         return (await this._videoRepository.EditAsync(videoEntity)).ToVideoDto();
+    }
+
+    private async Task<Video> GetByIdInternalAsync(string id)
+    {
+        return await this.GetAllTracked().SingleOrDefaultAsync(video => video.Id == id);
+    }
+
+    private IQueryable<Video> GetAllTracked()
+    {
+        return this._videoRepository.GetAll()
+            .Include(video => video.Thumbnail)
+            .Include(video => video.VideoFile)
+            .Include(video => video.Comments)
+                .ThenInclude(videoComment => videoComment.CreatedBy)
+                    .ThenInclude(channel => channel.ProfilePicture)
+            .Include(video => video.Reactions)
+                .ThenInclude(reaction => reaction.Type)
+                .ThenInclude(reactionType => reactionType.ReactionIcon)
+            .Include(video => video.CreatedBy)
+                .ThenInclude(channel => channel.ProfilePicture)
+            .Include(video => video.CreatedBy)
+                .ThenInclude(channel => channel.CoverPicture)
+            .Include(video => video.CreatedBy)
+                .ThenInclude(channel => channel.Subscribers)
+                .ThenInclude(subscriber => subscriber.Subscriber);
+    }
+
+    public IQueryable<VideoDto> GetSubscriptionVideos(string channelId, int count = 10)
+    {
+        return this.GetAllTracked()
+            .Where(video => video.CreatedBy.Subscribers.Any(subscriber => subscriber.Subscriber.Id == channelId))
+            .Take(count)
+            .Select(video => video.ToVideoDto(false, false, true));
+    }
+
+    public IQueryable<VideoDto> GetRandomVideos(HashSet<string> excludedVideoIds)
+    {
+        return this.GetAllTracked()
+            .Where(video => !excludedVideoIds.Contains(video.Id))
+            .Select(video => video.ToVideoDto(false, false, true));
     }
 }

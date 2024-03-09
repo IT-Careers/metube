@@ -10,7 +10,7 @@ namespace MeTube.Data.Models.Playlists
         {
             Reactions = new List<PlaylistReaction>();
             Comments = new List<PlaylistComment>();
-            Videos = new List<Video>();
+            Videos = new List<PlaylistVideoMapping>();
         }
         
         public string Title { get; set; }
@@ -23,6 +23,6 @@ namespace MeTube.Data.Models.Playlists
 
         public List<PlaylistComment> Comments { get; set; }
 
-        public List<Video> Videos { get; set; }
+        public List<PlaylistVideoMapping> Videos { get; set; }
     }
 }

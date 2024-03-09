@@ -12,6 +12,10 @@ public interface IVideoService
 
     Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId);
 
+    IQueryable<VideoDto> GetSubscriptionVideos(string channelId, int count = 10);
+
+    IQueryable<VideoDto> GetRandomVideos(HashSet<string> excludedVideoIds);
+
     Task<VideoDto> CreateAsync(VideoDto videoDto, string userId);
 
     Task<VideoDto> EditAsync(VideoDto attachmentDto);

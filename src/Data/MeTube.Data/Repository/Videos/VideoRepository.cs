@@ -11,12 +11,12 @@ public class VideoRepository : MetadataBaseRepository<Video>
     {
     }
 
-    public async Task<List<Video>> GetAllByPlaylistId(string id)
-    {
-        Playlist playlist = await _dbContext.Playlists
-             .Include(e => e.Videos)
-             .FirstAsync(p => p.Id == id);
+    //public async Task<List<Video>> GetAllByPlaylistId(string id)
+    //{
+    //    Playlist playlist = await _dbContext.Playlists
+    //         .Include(e => e.Videos)
+    //         .FirstAsync(p => p.Id == id);
 
-        return playlist.Videos;
-    }
+    //    return playlist.Videos;
+    //}
 }

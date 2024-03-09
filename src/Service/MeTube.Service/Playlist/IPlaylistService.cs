@@ -9,7 +9,7 @@ public interface IPlaylistService
 
     IQueryable<PlaylistDto> GetAll();
 
-    Task<PlaylistDto> CreateAsync(PlaylistDto playlistDto);
+    Task<PlaylistDto> CreateAsync(PlaylistDto playlistDto, string channelId);
 
     Task<PlaylistDto> EditAsync(PlaylistDto playlistDto);
 

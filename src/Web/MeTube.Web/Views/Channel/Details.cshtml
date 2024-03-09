@@ -1,4 +1,4 @@
-﻿@model ChannelDto
+@model ChannelDto
 
 @*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
@@ -79,7 +79,19 @@
         }
     </div>
     <div class="channel-tab channel-tab-hidden" id="channel-playlists-tab">
-        <h1>Playlists</h1>
+        @foreach(var playlist in Model.Playlists) {
+            <a class="link-custom" href="/Playlist/Details?playlistId=@playlist.Id">
+                <div class="playlist-row">
+                    <div class="playlist-thumbnail">
+                        <img src="@playlist.PlaylistThumbnail.CloudURL" />
+                    </div>
+                    <div class="playlist-data">
+                        <h1 class="playlist-data-title">@playlist.Title</h1>
+                        <h1 class="playlist-data-description">@playlist.Description</h1>
+                    </div>
+                </div>
+            </a>
+        }
     </div>
 </div>
 

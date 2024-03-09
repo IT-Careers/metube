@@ -29,7 +29,7 @@ public class VideoFacade : IVideoFacade
         VideoDto dto = new VideoDto
         {
             Title = model.Title,
-            Description = model.Description,
+            Description = model.Description ?? string.Empty,
             VideoFile = attachmentService.CreateAttachmentFromCloudinaryPayload(videoData),
             Thumbnail = attachmentService.CreateAttachmentFromCloudinaryPayload(thumbnailData)
         };

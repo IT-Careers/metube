@@ -10,7 +10,7 @@ public class PlaylistDto : MetadataBaseEntityDto
     {
         Reactions = new List<PlaylistReactionDto>();
         Comments = new List<PlaylistCommentDto>();
-        Videos = new List<VideoDto>();
+        Videos = new List<PlaylistVideoMappingDto>();
     }
     public string Title { get; set; }
 
@@ -22,5 +22,5 @@ public class PlaylistDto : MetadataBaseEntityDto
 
     public List<PlaylistCommentDto> Comments { get; set; }
     
-    public List<VideoDto> Videos { get; set; }
+    public List<PlaylistVideoMappingDto> Videos { get; set; }
 }
