@@ -1,0 +1,48 @@
+﻿@{
+    var searchVideos = (List<VideoDto>)this.ViewData["SearchVideos"];
+}
+
+<header>
+    <div class="search-bar-container">
+        <form action="/Search" method="get" id="search-bar-form">
+            <input id="search-bar-input" class="search-bar" type="text" name="query" />
+        </form>
+        <img class="search-bar-icon" src="~/images/search-icon.png" />
+    </div>
+</header>
+<main>
+    <div class="search-results">
+        @foreach (var video in searchVideos)
+        {
+            <div class="search-result-video">
+                <img class="search-result-video-thumbnail" src="@video.Thumbnail.CloudURL" />
+                <div class="search-result-video-data">
+                    <div class="search-result-video-data-title">@video.Title</div>
+                    <div class="search-result-video-data-parameters">
+                        <div class="videos-metrics">
+                            <div class="videos-views">@video.Views</div>
+                            <div class="videos-views-date-separator"></div>
+                            <div class="videos-date">@video.CreatedOn.ToString("dd/MM/yyyy")</div>
+                        </div>
+                    </div>
+                    <div class="search-result-video-data-channel">
+                        <img class="search-result-video-data-channel-profile-picture" src="@video.CreatedBy.ProfilePicture.CloudURL" />
+                        <div class="search-result-video-data-channel-name">@video.CreatedBy.Name</div>
+                    </div>
+                    <div class="search-result-video-data-description">@(video.Description.Length > 500 ? video.Description.Substring(0, 497) + "..." : video.Description)</div>
+                </div>
+            </div>
+        }
+    </div>
+</main>
+
+<script>
+    const searchBarInput = document.getElementById('search-bar-input');
+    const searchBarForm = document.getElementById('search-bar-form');
+
+    searchBarInput.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            searchBarForm.submit();
+        }
+    });
+</script>

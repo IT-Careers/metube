@@ -303,16 +303,16 @@ body {
         margin-top: 5px;
     }
 
-    .videos-card .videos-metrics {
+    .videos-metrics {
         display: flex;
         justify-content: start;
     }
 
-    .videos-card .videos-views {
+    .videos-views {
     }
 
 
-    .videos-card .videos-views-date-separator {
+    .videos-views-date-separator {
         background-color: #45322E;
         border-radius: 50%;
         width: 5px;
@@ -320,7 +320,7 @@ body {
         margin: 7.5px 5px 0 5px;
     }
 
-    .videos-card .videos-date {
+    .videos-date {
     }
 
 /* HOME PAGE STYLES */
@@ -426,6 +426,61 @@ body {
     border: 3px solid #45322E
 }
 
+/* SEARCH STYLES */
+
+.search-results {
+
+}
+
+.search-result-video {
+    display: flex;
+    justify-content: flex-start;
+    margin: 30px 0;
+}
+
+.search-result-video-thumbnail {
+    width: 250px;
+    height: 250px;
+    border-radius: 10px;
+}
+
+.search-result-video-data {
+    margin-left: 25px;
+    margin-top: 15px;
+}
+
+.search-result-video-data-title {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.search-result-video-data-parameters {
+}
+
+.search-result-video-data-channel {
+    margin-top: 15px;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.search-result-video-data-channel-profile-picture {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+}
+
+.search-result-video-data-channel-name {
+    margin-top: 15px;
+    margin-left: 15px;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.search-result-video-data-description {
+    margin-top: 20px;
+    font-size: 14px;
+    color: #ADADAD;
+}
 /* UPLOAD ZONE STYLES */
 #upload-thumbnail-input,
 #upload-icon-input,

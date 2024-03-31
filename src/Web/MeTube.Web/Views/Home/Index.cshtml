@@ -1,7 +1,7 @@
 ﻿@{
     ViewData["Title"] = "Home page";
-    var subscriptionVideos = this.User.Identity.IsAuthenticated 
-        ? (List<VideoDto>) this.ViewData["SubscriptionVideos"]
+    var subscriptionVideos = this.User.Identity.IsAuthenticated
+        ? (List<VideoDto>)this.ViewData["SubscriptionVideos"]
         : new List<VideoDto>();
 
     var randomVideos = (List<VideoDto>)this.ViewData["RandomVideos"];
@@ -9,7 +9,9 @@
 
 <header>
     <div class="search-bar-container">
-        <input class="search-bar" type="text" />
+        <form action="/Search" method="get" id="search-bar-form">
+            <input id="search-bar-input" class="search-bar" type="text" name="query" />
+        </form>
         <img class="search-bar-icon" src="~/images/search-icon.png" />
     </div>
 </header>
@@ -59,7 +61,7 @@
     }
     <section class="home-page-section random-videos">
         <h1 class="home-page-section-title">Suggested for you</h1>
-        <hr class="hr-2"/>
+        <hr class="hr-2" />
         @{
             int randomVideoIndex = 0;
             int leftoverVideoContainers = 0;
@@ -98,3 +100,14 @@
         }
     </section>
 </main>
+
+<script>
+    const searchBarInput = document.getElementById('search-bar-input');
+    const searchBarForm = document.getElementById('search-bar-form');
+
+    searchBarInput.addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+            searchBarForm.submit();
+        }
+    });
+</script>
