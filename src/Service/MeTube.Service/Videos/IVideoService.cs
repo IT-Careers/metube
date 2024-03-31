@@ -8,13 +8,15 @@ public interface IVideoService
 
     Task<VideoDto> ViewVideoByIdAsync(string videoId);
 
-    IQueryable<VideoDto> GetAll();
+    IQueryable<VideoDto> GetAll(bool tracked = false);
 
     Task<ICollection<VideoDto>> GetAllPlaylistVideos(string playlistId);
 
     IQueryable<VideoDto> GetSubscriptionVideos(string channelId, int count = 10);
 
     IQueryable<VideoDto> GetRandomVideos(HashSet<string> excludedVideoIds);
+
+    IQueryable<VideoDto> SearchVideos(string query);
 
     Task<VideoDto> CreateAsync(VideoDto videoDto, string userId);
 

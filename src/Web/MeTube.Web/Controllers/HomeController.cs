@@ -41,5 +41,14 @@ namespace MeTube.Web.Controllers
 
             return View();
         }
+
+        [HttpGet("/Search")]
+        public async Task<IActionResult> Search([FromQuery] string query)
+        {
+            // TODO: Refactor use of View Model
+            this.ViewData["SearchVideos"] = await this._videoService.SearchVideos(query).ToListAsync();
+
+            return View();
+        }
     }
 }

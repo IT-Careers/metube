@@ -43,19 +43,9 @@ public class VideoService : IVideoService
         return (await this.GetByIdInternalAsync(id)).ToVideoDto();
     }
 
-    public IQueryable<VideoDto> GetAll()
+    public IQueryable<VideoDto> GetAll(bool tracked = false)
     {
-        return this._videoRepository.GetAllAsNoTracking()
-            .Include(video => video.VideoFile) 
-            .Include(video => video.Thumbnail)
-            .Include(video => video.CreatedBy).ThenInclude(channel => channel.ProfilePicture)
-            .Include(video => video.Comments)
-                .ThenInclude(videoComment => videoComment.CreatedBy)
-            .Include(video => video.Reactions)
-                .ThenInclude(videoReaction => videoReaction.Channel)
-            .Include(video => video.Reactions)
-                .ThenInclude(videoReaction => videoReaction.Type)
-                .ThenInclude(reactionType => reactionType.ReactionIcon)
+        return (tracked ? this.GetAllTracked() : this.GetAllAsNoTracking())
             .Select(video => video.ToVideoDto(true, true, true));
     }
 
@@ -164,6 +154,26 @@ public class VideoService : IVideoService
         return await this.GetAllTracked().SingleOrDefaultAsync(video => video.Id == id);
     }
 
+    private IQueryable<Video> GetAllAsNoTracking()
+    {
+        return this._videoRepository.GetAllAsNoTracking()
+            .Include(video => video.Thumbnail)
+            .Include(video => video.VideoFile)
+            .Include(video => video.Comments)
+                .ThenInclude(videoComment => videoComment.CreatedBy)
+                    .ThenInclude(channel => channel.ProfilePicture)
+            .Include(video => video.Reactions)
+                .ThenInclude(reaction => reaction.Type)
+                .ThenInclude(reactionType => reactionType.ReactionIcon)
+            .Include(video => video.CreatedBy)
+                .ThenInclude(channel => channel.ProfilePicture)
+            .Include(video => video.CreatedBy)
+                .ThenInclude(channel => channel.CoverPicture)
+            .Include(video => video.CreatedBy)
+                .ThenInclude(channel => channel.Subscribers)
+                .ThenInclude(subscriber => subscriber.Subscriber);
+    }
+
     private IQueryable<Video> GetAllTracked()
     {
         return this._videoRepository.GetAll()
@@ -196,6 +206,14 @@ public class VideoService : IVideoService
     {
         return this.GetAllTracked()
             .Where(video => !excludedVideoIds.Contains(video.Id))
+            .Select(video => video.ToVideoDto(false, false, true));
+    }
+
+    public IQueryable<VideoDto> SearchVideos(string query)
+    {
+        return this.GetAllAsNoTracking()
+            .Where(video => video.Title.ToLower().Contains(query.ToLower()) 
+                            || query.ToLower().Contains(video.Title.ToLower()))
             .Select(video => video.ToVideoDto(false, false, true));
     }
 }
