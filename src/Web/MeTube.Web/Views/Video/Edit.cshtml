@@ -1,0 +1,80 @@
+﻿@model VideoDto
+
+@{
+    ViewData["Title"] = "Video";
+    var reactionTypes = (List<ReactionTypeDto>)ViewData["ReactionTypes"];
+    var currentUserChannel = this.User.Identity.IsAuthenticated ? (ChannelDto)ViewData["Channel"] : null;
+}
+
+<header>
+    <div class="search-bar-container">
+        <input class="search-bar" type="text" />
+        <img class="search-bar-icon" src="~/images/search-icon.png" />
+    </div>
+</header>
+<main>
+    <div class="video-page-content d-flex ">
+        <div class="video-play-container">
+            <span id="video-id-@Model.Id" hidden></span>
+            <div class="video-visualizer">
+                <video controls src="@Model.VideoFile.CloudURL"></video>
+            </div>
+            <form action="/Video/Edit?v=@Model.Id" method="post">
+                <div class="video-title-and-reactions d-flex justify-content-between mt-3">
+                    <input class="form-control fw-bold" type="text" value="@Model.Title" placeholder="Enter title..." name="Title" />
+                    <div class="video-reactions d-flex justify-content-end w-50">
+                        @foreach (var reactionType in reactionTypes.OrderByDescending(rt => Model.Reactions.Count(reaction => reaction.Type.Type == rt.Type)))
+                        {
+                            <div class="video-reaction-type-card p-3 d-flex justify-content-around" id="reaction-type-@reactionType.Id">
+                                <img width="25px" height="25px" src="@reactionType.ReactionIcon.CloudURL" />
+                                <span class="fw-bold">@Model.Reactions.Count(reaction => reaction.Type.Type == reactionType.Type)</span>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <div class="video-metadata mt-3">
+                    <div class="video-administration">
+                        <div class="video-metadata-channel">
+                            <img class="video-matadata-channel-profile-picture" src="@Model.CreatedBy.ProfilePicture.CloudURL" />
+                            <div class="video-matadata-channel-data">
+                                <h5 class="fw-bold"><a class="link-custom" href="/Channel/Details?channelId=@Model.CreatedBy.Id">@Model.CreatedBy.Name</a></h5>
+                                <h6 class="text-faded fw-normal">@Model.CreatedBy.Subscribers.Count subscribers</h6>
+                            </div>
+                        </div>
+                        @if (this.User.FindFirst("ChannelId")?.Value == Model.CreatedBy.Id || this.User.IsInRole("Admin"))
+                        {
+                            <div class="video-operations">
+                                <button type="submit" class="btn btn-edit">Confirm Edition</button>
+                                <a href="/Video/Details?v=@Model.Id" class="btn btn-delete">Cancel Edition</a>
+                            </div>
+                        }
+                    </div>
+                    <div class="video-metadata-description mt-3">
+                        <h6 class="video-metadata-views-and-date fw-bold">@Model.Views views, @Model.CreatedOn.ToString("dd/MM/yyyy")</h6>
+                        <textarea class="form-control" rows="5" name="Description">@Model.Description</textarea>
+                    </div>
+                    <div class="comment-section mt-3">
+                        <div class="comments-wrapper">
+                            @foreach (var comment in Model.Comments)
+                            {
+                                <div class="comment-container d-flex justify-content-start mt-4">
+                                    <span class="comment-id-container" id="@comment.Id" hidden></span>
+                                    <img class="comment-channel-profile-picture" width="65px" height="65px" src="@comment.CreatedBy.ProfilePicture.CloudURL" />
+                                    <div class="comment-data">
+                                        <div class="comment-channel-metadata">
+                                            <span class="comment-channel-name"><a class="link-custom" href="/Channel/Details?channelId=@comment.CreatedBy.Id">@@@comment.CreatedBy.Name</a></span>
+                                            <span class="comment-date text-faded">@comment.CreatedOn.ToString("dd/MM/yyyy")</span>
+                                        </div>
+                                        <p class="comment-content mt-2">
+                                            @comment.Content
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>

@@ -33,12 +33,21 @@
                 </div>
             </div>
             <div class="video-metadata mt-3">
-                <div class="video-metadata-channel">
-                    <img class="video-matadata-channel-profile-picture" src="@Model.CreatedBy.ProfilePicture.CloudURL" />
-                    <div class="video-matadata-channel-data">
-                        <h5 class="fw-bold"><a class="link-custom" href="/Channel/Details?channelId=@Model.CreatedBy.Id">@Model.CreatedBy.Name</a></h5>
-                        <h6 class="text-faded fw-normal">@Model.CreatedBy.Subscribers.Count subscribers</h6>
+                <div class="video-administration">
+                    <div class="video-metadata-channel">
+                        <img class="video-matadata-channel-profile-picture" src="@Model.CreatedBy.ProfilePicture.CloudURL" />
+                        <div class="video-matadata-channel-data">
+                            <h5 class="fw-bold"><a class="link-custom" href="/Channel/Details?channelId=@Model.CreatedBy.Id">@Model.CreatedBy.Name</a></h5>
+                            <h6 class="text-faded fw-normal">@Model.CreatedBy.Subscribers.Count subscribers</h6>
+                        </div>
                     </div>
+                    @if (this.User.FindFirst("ChannelId")?.Value == Model.CreatedBy.Id || this.User.IsInRole("Admin"))
+                    {
+                        <div class="video-operations">
+                            <a href="/Video/Edit?v=@Model.Id" class="btn btn-edit">Edit Video</a>
+                            <a href="" class="btn btn-delete">Delete Video</a>
+                        </div>
+                    }
                 </div>
                 <div class="video-metadata-description mt-3">
                     <h6 class="video-metadata-views-and-date fw-bold">@Model.Views views, @Model.CreatedOn.ToString("dd/MM/yyyy")</h6>
@@ -162,17 +171,17 @@
     const commentsWrapper = document.querySelector('.comments-wrapper');
 
     const commentTemplate = `
-                    <div class="comment-container d-flex justify-content-start mt-4">
-                        <span class="comment-id-container" id="{commentId}" hidden></span>
-                        <img class="comment-channel-profile-picture" width="65px" height="65px" src="{commentChannelProfilePicture}" />
-                        <div class="comment-data">
-                            <div class="comment-channel-metadata">
-                                <span class="comment-channel-name">@@{commentChannelName}</span>
-                                <span class="comment-date text-faded">@@{commentDate}</span>
+                        <div class="comment-container d-flex justify-content-start mt-4">
+                            <span class="comment-id-container" id="{commentId}" hidden></span>
+                            <img class="comment-channel-profile-picture" width="65px" height="65px" src="{commentChannelProfilePicture}" />
+                            <div class="comment-data">
+                                <div class="comment-channel-metadata">
+                                    <span class="comment-channel-name">@@{commentChannelName}</span>
+                                    <span class="comment-date text-faded">@@{commentDate}</span>
+                                </div>
+                                <p class="comment-content mt-2">{commentContent}</p>
                             </div>
-                            <p class="comment-content mt-2">{commentContent}</p>
-                        </div>
-                    </div>`;
+                        </div>`;
 
     commentInput.addEventListener('keydown', (e) => {
         const commentInputValue = commentInput.value;

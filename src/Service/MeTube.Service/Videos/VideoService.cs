@@ -74,7 +74,10 @@ public class VideoService : IVideoService
 
     public async Task<VideoDto> EditAsync(VideoDto videoDto)
     {
-        Video video = videoDto.ToVideoEntity();
+        Video video = await this.GetByIdInternalAsync(videoDto.Id);
+
+        video.Title = videoDto.Title;
+        video.Description = videoDto.Description;
 
         return (await _videoRepository.EditAsync(video)).ToVideoDto();
     }
