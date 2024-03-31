@@ -4,6 +4,7 @@ using MeTube.Data.Models.Comments;
 using MeTube.Data.Models.Playlists;
 using MeTube.Data.Models.Reactions;
 using MeTube.Data.Models.Videos;
+using MeTube.Data.Util;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -28,8 +29,7 @@ public class MeTubeDbContext : IdentityDbContext<MeTubeUser, IdentityRole, strin
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
-        // TODO: Extract into some kind of constant...
-        optionsBuilder.UseNpgsql("Server=127.0.0.1;Port=5432;Database=metube_db;User Id=postgres;Password=1234;");
+        optionsBuilder.UseNpgsql(ConnectionStringBuilder.BuildConnectionString() ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found."));
 
         base.OnConfiguring(optionsBuilder);
     }

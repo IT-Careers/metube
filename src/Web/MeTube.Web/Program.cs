@@ -6,6 +6,7 @@ using MeTube.Data.Repository.Comments;
 using MeTube.Data.Repository.Playlists;
 using MeTube.Data.Repository.Reactions;
 using MeTube.Data.Repository.Videos;
+using MeTube.Data.Util;
 using MeTube.Service;
 using MeTube.Service.Attachments;
 using MeTube.Service.Channels;
@@ -25,7 +26,7 @@ namespace MeTube.Web
         public static void ConfigureServices(WebApplicationBuilder builder)
         {
             // Add services to the container.
-            var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
+            var connectionString = ConnectionStringBuilder.BuildConnectionString() ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found.");
             builder.Services.AddDbContext<MeTubeDbContext>(options =>
                 options.UseNpgsql(connectionString));
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();

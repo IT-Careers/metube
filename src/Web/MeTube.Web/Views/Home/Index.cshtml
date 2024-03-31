@@ -3,10 +3,8 @@
     var subscriptionVideos = this.User.Identity.IsAuthenticated 
         ? (List<VideoDto>) this.ViewData["SubscriptionVideos"]
         : new List<VideoDto>();
-    
-    var randomVideos = this.User.Identity.IsAuthenticated
-        ? (List<VideoDto>)this.ViewData["RandomVideos"]
-        : new List<VideoDto>();
+
+    var randomVideos = (List<VideoDto>)this.ViewData["RandomVideos"];
 }
 
 <header>
