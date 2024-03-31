@@ -1,5 +1,6 @@
 using MeTube.Data.Models;
 using MeTube.Service.Channels;
+using MeTube.Service.Models.Videos;
 using MeTube.Service.Playlists;
 using MeTube.Service.Reactions;
 using MeTube.Service.Videos;
@@ -95,6 +96,38 @@ namespace MeTube.Web.Controllers
             MeTubeUser currentUser = await this._userManager.GetUserAsync(this.User);
 
             return Ok(await this._videoService.Comment(videoId, commentCreateModel.Content, currentUser.Id));
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Edit([FromQuery(Name = "v")] string videoId)
+        {
+            MeTubeUser currentUser = await this._userManager.GetUserAsync(this.User);
+
+            if (this.User.Identity.IsAuthenticated)
+            {
+                this.ViewData["Channel"] = await this._channelService.GetByUserIdAsync(currentUser.Id);
+            }
+
+            this.ViewData["ReactionTypes"] = await this._reactionTypeService.GetAll().ToListAsync();
+
+            var video = await this._videoService.ViewVideoByIdAsync(videoId);
+
+            return View(video);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Edit([FromQuery(Name = "v")] string videoId, [FromForm] VideoEditModel videoEditModel)
+        {
+            VideoDto videoModifiedDto = new VideoDto
+            {
+                Id = videoId,
+                Title = videoEditModel.Title,
+                Description = videoEditModel.Description
+            };
+
+            await this._videoService.EditAsync(videoModifiedDto);
+            
+            return Redirect("/Video/Details?v=" + videoId);
         }
     }
 }

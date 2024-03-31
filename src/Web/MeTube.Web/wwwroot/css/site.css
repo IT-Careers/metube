@@ -19,6 +19,30 @@ body {
         border: 10px solid #ebebeb;
     }
 
+.btn-edit {
+    background-color: #84C3BE;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-edit:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #ebebeb;
+}
+
+.btn-delete {
+    background-color: #fc656a;
+    color: white;
+    font-weight: bold;
+}
+
+.btn-delete:hover {
+    background-color: white;
+    color: black;
+    border: 2px solid #ebebeb;
+}
+
 .btn-custom {
 
 }
@@ -746,9 +770,18 @@ textarea {
     width: 1280px;
 }
 
+.video-administration {
+    display: flex;
+    justify-content: space-between;
+}
+
 .video-metadata-channel {
     display: flex;
     justify-content: flex-start;
+}
+
+.video-operations {
+    margin-top: 15px;
 }
 
 .video-matadata-channel-profile-picture {
