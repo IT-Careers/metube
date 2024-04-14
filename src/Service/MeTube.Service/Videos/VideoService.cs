@@ -14,22 +14,22 @@ namespace MeTube.Service.Videos;
 
 public class VideoService : IVideoService
 {
-    private readonly VideoRepository _videoRepository;
+    private readonly IVideoRepository _videoRepository;
 
-    private readonly ChannelRepository _channelRepository;
+    private readonly IChannelRepository _channelRepository;
 
-    private readonly VideoReactionRepository _videoReactionRepository;
+    private readonly IVideoReactionRepository _videoReactionRepository;
 
-    private readonly ReactionTypeRepository _reactionTypeRepository;
+    private readonly IReactionTypeRepository _reactionTypeRepository;
 
     private readonly IPlaylistService _playlistService;
 
     public VideoService(
-        VideoRepository videoRepository, 
-        ChannelRepository channelRepository, 
-        IPlaylistService playlistService, 
-        VideoReactionRepository videoReactionRepository, 
-        ReactionTypeRepository reactionTypeRepository)
+        IVideoRepository videoRepository, 
+        IChannelRepository channelRepository, 
+        IPlaylistService playlistService,   
+        IVideoReactionRepository videoReactionRepository, 
+        IReactionTypeRepository reactionTypeRepository)
     {
         this._videoRepository = videoRepository;
         this._channelRepository = channelRepository;
@@ -154,7 +154,14 @@ public class VideoService : IVideoService
 
     private async Task<Video> GetByIdInternalAsync(string id)
     {
-        return await this.GetAllTracked().SingleOrDefaultAsync(video => video.Id == id);
+        var video = await this.GetAllTracked().SingleOrDefaultAsync(video => video.Id == id);
+        
+        if(video == null)
+        {
+            throw new ArgumentException($"Video with Id: {id} is non existent."); // TODO: This should be in a constant
+        }
+
+        return video;
     }
 
     private IQueryable<Video> GetAllAsNoTracking()

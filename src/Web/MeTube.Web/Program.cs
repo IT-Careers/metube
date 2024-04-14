@@ -33,12 +33,15 @@ namespace MeTube.Web
 
             builder.Services.AddTransient<AttachmentRepository, AttachmentRepository>();
             builder.Services.AddTransient<ReactionTypeRepository, ReactionTypeRepository>();
+            builder.Services.AddTransient<IReactionTypeRepository, ReactionTypeRepository>();
             builder.Services.AddTransient<ChannelRepository, ChannelRepository>();
+            builder.Services.AddTransient<IChannelRepository, ChannelRepository>();
             builder.Services.AddTransient<ChannelSubscriptionMappingRepository, ChannelSubscriptionMappingRepository>();
-            builder.Services.AddTransient<VideoRepository, VideoRepository>();
+            builder.Services.AddTransient<IVideoRepository, VideoRepository>();
             builder.Services.AddTransient<PlaylistRepository, PlaylistRepository>();
             builder.Services.AddTransient<VideoCommentRepository, VideoCommentRepository>();
             builder.Services.AddTransient<VideoReactionRepository, VideoReactionRepository>();
+            builder.Services.AddTransient<IVideoReactionRepository, VideoReactionRepository>();
             builder.Services.AddTransient<PlaylistCommentRepository, PlaylistCommentRepository>();
             builder.Services.AddTransient<PlaylistReactionRepository, PlaylistReactionRepository>();
 

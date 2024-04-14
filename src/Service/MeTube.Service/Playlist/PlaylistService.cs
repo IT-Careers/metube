@@ -1,6 +1,5 @@
 using MeTube.Data.Models.Channels;
 using MeTube.Data.Models.Playlists;
-using MeTube.Data.Models.Videos;
 using MeTube.Data.Repository.Channels;
 using MeTube.Data.Repository.Playlists;
 using MeTube.Data.Repository.Videos;
@@ -14,11 +13,11 @@ public class PlaylistService : IPlaylistService
 {
     private readonly PlaylistRepository _playlistRepository;
 
-    private readonly VideoRepository _videoRepository;
+    private readonly IVideoRepository _videoRepository;
 
     private readonly ChannelRepository _channelRepository;
 
-    public PlaylistService(PlaylistRepository playlistRepository, VideoRepository videoRepository, ChannelRepository channelRepository)
+    public PlaylistService(PlaylistRepository playlistRepository, IVideoRepository videoRepository, ChannelRepository channelRepository)
     {
         this._playlistRepository = playlistRepository;
         this._videoRepository = videoRepository;
