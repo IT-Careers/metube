@@ -131,4 +131,54 @@ public class VideoServiceTests
 
         Assert.That(areEqual, Is.True);
     }
+
+    [Test]
+    public async Task TestGetAll_NonTrackedAndExistingVideos_ShouldReturnCollectionOfVideos()
+    {
+        // Arrange
+        var testVideoDataQueryable = this.GetTestVideoData().AsQueryable();
+        var mockSet = MoqExtensions.MockQueryable(testVideoDataQueryable);
+        mockSet.As<IQueryable<Video>>().Setup(m => m.GetEnumerator()).Returns(() => testVideoDataQueryable.GetEnumerator());
+
+        videoRepositoryMock.Setup(vr => vr.GetAllAsNoTracking())
+            .Returns(mockSet.Object);
+
+        var expectedCollection = this.GetTestVideoData().Select(video => video.ToVideoDto(true, true, true)).AsQueryable();
+
+        // Act
+        var actualQueryable = this.videoService.GetAll(false);
+
+        // Assert
+        var areEqual = MoqExtensions.CompareCollections(expectedCollection, actualQueryable, (firstVideo, secondVideo) =>
+        {
+            return firstVideo.Id == secondVideo.Id && firstVideo.Title == secondVideo.Title;
+        });
+
+        Assert.That(areEqual, Is.True);
+    }
+
+    [Test]
+    public async Task TestGetAll_WithDefaultParameterAndExistingVideos_ShouldReturnCollectionOfVideos()
+    {
+        // Arrange
+        var testVideoDataQueryable = this.GetTestVideoData().AsQueryable();
+        var mockSet = MoqExtensions.MockQueryable(testVideoDataQueryable);
+        mockSet.As<IQueryable<Video>>().Setup(m => m.GetEnumerator()).Returns(() => testVideoDataQueryable.GetEnumerator());
+
+        videoRepositoryMock.Setup(vr => vr.GetAll())
+            .Returns(mockSet.Object);
+
+        var expectedVideoId = "2";
+        var expectedVideoTitle = "Video-2";
+
+        // Act
+        var actualVideo = await videoService.GetByIdAsync("2");
+
+        var actualVideoId = actualVideo.Id;
+        var actualVideoTitle = actualVideo.Title;
+
+        // Assert
+        Assert.That(actualVideoId, Is.EqualTo(expectedVideoId), "Video Ids differ.");
+        Assert.That(actualVideoTitle, Is.EqualTo(expectedVideoTitle), "Video Titles differ.");
+    }
 }
