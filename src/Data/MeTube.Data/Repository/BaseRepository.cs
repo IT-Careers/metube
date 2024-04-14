@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Data.Repository;
 
-public class BaseRepository<TEntity> where TEntity : BaseEntity
+public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly MeTubeDbContext _dbContext;
 

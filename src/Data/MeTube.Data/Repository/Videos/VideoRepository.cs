@@ -1,10 +1,8 @@
-using MeTube.Data.Models.Playlists;
 using MeTube.Data.Models.Videos;
-using Microsoft.EntityFrameworkCore;
 
 namespace MeTube.Data.Repository.Videos;
 
-public class VideoRepository : MetadataBaseRepository<Video>
+public class VideoRepository : MetadataBaseRepository<Video>, IVideoRepository
 {
     public VideoRepository(MeTubeDbContext dbContext)
         : base(dbContext)
